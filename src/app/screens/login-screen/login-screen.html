@@ -1,0 +1,47 @@
+<div class="main">
+  <app-logo></app-logo>
+  <h3 class="{{ h3Style }}">Socially</h3>
+  <h4 class="mb-8 {{ mutedStyle }}">Your personal social Butler</h4>
+  <div hlmCard class="min-w-xs md:min-w-md">
+    <div hlmCardHeader>
+      <div hlmCardTitle>Welcome Back!</div>
+      <div hlmCardDescription>Log In</div>
+    </div>
+    <div hlmCardContent>
+      <form class="space-y-4">
+        <hlm-form-field>
+          <input class="w-full" hlmInput placeholder="Username" />
+        </hlm-form-field>
+        <hlm-form-field>
+          <input class="w-full" hlmInput placeholder="Email" />
+        </hlm-form-field>
+        <hlm-form-field>
+          <input
+            class="w-full"
+            hlmInput
+            [type]="hidden ? 'password' : 'text'"
+            placeholder="Password"
+          />
+        </hlm-form-field>
+        <label hlmLabel class="flex items-center justify-end mb-4">
+          <hlm-checkbox (changed)="showPasswordToggle($event)" class="mr-2" />
+          show password
+        </label>
+      </form>
+    </div>
+    <div hlmCardFooter>
+      <button hlmBtn variant="secondary" (click)="navigateToRegisterScreen()">
+        Register
+      </button>
+      <button hlmBtn variant="outline">
+        <img
+          class="w-[20px] h-[20px] shrink-0"
+          src="google.png"
+          alt=""
+          srcset=""
+        />
+      </button>
+      <button hlmBtn class="w-full">Log In</button>
+    </div>
+  </div>
+</div>

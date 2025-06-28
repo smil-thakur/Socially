@@ -1,5 +1,3 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -13,7 +11,33 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "paths": {
+      "@spartan-ng/helm/button": [
+        "./libs/ui/ui-button-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/icon": [
+        "./libs/ui/ui-icon-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/card": [
+        "./libs/ui/ui-card-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/form-field": [
+        "./libs/ui/ui-form-field-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/input": [
+        "./libs/ui/ui-input-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/typography": [
+        "./libs/ui/ui-typography-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/checkbox": [
+        "./libs/ui/ui-checkbox-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/label": [
+        "./libs/ui/ui-label-helm/src/index.ts"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
