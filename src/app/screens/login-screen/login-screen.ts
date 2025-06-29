@@ -50,4 +50,8 @@ export class LoginScreen extends BasePageScreen {
   public showPasswordToggle(event: boolean) {
     this.hidden = !event;
   }
+
+  public navigateToHomeScreen() {
+    this.router.navigate(['/home']);
+  }
 }

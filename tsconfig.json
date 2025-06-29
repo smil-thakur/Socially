@@ -36,6 +36,9 @@
       ],
       "@spartan-ng/helm/label": [
         "./libs/ui/ui-label-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/select": [
+        "./libs/ui/ui-select-helm/src/index.ts"
       ]
     }
   },

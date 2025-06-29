@@ -1,0 +1,38 @@
+<div class="flex items-center p-10 flex-col">
+  <h1 class="{{ h1Style }} text-center">Welcome, Smil Raj Thakur</h1>
+  <div>
+    <p class="{{ mutedStyle }} mt-20 text-center">
+      Drop your resume, linkedin pdf or anything that tells us about you
+    </p>
+    <div
+      tabindex="1"
+      class="flex items-center flex-col justify-center px-10 py-5 rounded-xl mt-10 border-dashed border-5 focusable"
+    >
+      <ng-icon hlm size="80px" name="lucideFilePlus2" />
+      <p class="{{ mutedStyle }} mt-8">drop here, or click to choose file</p>
+    </div>
+  </div>
+  <div class="mt-20">
+    <h3 class="{{ h3Style }}">Your socials</h3>
+    <p class="{{ mutedStyle }}">
+      Here are the collection of socials you have created, or can be created
+    </p>
+    <div class="flex flex-wrap justify-center gap-4 mt-8 items-stretch">
+      @for (social of socials; track $index) {
+      <div hlmCard class="w-xs cursor-pointer focusable">
+        <div hlmCardHeader>
+          <div hlmCardTitle>{{ social.type }}</div>
+          <div hlmCardDescription>{{ social.desc }}</div>
+        </div>
+        <div hlmCardContent>
+          <ng-icon [name]="social.icon" size="30px" hlm></ng-icon>
+        </div>
+        <div hlmCardFooter>
+          <button (click)="navigateToSocial(social.route)" hlmBtn>Edit</button>
+          <button hlmBtn variant="outline">View</button>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>

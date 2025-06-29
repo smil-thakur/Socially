@@ -1,0 +1,151 @@
+<div class="flex flex-col items-center p-8 w-full max-w-4xl mx-auto">
+  <!-- Create New Social Link Section -->
+  <div hlmCard>
+    <form [formGroup]="newLinkForm!">
+      <div hlmCardHeader>
+        <div hlmCardTitle>Add a Social Link</div>
+        <div hlmCardDescription>
+          Enter your profile link, select the platform, pick a color, and
+          optionally upload a custom icon.
+        </div>
+      </div>
+      <div hlmCardContent>
+        <hlm-form-field class="flex-1 mb-4">
+          <input
+            hlmInput
+            class="w-full"
+            placeholder="Paste your profile URL"
+            formControlName="url"
+          />
+        </hlm-form-field>
+        <div class="flex items-center justify-center space-x-2">
+          <hlm-form-field class="flex-1">
+            <brn-select
+              class="inline-block w-full"
+              placeholder="Select social media"
+              formControlName="platform"
+            >
+              <hlm-select-trigger class="w-full">
+                <hlm-select-value />
+              </hlm-select-trigger>
+              <hlm-select-content>
+                <hlm-select-label>Platform</hlm-select-label>
+                @for (platform of platforms; track platform.value) {
+                <hlm-option [value]="platform.value">{{
+                  platform.label
+                }}</hlm-option>
+                }
+              </hlm-select-content>
+            </brn-select>
+          </hlm-form-field>
+          <hlm-form-field>
+            <input
+              type="color"
+              hlmInput
+              class="w-[40px] h-[40px] p-1"
+              placeholder="Color"
+              formControlName="color"
+              [value]="color?.value"
+            />
+          </hlm-form-field>
+        </div>
+        @if (platform?.value === 'custom') {
+        <ng-container>
+          <hlm-form-field class="mt-4">
+            <label hlmLabel>
+              Choose custom Icon
+              <input
+                hlmInput
+                type="file"
+                accept="image/*"
+                (change)="onIconUpload($event)"
+              />
+            </label>
+          </hlm-form-field>
+        </ng-container>
+        }
+
+        <div class="flex items-center gap-4 mt-2" *ngIf="customIcon">
+          <span class="text-muted-foreground text-xs">Preview:</span>
+          <img [src]="customIcon" class="w-8 h-8 rounded-full border" />
+        </div>
+      </div>
+      <div hlmCardFooter>
+        <button hlmBtn type="button" (click)="addSocialLink()">Add</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="w-full flex flex-row items-center gap-4 mb-4 mt-4">
+    <span class="flex-1 border-b border-muted"></span>
+    <span class="text-muted-foreground">Your Social Links</span>
+    <span class="flex-1 border-b border-muted"></span>
+  </div>
+
+  <!-- Layout Options -->
+  <div class="flex gap-2 mb-6">
+    <button hlmBtn variant="outline" (click)="layout = 'card'">Card</button>
+    <button hlmBtn variant="outline" (click)="layout = 'pill'">Pill</button>
+    <button hlmBtn variant="outline" (click)="layout = 'icon'">
+      Icon Only
+    </button>
+  </div>
+
+  <!-- Social Links Display Section -->
+  @switch (layout) { @case ('card') {
+  <div class="flex flex-wrap gap-4 justify-center w-full">
+    @for (link of socialLinks; track $index) {
+    <div
+      hlmCard
+      class="w-xs min-h-[120px] flex flex-col items-center justify-center gap-2"
+    >
+      @if (link.icon) {
+      <ng-icon [name]="link.icon" size="32px"></ng-icon>
+      } @if (link.customIcon) {
+      <img [src]="link.customIcon" class="w-8 h-8 rounded-full" />
+      }
+      <div hlmCardTitle>{{ link.platformName }}</div>
+      <a
+        [href]="link.url"
+        target="_blank"
+        class="text-primary underline break-all"
+        >{{ link.url }}</a
+      >
+    </div>
+    }
+  </div>
+  } @case ('pill') {
+  <div class="flex flex-wrap gap-2 justify-center w-full">
+    @for (link of socialLinks; track $index) {
+    <a
+      [href]="link.url"
+      target="_blank"
+      class="px-4 py-2 rounded-full text-white"
+      [ngStyle]="{ background: link.color }"
+    >
+      @if (link.icon) {
+      <ng-icon [name]="link.icon" size="18px"></ng-icon>
+      } @if (link.customIcon) {
+      <img
+        [src]="link.customIcon"
+        class="w-5 h-5 rounded-full inline-block mr-1"
+      />
+      }
+      {{ link.platformName }}
+    </a>
+    }
+  </div>
+  } @case ('icon') {
+  <div class="flex flex-wrap gap-4 justify-center w-full">
+    @for (link of socialLinks; track $index) {
+    <a [href]="link.url" target="_blank">
+      @if (link.icon) {
+      <ng-icon [name]="link.icon" size="32px"></ng-icon>
+      } @if (link.customIcon) {
+      <img [src]="link.customIcon" class="w-8 h-8 rounded-full" />
+      }
+    </a>
+    }
+  </div>
+  } }
+</div>

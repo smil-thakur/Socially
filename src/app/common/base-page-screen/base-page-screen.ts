@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { hlmMuted, hlmH3 } from '@spartan-ng/helm/typography';
+import { hlmMuted, hlmH3, hlmH1 } from '@spartan-ng/helm/typography';
 
 @Component({
   selector: 'app-base-page-screen',
@@ -10,4 +10,5 @@ import { hlmMuted, hlmH3 } from '@spartan-ng/helm/typography';
 export class BasePageScreen {
   public mutedStyle = hlmMuted;
   public h3Style = hlmH3;
+  public h1Style = hlmH1;
 }
