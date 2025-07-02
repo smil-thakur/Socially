@@ -31,6 +31,8 @@ import { HlmSelectImports, HlmSelectModule } from '@spartan-ng/helm/select';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { Subscription } from 'rxjs';
 import { HlmLabelDirective } from '@spartan-ng/helm/label';
+import { SocialLink } from '../../interfaces/social-link';
+import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
 
 @Component({
   selector: 'app-social-links-screen',
@@ -55,6 +57,8 @@ import { HlmLabelDirective } from '@spartan-ng/helm/label';
     HlmCardDescriptionDirective,
     HlmCardFooterDirective,
 
+    SocialLinkCard,
+
     CommonModule,
   ],
   templateUrl: './social-links-screen.html',
@@ -74,7 +78,59 @@ import { HlmLabelDirective } from '@spartan-ng/helm/label';
 export class SocialLinksScreen implements OnInit, OnDestroy {
   newLinkForm: FormGroup | null = null;
   layout: 'card' | 'pill' | 'icon' = 'card';
-  socialLinks: any[] = [];
+  socialLinks: SocialLink[] = [
+    {
+      url: 'https://linkedin.com/in/example',
+      platform: 'linkedin',
+      platformName: 'LinkedIn',
+      icon: 'lucideLinkedin',
+      color: '#0077b5',
+      customIcon: '',
+    },
+    {
+      url: 'https://wa.me/1234567890',
+      platform: 'whatsapp',
+      platformName: 'WhatsApp',
+      icon: 'lucideMessageCircle',
+      color: '#25d366',
+      customIcon: '',
+    },
+    {
+      url: 'https://x.com/SmilThakur',
+      platform: 'twitter',
+      platformName: 'Twitter',
+      icon: 'lucideTwitter',
+      color: '#1da1f2',
+      customIcon: '',
+      desc: 'you know who I am',
+      followers: '25',
+      following: '62',
+    },
+    {
+      url: 'https://github.com/example',
+      platform: 'github',
+      platformName: 'GitHub',
+      icon: 'lucideGithub',
+      color: '#333',
+      customIcon: '',
+    },
+    {
+      url: 'https://youtube.com/example',
+      platform: 'youtube',
+      platformName: 'Youtube',
+      icon: 'lucideYoutube',
+      color: '#ff0000',
+      customIcon: '',
+    },
+    {
+      url: 'https://custom.com/myprofile',
+      platform: 'custom',
+      platformName: 'Custom',
+      icon: '',
+      color: '#ff8800',
+      customIcon: 'https://placehold.co/32x32/orange/white?text=C',
+    },
+  ];
   customIcon: string = '';
   platforms = [
     {

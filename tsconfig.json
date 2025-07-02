@@ -39,6 +39,9 @@
       ],
       "@spartan-ng/helm/select": [
         "./libs/ui/ui-select-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/dialog": [
+        "./libs/ui/ui-dialog-helm/src/index.ts"
       ]
     }
   },

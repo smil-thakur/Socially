@@ -1,1 +1,33 @@
-<p>social-link-card works!</p>
+<div
+  hlmCard
+  (click)="openMainCard()"
+  class="focus-effect social-link-card card-frosted-bg"
+  [style]="{
+    '--social-link-color': socialLink().color,
+    '--frost-x': frostX,
+    '--frost-y': frostY
+  }"
+  (mousemove)="onFrostMove($event)"
+  (mouseleave)="resetFrost()"
+>
+  <div hlmCardHeader>
+    <div hlmCardTitle>
+      {{ socialLink().platformName }}
+    </div>
+    <div hlmCardDescription>
+      <a [href]="socialLink().url">{{ socialLink().url }}</a>
+    </div>
+  </div>
+  <div hlmCardContent>
+    @if (lucideIcons.includes(socialLink().icon.toString())) {
+    <ng-icon [name]="socialLink().icon" size="24px"></ng-icon>
+    } @else {
+    <img
+      class="rounded-full"
+      [src]="socialLink().customIcon"
+      alt=""
+      srcset=""
+    />
+    }
+  </div>
+</div>
