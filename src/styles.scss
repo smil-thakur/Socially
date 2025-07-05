@@ -102,3 +102,16 @@ html.dark body,
 body.dark {
   background: #18181b; // or any dark color you prefer
 }
+
+//to remove increment and decrement arrows from input text
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

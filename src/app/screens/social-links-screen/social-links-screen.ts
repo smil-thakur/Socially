@@ -33,6 +33,7 @@ import { Subscription } from 'rxjs';
 import { HlmLabelDirective } from '@spartan-ng/helm/label';
 import { SocialLink } from '../../interfaces/social-link';
 import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
+import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 
 @Component({
   selector: 'app-social-links-screen',
@@ -75,7 +76,10 @@ import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
     }),
   ],
 })
-export class SocialLinksScreen implements OnInit, OnDestroy {
+export class SocialLinksScreen
+  extends BasePageScreen
+  implements OnInit, OnDestroy
+{
   newLinkForm: FormGroup | null = null;
   layout: 'card' | 'pill' | 'icon' = 'card';
   socialLinks: SocialLink[] = [
@@ -180,7 +184,9 @@ export class SocialLinksScreen implements OnInit, OnDestroy {
 
   private platformValueChangeSubscription: Subscription | undefined;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    super();
+  }
   ngOnInit(): void {
     this.newLinkForm = this.fb.group({
       url: [''],

@@ -18,6 +18,30 @@
             formControlName="url"
           />
         </hlm-form-field>
+        <div class="flex gap-2 mb-8 flex-col ml-4">
+          <div>Additional Info</div>
+
+          <div class="flex gap-6">
+            <hlm-form-field>
+              <label hlmLabel>
+                <div class="{{ mutedStyle }} text-xs">Followers</div>
+                <input hlmInput type="number" class="w-[72px]" />
+              </label>
+            </hlm-form-field>
+            <hlm-form-field>
+              <label hlmLabel>
+                <div class="{{ mutedStyle }} text-xs">Following</div>
+                <input hlmInput type="number" class="w-[72px]" />
+              </label>
+            </hlm-form-field>
+          </div>
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Bio</div>
+              <input type="text" hlmInput placeholder="Your bio or desc" />
+            </label>
+          </hlm-form-field>
+        </div>
         <div class="flex items-center justify-center space-x-2">
           <hlm-form-field class="flex-1">
             <brn-select
