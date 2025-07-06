@@ -5,6 +5,7 @@ import {
   FormBuilder,
   FormGroup,
   FormControl,
+  Validators,
 } from '@angular/forms';
 import { HlmFormFieldModule } from '@spartan-ng/helm/form-field';
 import { HlmInputDirective } from '@spartan-ng/helm/input';
@@ -34,6 +35,8 @@ import { HlmLabelDirective } from '@spartan-ng/helm/label';
 import { SocialLink } from '../../interfaces/social-link';
 import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
+import { popularSocialMediaPlatforms } from '../../enums/popular-social-media-platforms';
+import { POPULAR_SOCIAL_MEDIA_BASE_URLS } from '../../enums/popular-social-medial-base-url';
 
 @Component({
   selector: 'app-social-links-screen',
@@ -84,125 +87,77 @@ export class SocialLinksScreen
   layout: 'card' | 'pill' | 'icon' = 'card';
   socialLinks: SocialLink[] = [
     {
-      url: 'https://linkedin.com/in/example',
-      platform: 'linkedin',
-      platformName: 'LinkedIn',
-      icon: 'lucideLinkedin',
-      color: '#0077b5',
-      customIcon: '',
-    },
-    {
-      url: 'https://wa.me/1234567890',
-      platform: 'whatsapp',
-      platformName: 'WhatsApp',
-      icon: 'lucideMessageCircle',
-      color: '#25d366',
-      customIcon: '',
-    },
-    {
-      url: 'https://x.com/SmilThakur',
-      platform: 'twitter',
-      platformName: 'Twitter',
+      url: 'https://www.example.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',
+      platform: 'x',
+      platformName: 'X',
+      followers: '123456789',
+      following: '123456789',
       icon: 'lucideTwitter',
       color: '#1da1f2',
       customIcon: '',
-      desc: 'you know who I am',
-      followers: '25',
-      following: '62',
-    },
-    {
-      url: 'https://github.com/example',
-      platform: 'github',
-      platformName: 'GitHub',
-      icon: 'lucideGithub',
-      color: '#333',
-      customIcon: '',
-    },
-    {
-      url: 'https://youtube.com/example',
-      platform: 'youtube',
-      platformName: 'Youtube',
-      icon: 'lucideYoutube',
-      color: '#ff0000',
-      customIcon: '',
-    },
-    {
-      url: 'https://custom.com/myprofile',
-      platform: 'custom',
-      platformName: 'Custom',
-      icon: '',
-      color: '#ff8800',
-      customIcon: 'https://placehold.co/32x32/orange/white?text=C',
+      username: 'usernamemaximumthirtychars1234',
+      handle: '@handlemaximumthirtycharacters',
+      desc: 'This is a test bio reaching the maximum character limit of 160, adding more and more until we hit 160 characters exactly to check if truncation or validation k1',
     },
   ];
   customIcon: string = '';
-  platforms = [
-    {
-      value: 'linkedin',
-      label: 'LinkedIn',
-      icon: 'lucideLinkedin',
-      color: '#0077b5',
-    },
-    {
-      value: 'whatsapp',
-      label: 'WhatsApp',
-      icon: 'lucideMessageCircle',
-      color: '#25d366',
-    },
-    {
-      value: 'twitter',
-      label: 'Twitter',
-      icon: 'lucideTwitter',
-      color: '#1da1f2',
-    },
-    {
-      value: 'facebook',
-      label: 'Facebook',
-      icon: 'lucideFacebook',
-      color: '#1877f3',
-    },
-    {
-      value: 'instagram',
-      label: 'Instagram',
-      icon: 'lucideInstagram',
-      color: '#e1306c',
-    },
-    { value: 'github', label: 'GitHub', icon: 'lucideGithub', color: '#333' },
-    {
-      value: 'youtube',
-      label: 'YouTube',
-      icon: 'lucideYoutube',
-      color: '#ff0000',
-    },
-    {
-      value: 'custom',
-      label: 'Custom',
-      icon: '',
-      color: '',
-    },
-  ];
+  platforms = popularSocialMediaPlatforms;
 
   private platformValueChangeSubscription: Subscription | undefined;
+  private profileURLChangeSubscription: Subscription | undefined;
 
   constructor(private fb: FormBuilder) {
     super();
   }
   ngOnInit(): void {
     this.newLinkForm = this.fb.group({
-      url: [''],
-      platform: [''],
-      color: new FormControl({ value: '', disabled: true }),
+      url: new FormControl({ value: '', disabled: false }, [
+        Validators.required,
+        Validators.maxLength(200),
+      ]),
+      username: new FormControl({ value: '', disabled: false }, [
+        Validators.required,
+        Validators.maxLength(30),
+      ]),
+      handle: new FormControl({ value: '', disabled: false }, [
+        Validators.required,
+        Validators.maxLength(30),
+      ]),
+      follower: new FormControl({ value: '', disabled: false }, [
+        Validators.max(999999999),
+        Validators.pattern(/^[0-9]+$/),
+      ]),
+      following: new FormControl({ value: '', disabled: false }, [
+        Validators.max(999999999),
+        Validators.pattern(/^[0-9]+$/),
+      ]),
+      bio: new FormControl({ value: '', disabled: false }, [
+        Validators.required,
+        Validators.maxLength(160),
+      ]),
+      platform: new FormControl({ value: null, disabled: true }, [
+        Validators.required,
+      ]),
+      color: new FormControl({ value: '#666666', disabled: true }),
     });
     this.platformValueChangeSubscription = this.newLinkForm
       .get('platform')
       ?.valueChanges.subscribe((newValue) => {
         this.onPlatformChange(newValue);
       });
+    this.profileURLChangeSubscription = this.newLinkForm
+      .get('url')
+      ?.valueChanges.subscribe((newURL) => {
+        this.onProfileURLChange(newURL);
+      });
   }
 
   ngOnDestroy(): void {
     if (this.platformValueChangeSubscription) {
       this.platformValueChangeSubscription.unsubscribe();
+    }
+    if (this.profileURLChangeSubscription) {
+      this.profileURLChangeSubscription.unsubscribe();
     }
   }
 
@@ -216,17 +171,54 @@ export class SocialLinksScreen
     return this.newLinkForm?.get('color');
   }
 
+  get followers() {
+    return this.newLinkForm?.get('follower');
+  }
+
+  get following() {
+    return this.newLinkForm?.get('following');
+  }
+
+  get username() {
+    return this.newLinkForm?.get('username');
+  }
+
+  get bio() {
+    return this.newLinkForm?.get('bio');
+  }
+
+  get handle() {
+    return this.newLinkForm?.get('handle');
+  }
+
+  onProfileURLChange(value: string) {
+    if (value) {
+      const match = POPULAR_SOCIAL_MEDIA_BASE_URLS.find((item) =>
+        value.includes(item.baseURL)
+      );
+      console.log(value, match);
+      if (match) {
+        const socialMediaValue = match.value;
+        this.platform?.enable();
+        this.platform?.setValue(socialMediaValue);
+      } else {
+        this.platform?.setValue('custom');
+      }
+    }
+  }
+
   onPlatformChange(newPlatform: string) {
+    console.log('cahnge');
     const platformValue = newPlatform;
     console.log(platformValue);
     if (platformValue && platformValue !== 'custom') {
       this.newLinkForm?.get('color')?.disable();
       const platform = this.platforms.find((p) => p.value === platformValue);
-      this.color?.setValue(platform ? platform.color : '#666');
+      this.color?.setValue(platform ? platform.color : '#666666');
       this.customIcon = '';
     } else if (platformValue === 'custom') {
       this.newLinkForm?.get('color')?.enable();
-      this.color?.setValue('#666');
+      this.color?.setValue('#666666');
     }
   }
 
@@ -242,20 +234,32 @@ export class SocialLinksScreen
   }
 
   addSocialLink() {
+    if (!this.newLinkForm) return;
+    this.newLinkForm.markAllAsTouched();
+    if (this.newLinkForm.invalid) return;
     if (!this.url?.value || !this.platform?.value) return;
     const platform = this.platforms.find(
       (p) => p.value === this.platform?.value
     );
-    const link = {
+    const link: SocialLink = {
       url: this.url.value,
+      username: this.username?.value,
       platform: this.platform.value,
       platformName: platform ? platform.label : 'Custom',
       icon: platform ? platform.icon : '',
-      color: this.color?.value || (platform ? platform.color : '#666'),
+      color: this.color?.value || (platform ? platform.color : '#666666'),
       customIcon: this.platform.value === 'custom' ? this.customIcon : '',
+      followers: this.followers?.value,
+      following: this.following?.value,
+      desc: this.bio?.value,
+      handle: this.handle?.value,
     };
+    console.log(link);
     this.socialLinks.push(link);
-    this.newLinkForm?.reset({ url: '', platform: '', color: '#666' });
+    this.newLinkForm.reset({
+      color: '#666666',
+    });
+    this.platform.disable();
     this.customIcon = '';
   }
 }

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Socially": {
+    "socially": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Socially:build:production"
+              "buildTarget": "socially:build:production"
             },
             "development": {
-              "buildTarget": "Socially:build:development"
+              "buildTarget": "socially:build:development"
             }
           },
           "defaultConfiguration": "development"

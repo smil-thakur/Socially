@@ -1,4 +1,4 @@
-import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 
 import { Component, inject } from '@angular/core';
 import { BrnDialogRef, injectBrnDialogContext } from '@spartan-ng/brain/dialog';
@@ -18,10 +18,16 @@ import {
 } from '@ng-icons/lucide';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { HlmButtonDirective } from '@spartan-ng/helm/button';
+import { HlmTooltipTriggerDirective } from '@spartan-ng/helm/tooltip';
 
 @Component({
   selector: 'app-social-link-main-card',
-  imports: [NgIconComponent, QRCodeComponent, HlmButtonDirective],
+  imports: [
+    NgIconComponent,
+    QRCodeComponent,
+    HlmButtonDirective,
+    HlmTooltipTriggerDirective,
+  ],
   templateUrl: './social-link-main-card.html',
   styleUrl: './social-link-main-card.scss',
   providers: [
@@ -60,15 +66,6 @@ export class SocialLinkMainCard extends BasePageScreen {
     const card = document.getElementById('main-card');
     if (!card) return;
 
-    const iconNodes = card.querySelectorAll('ng-icon');
-    const swappedIcons: { icon: Element; prevStyle: string }[] = [];
-    iconNodes.forEach((iconEl) => {
-      const el = iconEl as HTMLElement;
-      const prevStyle = el.getAttribute('style') || '';
-      el.setAttribute('style', prevStyle + ';margin-top:8px !important;');
-      swappedIcons.push({ icon: iconEl, prevStyle });
-    });
-
     const computedStyle = window.getComputedStyle(card);
     let cardVar = computedStyle.getPropertyValue('--card').trim();
     let bgColor = '';
@@ -93,37 +90,16 @@ export class SocialLinkMainCard extends BasePageScreen {
 
     const scale = 3;
 
-    const padding = 0;
-
-    const canvas = await html2canvas(card, {
-      backgroundColor: null,
-      scale,
-      useCORS: true,
-      logging: false,
-      removeContainer: true,
+    const dataUrl = await htmlToImage.toPng(card, {
+      backgroundColor: bgColor,
+      cacheBust: true,
+      pixelRatio: scale,
+      style: {},
     });
 
-    const width = card.offsetWidth * scale;
-    const height = card.offsetHeight * scale;
-    const paddedCanvas = document.createElement('canvas');
-    paddedCanvas.width = width;
-    paddedCanvas.height = height;
-    const ctx = paddedCanvas.getContext('2d');
-    if (!ctx) return;
-
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.drawImage(canvas, 0, 0, width, height);
-
-    swappedIcons.forEach(({ icon, prevStyle }) => {
-      (icon as HTMLElement).setAttribute('style', prevStyle);
-    });
-
-    const blob = await new Promise<Blob | null>((resolve) =>
-      paddedCanvas.toBlob(resolve, 'image/png', 0.98)
-    );
+    const blob = await (await fetch(dataUrl)).blob();
     if (!blob) return;
+
     if (mode === 'share') {
       const file = new File([blob], 'social-link-card.png', {
         type: 'image/png',
@@ -150,5 +126,19 @@ export class SocialLinkMainCard extends BasePageScreen {
       a.click();
       URL.revokeObjectURL(url);
     }
+  }
+  formatFollowersCount(count: number | string | null | undefined): string {
+    if (count === null || count === undefined || count === '') return '';
+    const num = typeof count === 'string' ? parseInt(count, 10) : count;
+    if (isNaN(num)) return '';
+    if (num >= 1_000_000_000)
+      return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'b+';
+    if (num >= 10_000_000)
+      return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'm+';
+    if (num >= 100_000)
+      return (num / 100_000).toFixed(1).replace(/\.0$/, '') + 'lkh+';
+    if (num >= 1_000)
+      return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k+';
+    return num.toString();
   }
 }

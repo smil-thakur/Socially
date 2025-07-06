@@ -1,7 +1,7 @@
 <div
   hlmCard
   (click)="openMainCard()"
-  class="focus-effect social-link-card card-frosted-bg"
+  class="focus-effect social-link-card card-frosted-bg w-xs"
   [style]="{
     '--social-link-color': socialLink().color,
     '--frost-x': frostX,
@@ -15,7 +15,11 @@
       {{ socialLink().platformName }}
     </div>
     <div hlmCardDescription>
-      <a [href]="socialLink().url">{{ socialLink().url }}</a>
+      <a
+        class="overflow-hidden text-ellipsis whitespace-nowrap block"
+        [href]="socialLink().url"
+        >{{ socialLink().url }}</a
+      >
     </div>
   </div>
   <div hlmCardContent>

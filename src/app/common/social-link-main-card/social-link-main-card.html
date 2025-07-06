@@ -6,14 +6,8 @@
         <div class="flex item-center gap-3">
           @if
           (this.popularMediaLucideIcons.includes(socialLink.icon.toString())) {
-          <div
-            class="relative w-[30px] h-[30px] flex items-center justify-center"
-          >
-            <ng-icon
-              [name]="socialLink.icon"
-              size="30px"
-              class="absolute top-0 left-0 w-[30px]! h-[30px]! block!"
-            ></ng-icon>
+          <div class="flex items-center justify-center">
+            <ng-icon [name]="socialLink.icon" size="30px"></ng-icon>
           </div>
           } @else {
           <img [src]="socialLink.customIcon" alt="" srcset="" />
@@ -26,33 +20,56 @@
           </div>
         </div>
         <div>
-          <h3 class="font-bold text-xl tracking-wider">SMIL THAKUR</h3>
-          <p class="{{ mutedStyle }} text-sm leading-relaxed">
+          <h3
+            [hlmTooltipTrigger]="socialLink.username"
+            [attr.aria-label]="socialLink.username"
+            class="font-bold text-xl tracking-wider text-ellipsis"
+          >
+            {{ socialLink.username }}
+          </h3>
+          <p
+            [hlmTooltipTrigger]="socialLink.desc"
+            [attr.aria-label]="socialLink.desc"
+            class="{{ mutedStyle }} text-sm leading-relaxed text-ellipsis"
+          >
             {{ socialLink.desc }}
           </p>
           <div class="flex gap-4 text-xs {{ mutedStyle }}">
-            <span>{{ socialLink.followers }} Followers</span>
+            <span
+              >{{ formatFollowersCount(socialLink.followers) }} Followers</span
+            >
             <span>•</span>
-            <span>{{ socialLink.following }} Following</span>
+            <span
+              >{{ formatFollowersCount(socialLink.following) }} Following</span
+            >
           </div>
         </div>
       </div>
 
       <div>
-        <p class="{{ mutedStyle }} text-xs font-mono">&#64;SmilThkaur</p>
-        <div class="flex items-center gap-2 {{ mutedStyle }}">
-          <div class="relative w-3 h-3 flex items-center justify-center">
-            <ng-icon
-              name="lucideExternalLink"
-              class="absolute top-0 left-0 w-3! h-3! block!"
-            ></ng-icon>
+        <p
+          [hlmTooltipTrigger]="socialLink.handle"
+          [attr.aria-label]="socialLink.handle"
+          class="{{ mutedStyle }} text-xs font-mono text-ellipsis"
+        >
+          {{ socialLink.handle }}
+        </p>
+        <div class="flex items-center gap-2 {{ mutedStyle }} mt-1">
+          <div class="flex items-center justify-center">
+            <ng-icon size="15px" name="lucideExternalLink"></ng-icon>
           </div>
-          <p class="text-xs font-mono">{{ socialLink.url }}</p>
+          <p
+            [hlmTooltipTrigger]="socialLink.url"
+            [attr.aria-label]="socialLink.url"
+            class="text-xs font-mono text-ellipsis"
+          >
+            {{ socialLink.url }}
+          </p>
         </div>
       </div>
     </div>
     <div class="flex flex-col items-center justify-center">
-      <qrcode [qrdata]="socialLink.url"></qrcode>
+      <qrcode [width]="150" [qrdata]="socialLink.url"></qrcode>
       <p class="text-xs {{ mutedStyle }} text-center mt-3 font-mono">
         SCAN TO CONNECT
       </p>

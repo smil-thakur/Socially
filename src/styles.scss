@@ -115,3 +115,11 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.nav-bar-margin {
+  margin-top: 80px;
+}
+
+hlm-error {
+  font-size: var(--text-xs);
+}

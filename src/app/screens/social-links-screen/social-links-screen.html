@@ -11,38 +11,129 @@
       </div>
       <div hlmCardContent>
         <hlm-form-field class="flex-1 mb-4">
-          <input
-            hlmInput
-            class="w-full"
-            placeholder="Paste your profile URL"
-            formControlName="url"
-          />
+          <label hlmLabel>
+            <div class="{{ mutedStyle }} text-xs">Profile URL</div>
+            <input
+              hlmInput
+              class="w-full"
+              placeholder="Paste your profile URL"
+              formControlName="url"
+            />
+            @if (newLinkForm!.get('url')?.errors?.['required'] &&
+            (newLinkForm?.get("url")?.dirty ||
+            newLinkForm?.get("url")?.touched)) {
+            <hlm-error>Profile URL is required.</hlm-error>
+            } @if (newLinkForm!.get('url')?.errors?.['maxlength']) {
+            <hlm-error>Profile URL cannot exceed 200 characters.</hlm-error>
+            }
+          </label>
         </hlm-form-field>
         <div class="flex gap-2 mb-8 flex-col ml-4">
           <div>Additional Info</div>
+          <div class="flex gap-2">
+            <hlm-form-field>
+              <label hlmLabel>
+                <div class="{{ mutedStyle }} text-xs">Username</div>
+                <input
+                  hlmInput
+                  type="text"
+                  placeholder="Smil_thakur"
+                  formControlName="username"
+                />
+                @if (newLinkForm!.get('username')?.errors?.['required'] &&
+                (newLinkForm?.get('username')?.dirty ||
+                newLinkForm?.get('username')?.touched)) {
+                <hlm-error>Username is required.</hlm-error>
+                } @if (newLinkForm!.get('username')?.errors?.['maxlength']) {
+                <hlm-error>Username cannot exceed 30 characters.</hlm-error>
+                }
+              </label>
+            </hlm-form-field>
+            <hlm-form-field>
+              <label hlmLabel>
+                <div class="{{ mutedStyle }} text-xs">handle</div>
+                <input
+                  hlmInput
+                  type="text"
+                  formControlName="handle"
+                  placeholder="@SmilThakur"
+                />
+                @if (newLinkForm!.get('handle')?.errors?.['required'] &&
+                (newLinkForm?.get('handle')?.dirty ||
+                newLinkForm?.get('handle')?.touched)) {
+                <hlm-error>Handle is required.</hlm-error>
+                } @if (newLinkForm!.get('handle')?.errors?.['maxlength']) {
+                <hlm-error>Handle cannot exceed 30 characters.</hlm-error>
+                }
+              </label>
+            </hlm-form-field>
+          </div>
 
           <div class="flex gap-6">
             <hlm-form-field>
               <label hlmLabel>
                 <div class="{{ mutedStyle }} text-xs">Followers</div>
-                <input hlmInput type="number" class="w-[72px]" />
+                <input
+                  hlmInput
+                  type="number"
+                  class="w-[72px]"
+                  placeholder="25"
+                  formControlName="follower"
+                />
+                @if (newLinkForm!.get('follower')?.errors?.['max'] &&
+                (newLinkForm?.get('follower')?.dirty ||
+                newLinkForm?.get('follower')?.touched)) {
+                <hlm-error>Followers cannot exceed 9 digits.</hlm-error>
+                } @if (newLinkForm!.get('follower')?.errors?.['pattern'] &&
+                (newLinkForm?.get('follower')?.dirty ||
+                newLinkForm?.get('follower')?.touched)) {
+                <hlm-error>Followers must be a number.</hlm-error>
+                }
               </label>
             </hlm-form-field>
             <hlm-form-field>
               <label hlmLabel>
                 <div class="{{ mutedStyle }} text-xs">Following</div>
-                <input hlmInput type="number" class="w-[72px]" />
+                <input
+                  hlmInput
+                  type="number"
+                  class="w-[72px]"
+                  placeholder="65"
+                  formControlName="following"
+                />
+                @if (newLinkForm!.get('following')?.errors?.['max'] &&
+                (newLinkForm?.get('following')?.dirty ||
+                newLinkForm?.get('following')?.touched)) {
+                <hlm-error>Following cannot exceed 9 digits.</hlm-error>
+                } @if (newLinkForm!.get('following')?.errors?.['pattern'] &&
+                (newLinkForm?.get('following')?.dirty ||
+                newLinkForm?.get('following')?.touched)) {
+                <hlm-error>Following must be a number.</hlm-error>
+                }
               </label>
             </hlm-form-field>
           </div>
           <hlm-form-field>
             <label hlmLabel>
               <div class="{{ mutedStyle }} text-xs">Bio</div>
-              <input type="text" hlmInput placeholder="Your bio or desc" />
+              <input
+                type="text"
+                hlmInput
+                placeholder="you know who I am"
+                class="w-md"
+                formControlName="bio"
+              />
+              @if (newLinkForm!.get('bio')?.errors?.['required'] &&
+              (newLinkForm?.get('bio')?.dirty ||
+              newLinkForm?.get('bio')?.touched)) {
+              <hlm-error>Bio is required.</hlm-error>
+              } @if (newLinkForm!.get('bio')?.errors?.['maxlength']) {
+              <hlm-error>Bio cannot exceed 160 characters.</hlm-error>
+              }
             </label>
           </hlm-form-field>
         </div>
-        <div class="flex items-center justify-center space-x-2">
+        <div class="flex justify-center space-x-2">
           <hlm-form-field class="flex-1">
             <brn-select
               class="inline-block w-full"
@@ -61,6 +152,12 @@
                 }
               </hlm-select-content>
             </brn-select>
+            @if (newLinkForm!.get('platform')?.errors?.['required'] &&
+            (newLinkForm?.get('platform')?.dirty ||
+            newLinkForm?.get('platform')?.touched)) {
+            <hlm-error>Social media type is required.</hlm-error>
+
+            }
           </hlm-form-field>
           <hlm-form-field>
             <input
@@ -95,7 +192,7 @@
         }
       </div>
       <div hlmCardFooter>
-        <button hlmBtn type="button" (click)="addSocialLink()">Add</button>
+        <button hlmBtn type="submit" (click)="addSocialLink()">Add</button>
       </div>
     </form>
   </div>

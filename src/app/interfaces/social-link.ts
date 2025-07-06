@@ -5,7 +5,9 @@ export interface SocialLink {
   icon: string;
   color: string;
   customIcon: string;
-  desc?: string;
+  desc: string;
   followers?: string;
   following?: string;
+  username: string;
+  handle: string;
 }

@@ -1,5 +1,6 @@
-<div class="flex items-center p-10 flex-col">
-  <h1 class="{{ h1Style }} text-center">Welcome, Smil Raj Thakur</h1>
+<app-top-nav-bar></app-top-nav-bar>
+<div class="flex items-center p-10 flex-col nav-bar-margin">
+  <h1 class="{{ h1Style }} text-center">Welcome, {{ gUser?.displayName }}</h1>
   <div>
     <p class="{{ mutedStyle }} mt-20 text-center">
       Drop your resume, linkedin pdf or anything that tells us about you
