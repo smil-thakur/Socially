@@ -45,6 +45,9 @@
       ],
       "@spartan-ng/helm/tooltip": [
         "./libs/ui/ui-tooltip-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/spinner": [
+        "./libs/ui/ui-spinner-helm/src/index.ts"
       ]
     }
   },

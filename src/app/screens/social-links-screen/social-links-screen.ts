@@ -37,6 +37,7 @@ import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { popularSocialMediaPlatforms } from '../../enums/popular-social-media-platforms';
 import { POPULAR_SOCIAL_MEDIA_BASE_URLS } from '../../enums/popular-social-medial-base-url';
+import { PreloaderService } from '../../services/preloader-service';
 
 @Component({
   selector: 'app-social-links-screen',
@@ -85,28 +86,17 @@ export class SocialLinksScreen
 {
   newLinkForm: FormGroup | null = null;
   layout: 'card' | 'pill' | 'icon' = 'card';
-  socialLinks: SocialLink[] = [
-    {
-      url: 'https://www.example.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',
-      platform: 'x',
-      platformName: 'X',
-      followers: '123456789',
-      following: '123456789',
-      icon: 'lucideTwitter',
-      color: '#1da1f2',
-      customIcon: '',
-      username: 'usernamemaximumthirtychars1234',
-      handle: '@handlemaximumthirtycharacters',
-      desc: 'This is a test bio reaching the maximum character limit of 160, adding more and more until we hit 160 characters exactly to check if truncation or validation k1',
-    },
-  ];
+  socialLinks: SocialLink[] = [];
   customIcon: string = '';
   platforms = popularSocialMediaPlatforms;
 
   private platformValueChangeSubscription: Subscription | undefined;
   private profileURLChangeSubscription: Subscription | undefined;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private preloaderService: PreloaderService
+  ) {
     super();
   }
   ngOnInit(): void {
