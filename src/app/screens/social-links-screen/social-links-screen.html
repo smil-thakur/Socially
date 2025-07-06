@@ -1,4 +1,4 @@
-<div class="flex flex-col items-center p-8 w-full max-w-4xl mx-auto">
+<div class="flex flex-col items-center p-4 sm:p-8 w-full max-w-4xl mx-auto">
   <!-- Create New Social Link Section -->
   <div hlmCard>
     <form [formGroup]="newLinkForm!">
@@ -28,9 +28,9 @@
             }
           </label>
         </hlm-form-field>
-        <div class="flex gap-2 mb-8 flex-col ml-4">
+        <div class="flex gap-2 mb-8 flex-col sm:ml-4 ml-0">
           <div>Additional Info</div>
-          <div class="flex gap-2">
+          <div class="flex flex-col sm:flex-row gap-2">
             <hlm-form-field>
               <label hlmLabel>
                 <div class="{{ mutedStyle }} text-xs">Username</div>
@@ -69,7 +69,7 @@
             </hlm-form-field>
           </div>
 
-          <div class="flex gap-6">
+          <div class="flex flex-col sm:flex-row gap-2 sm:gap-6">
             <hlm-form-field>
               <label hlmLabel>
                 <div class="{{ mutedStyle }} text-xs">Followers</div>
@@ -120,7 +120,7 @@
                 type="text"
                 hlmInput
                 placeholder="you know who I am"
-                class="w-md"
+                class="w-xs sm:w-md"
                 formControlName="bio"
               />
               @if (newLinkForm!.get('bio')?.errors?.['required'] &&
@@ -133,7 +133,7 @@
             </label>
           </hlm-form-field>
         </div>
-        <div class="flex justify-center space-x-2">
+        <div class="flex flex-col sm:flex-row justify-center sm:space-x-2 space-y-2 sm:space-y-0">
           <hlm-form-field class="flex-1">
             <brn-select
               class="inline-block w-full"
@@ -197,14 +197,14 @@
     </form>
   </div>
 
-  <div class="w-full flex flex-row items-center gap-4 mb-4 mt-4">
+  <div class="w-full flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mb-4 mt-4">
     <span class="flex-1 border-b border-muted"></span>
     <span class="text-muted-foreground">Your Social Links</span>
     <span class="flex-1 border-b border-muted"></span>
   </div>
 
   <!-- Layout Options -->
-  <div class="flex gap-2 mb-6">
+  <div class="flex flex-col sm:flex-row gap-2 mb-6">
     <button hlmBtn variant="outline" (click)="layout = 'card'">Card</button>
     <button hlmBtn variant="outline" (click)="layout = 'pill'">Pill</button>
     <button hlmBtn variant="outline" (click)="layout = 'icon'">
@@ -214,13 +214,13 @@
 
   <!-- Social Links Display Section -->
   @switch (layout) { @case ('card') {
-  <div class="flex flex-wrap gap-4 justify-center w-full">
+  <div class="flex flex-wrap gap-2 sm:gap-4 justify-center w-full">
     @for (link of socialLinks; track $index) {
     <app-social-link-card [socialLink]="link"></app-social-link-card>
     }
   </div>
   } @case ('pill') {
-  <div class="flex flex-wrap gap-2 justify-center w-full">
+  <div class="flex flex-wrap gap-1 sm:gap-2 justify-center w-full">
     @for (link of socialLinks; track $index) {
     <a
       [href]="link.url"
@@ -241,7 +241,7 @@
     }
   </div>
   } @case ('icon') {
-  <div class="flex flex-wrap gap-4 justify-center w-full">
+  <div class="flex flex-wrap gap-2 sm:gap-4 justify-center w-full">
     @for (link of socialLinks; track $index) {
     <a [href]="link.url" target="_blank">
       @if (link.icon) {

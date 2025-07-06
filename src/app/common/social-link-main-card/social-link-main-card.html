@@ -1,40 +1,58 @@
-<div id="main-card" class="h-[250px] bg-[var(--card)] border rounded-xl">
-  <div class="h-full flex gap-8 p-8">
+<div
+  id="main-card"
+  class="bg-[var(--card)] border rounded-xl h-[250px] sm:h-[250px] h-auto"
+>
+  <div class="h-full flex flex-col sm:flex-row gap-4 sm:gap-8 p-4 sm:p-8">
     <!-- left content  -->
-    <div class="flex-1 flex flex-col justify-between">
+    <div class="flex-1 flex flex-col justify-between mb-4 sm:mb-0">
       <div>
-        <div class="flex item-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3">
           @if
           (this.popularMediaLucideIcons.includes(socialLink.icon.toString())) {
           <div class="flex items-center justify-center">
-            <ng-icon [name]="socialLink.icon" size="30px"></ng-icon>
+            <ng-icon
+              [name]="socialLink.icon"
+              size="24px"
+              class="sm:size-[30px]"
+            ></ng-icon>
           </div>
           } @else {
-          <img [src]="socialLink.customIcon" alt="" srcset="" />
+          <img
+            [src]="socialLink.customIcon"
+            alt=""
+            srcset=""
+            class="w-8 h-8 sm:w-10 sm:h-10"
+          />
           }
           <div>
-            <h2 class="font-semibold text-sm uppercase tracking-wider">
+            <h2
+              class="font-semibold text-xs sm:text-sm uppercase tracking-wider"
+            >
               {{ socialLink.platformName }}
             </h2>
-            <p class="{{ mutedStyle }} text-xs">Social Profile</p>
+            <p class="{{ mutedStyle }} text-[10px] sm:text-xs">
+              Social Profile
+            </p>
           </div>
         </div>
         <div>
           <h3
             [hlmTooltipTrigger]="socialLink.username"
             [attr.aria-label]="socialLink.username"
-            class="font-bold text-xl tracking-wider text-ellipsis"
+            class="font-bold text-lg sm:text-xl tracking-wider text-ellipsis"
           >
             {{ socialLink.username }}
           </h3>
           <p
             [hlmTooltipTrigger]="socialLink.desc"
             [attr.aria-label]="socialLink.desc"
-            class="{{ mutedStyle }} text-sm leading-relaxed text-ellipsis"
+            class="{{
+              mutedStyle
+            }} text-xs sm:text-sm leading-relaxed text-ellipsis"
           >
             {{ socialLink.desc }}
           </p>
-          <div class="flex gap-4 text-xs {{ mutedStyle }}">
+          <div class="flex gap-2 sm:gap-4 text-xs {{ mutedStyle }} flex-wrap">
             @if (socialLink.followers) {
             <span
               >{{ formatFollowersCount(socialLink.followers) }} Followers</span
@@ -55,36 +73,54 @@
         <p
           [hlmTooltipTrigger]="socialLink.handle"
           [attr.aria-label]="socialLink.handle"
-          class="{{ mutedStyle }} text-xs font-mono text-ellipsis"
+          class="{{
+            mutedStyle
+          }} text-[10px] sm:text-xs font-mono text-ellipsis"
         >
           {{ socialLink.handle }}
         </p>
         }
-        <div class="flex items-center gap-2 {{ mutedStyle }} mt-1">
+        <div
+          class="flex items-center gap-1 sm:gap-2 {{
+            mutedStyle
+          }} mt-1 flex-wrap"
+        >
           <div class="flex items-center justify-center">
-            <ng-icon size="15px" name="lucideExternalLink"></ng-icon>
+            <ng-icon
+              size="12px"
+              class="sm:size-[15px]"
+              name="lucideExternalLink"
+            ></ng-icon>
           </div>
           <p
             [hlmTooltipTrigger]="socialLink.url"
             [attr.aria-label]="socialLink.url"
-            class="text-xs font-mono text-ellipsis"
+            class="text-[10px] sm:text-xs font-mono text-ellipsis break-all"
           >
             {{ socialLink.url }}
           </p>
         </div>
       </div>
     </div>
-    <div class="flex flex-col items-center justify-center">
-      <qrcode [width]="150" [qrdata]="socialLink.url"></qrcode>
-      <p class="text-xs {{ mutedStyle }} text-center mt-3 font-mono">
+    <div class="flex flex-col items-center justify-center min-w-[120px]">
+      <qrcode
+        [width]="90"
+        [qrdata]="socialLink.url"
+        class="sm:w-[150px] w-[90px] h-[90px] sm:h-[150px] flex items-center justify-center"
+      ></qrcode>
+      <p
+        class="text-[10px] sm:text-xs {{
+          mutedStyle
+        }} text-center mt-3 font-mono"
+      >
         SCAN TO CONNECT
       </p>
     </div>
   </div>
 </div>
 
-<div class="flex item-center mt-6">
-  <button class="mr-4" hlmBtn (click)="shareCardImage()">Share</button>
+<div class="flex items-center mt-4 sm:mt-6 gap-2 sm:gap-4 flex-wrap">
+  <button class="sm:mr-4" hlmBtn (click)="shareCardImage()">Share</button>
   <button hlmBtn variant="outline" (click)="downloadCardImage()">
     Download
   </button>
