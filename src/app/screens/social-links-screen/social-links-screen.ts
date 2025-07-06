@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -38,6 +38,12 @@ import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { popularSocialMediaPlatforms } from '../../enums/popular-social-media-platforms';
 import { POPULAR_SOCIAL_MEDIA_BASE_URLS } from '../../enums/popular-social-medial-base-url';
 import { PreloaderService } from '../../services/preloader-service';
+import {
+  addSocialLinkForUser,
+  getAllSocialLinksForUser,
+} from '../../cloud-storage-methods/social-link-methods';
+import { UserService } from '../../services/user-service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-social-links-screen',
@@ -92,12 +98,21 @@ export class SocialLinksScreen
 
   private platformValueChangeSubscription: Subscription | undefined;
   private profileURLChangeSubscription: Subscription | undefined;
+  private userService = inject(UserService);
 
   constructor(
     private fb: FormBuilder,
     private preloaderService: PreloaderService
   ) {
     super();
+  }
+
+  async fetchSocialLinks() {
+    this.preloaderService.show();
+    this.socialLinks = await getAllSocialLinksForUser(
+      this.userService.getCurrentUserObject().uid
+    );
+    this.preloaderService.hide();
   }
   ngOnInit(): void {
     this.newLinkForm = this.fb.group({
@@ -110,7 +125,6 @@ export class SocialLinksScreen
         Validators.maxLength(30),
       ]),
       handle: new FormControl({ value: '', disabled: false }, [
-        Validators.required,
         Validators.maxLength(30),
       ]),
       follower: new FormControl({ value: '', disabled: false }, [
@@ -140,6 +154,8 @@ export class SocialLinksScreen
       ?.valueChanges.subscribe((newURL) => {
         this.onProfileURLChange(newURL);
       });
+
+    this.fetchSocialLinks();
   }
 
   ngOnDestroy(): void {
@@ -223,7 +239,7 @@ export class SocialLinksScreen
     }
   }
 
-  addSocialLink() {
+  async addSocialLink() {
     if (!this.newLinkForm) return;
     this.newLinkForm.markAllAsTouched();
     if (this.newLinkForm.invalid) return;
@@ -232,6 +248,7 @@ export class SocialLinksScreen
       (p) => p.value === this.platform?.value
     );
     const link: SocialLink = {
+      id: uuidv4(),
       url: this.url.value,
       username: this.username?.value,
       platform: this.platform.value,
@@ -251,5 +268,11 @@ export class SocialLinksScreen
     });
     this.platform.disable();
     this.customIcon = '';
+    this.preloaderService.show();
+    const res = await addSocialLinkForUser(
+      this.userService.getCurrentUserObject().uid,
+      link
+    );
+    this.preloaderService.hide();
   }
 }

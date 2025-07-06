@@ -1,4 +1,5 @@
 export interface SocialLink {
+  id: string;
   url: string;
   platform: string;
   platformName: string;
@@ -9,5 +10,5 @@ export interface SocialLink {
   followers?: string;
   following?: string;
   username: string;
-  handle: string;
+  handle?: string;
 }

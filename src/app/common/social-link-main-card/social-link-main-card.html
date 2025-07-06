@@ -35,18 +35,23 @@
             {{ socialLink.desc }}
           </p>
           <div class="flex gap-4 text-xs {{ mutedStyle }}">
+            @if (socialLink.followers) {
             <span
               >{{ formatFollowersCount(socialLink.followers) }} Followers</span
             >
+            }@if (socialLink.followers && socialLink.following) {
             <span>•</span>
+            } @if (socialLink.following) {
             <span
               >{{ formatFollowersCount(socialLink.following) }} Following</span
             >
+            }
           </div>
         </div>
       </div>
 
       <div>
+        @if (socialLink.handle) {
         <p
           [hlmTooltipTrigger]="socialLink.handle"
           [attr.aria-label]="socialLink.handle"
@@ -54,6 +59,7 @@
         >
           {{ socialLink.handle }}
         </p>
+        }
         <div class="flex items-center gap-2 {{ mutedStyle }} mt-1">
           <div class="flex items-center justify-center">
             <ng-icon size="15px" name="lucideExternalLink"></ng-icon>
