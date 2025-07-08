@@ -2,8 +2,6 @@ import { Component, inject } from '@angular/core';
 import { BrnDialogRef, injectBrnDialogContext } from '@spartan-ng/brain/dialog';
 import { HlmButtonDirective } from '@spartan-ng/helm/button';
 import {
-  HlmDialogComponent,
-  HlmDialogContentComponent,
   HlmDialogDescriptionDirective,
   HlmDialogFooterComponent,
   HlmDialogHeaderComponent,
@@ -12,8 +10,6 @@ import {
 @Component({
   selector: 'app-error-dialog',
   imports: [
-    HlmDialogComponent,
-    HlmDialogContentComponent,
     HlmDialogDescriptionDirective,
     HlmDialogFooterComponent,
     HlmDialogHeaderComponent,
