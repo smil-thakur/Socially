@@ -8,32 +8,58 @@
       <div hlmCardDescription>Log In</div>
     </div>
     <div hlmCardContent>
-      <form class="space-y-4">
+      <form
+        class="space-y-4"
+        [formGroup]="loginForm!"
+        (submit)="loginWithEmail()"
+      >
         <hlm-form-field>
-          <input class="w-full" hlmInput placeholder="Username" />
+          <label hlmLabel>
+            <div class="text-xs {{ mutedStyle }}">Email</div>
+            <input
+              class="w-full"
+              hlmInput
+              placeholder="Email"
+              formControlName="email"
+            />
+            @if (email?.errors?.["required"] && (email?.dirty ||
+            email?.touched)) {
+            <hlm-error>Email is required.</hlm-error>
+            } @if (email?.errors?.['email'] && (email?.dirty || email?.touched))
+            {
+            <hlm-error>Invalid Email.</hlm-error>
+            }
+          </label>
         </hlm-form-field>
         <hlm-form-field>
-          <input class="w-full" hlmInput placeholder="Email" />
+          <label hlmLabel>
+            <div class="text-xs {{ mutedStyle }}">Password</div>
+            <input
+              class="w-full"
+              hlmInput
+              [type]="hidden ? 'password' : 'text'"
+              placeholder="Password"
+              formControlName="password"
+            />
+            @if (password?.errors?.["required"] && (password?.dirty ||
+            password?.touched)) {
+            <hlm-error>Password is required.</hlm-error>
+            }
+          </label>
         </hlm-form-field>
-        <hlm-form-field>
-          <input
-            class="w-full"
-            hlmInput
-            [type]="hidden ? 'password' : 'text'"
-            placeholder="Password"
-          />
-        </hlm-form-field>
-        <label hlmLabel class="flex items-center justify-end mb-4">
-          <hlm-checkbox (changed)="showPasswordToggle($event)" class="mr-2" />
-          show password
-        </label>
+        <div class="flex items-center justify-end mb-4">
+          <label hlmLabel class="flex items-center">
+            <hlm-checkbox (changed)="showPasswordToggle($event)" class="mr-2" />
+            show password
+          </label>
+        </div>
       </form>
     </div>
     <div hlmCardFooter>
       <button hlmBtn variant="secondary" (click)="navigateToRegisterScreen()">
         Register
       </button>
-      <button hlmBtn variant="outline">
+      <button (click)="loginWithGoogle()" hlmBtn variant="outline">
         <img
           class="w-[20px] h-[20px] shrink-0"
           src="google.png"
@@ -41,7 +67,7 @@
           srcset=""
         />
       </button>
-      <button hlmBtn class="w-full" (click)="login()">Log In</button>
+      <button hlmBtn class="w-full" (click)="loginWithEmail()">Log In</button>
     </div>
   </div>
 </div>
