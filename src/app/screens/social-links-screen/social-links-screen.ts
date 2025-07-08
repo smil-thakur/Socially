@@ -38,16 +38,12 @@ import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { popularSocialMediaPlatforms } from '../../enums/popular-social-media-platforms';
 import { POPULAR_SOCIAL_MEDIA_BASE_URLS } from '../../enums/popular-social-medial-base-url';
 import { PreloaderService } from '../../services/preloader-service';
-import {
-  addSocialLinkForUser,
-  getAllSocialLinksForUser,
-  uploadIconAndGetUrl,
-} from '../../cloud-storage-methods/social-link-methods';
 import { UserService } from '../../services/user-service';
 import { v4 as uuidv4 } from 'uuid';
 import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { ErrorDialog } from '../../common/error-dialog/error-dialog';
 import { InfoDialog } from '../../common/info-dialog/info-dialog';
+import { SocialLinkService } from '../../services/social-link-service';
 
 @Component({
   selector: 'app-social-links-screen',
@@ -108,14 +104,15 @@ export class SocialLinksScreen
 
   constructor(
     private fb: FormBuilder,
-    private preloaderService: PreloaderService
+    private preloaderService: PreloaderService,
+    private socialLinkService: SocialLinkService
   ) {
     super();
   }
 
   async fetchSocialLinks() {
     this.preloaderService.show();
-    this.socialLinks = await getAllSocialLinksForUser(
+    this.socialLinks = await this.socialLinkService.getAllSocialLinksForUser(
       this.userService.getCurrentUserObject().uid
     );
     this.preloaderService.hide();
@@ -274,7 +271,7 @@ export class SocialLinksScreen
     try {
       this.preloaderService.show();
       if (this.platform.value === 'custom' && this.customIconFile) {
-        customIconUrl = await uploadIconAndGetUrl(
+        customIconUrl = await this.socialLinkService.uploadIconAndGetUrl(
           this.userService.getCurrentUserObject().uid,
           this.customIconFile
         );
@@ -305,7 +302,7 @@ export class SocialLinksScreen
       this.platform.disable();
       this.customIcon = '';
       this.customIconFile = null;
-      await addSocialLinkForUser(
+      await this.socialLinkService.addSocialLinkForUser(
         this.userService.getCurrentUserObject().uid,
         link
       );

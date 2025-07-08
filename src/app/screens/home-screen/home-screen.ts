@@ -28,6 +28,7 @@ import { HlmButtonDirective } from '@spartan-ng/helm/button';
 import { Router } from '@angular/router';
 import { TopNavBar } from '../../common/top-nav-bar/top-nav-bar';
 import { Auth, User, user } from '@angular/fire/auth';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-home-screen',
@@ -62,21 +63,14 @@ import { Auth, User, user } from '@angular/fire/auth';
   ],
 })
 export class HomeScreen extends BasePageScreen implements OnInit {
-  constructor(private router: Router) {
+  constructor(private router: Router, private userService: UserService) {
     super();
   }
-
-  private auth = inject(Auth);
 
   public gUser: User | null = null;
 
   ngOnInit(): void {
-    user(this.auth).subscribe((currentUser) => {
-      this.gUser = currentUser;
-    });
-    if (this.gUser === null) {
-      //TODO:
-    }
+    this.gUser = this.userService.getCurrentUserObject();
   }
 
   public socials: Social[] = [
