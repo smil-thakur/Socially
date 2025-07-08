@@ -9,7 +9,7 @@ export const guestGuard: CanActivateFn = (route, state) => {
 
   return user(auth).pipe(
     map((currentUser) => {
-      if (currentUser) {
+      if (currentUser && currentUser.emailVerified) {
         router.navigate(['/home']);
         return false;
       } else {

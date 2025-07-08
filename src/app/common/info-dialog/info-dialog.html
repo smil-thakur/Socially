@@ -1,0 +1,12 @@
+<hlm-dialog-header>
+  <h3 hlmDialogTitle>Info</h3>
+  @if (desc) {
+  <p hlmDialogDescription>{{ desc }}</p>
+  }
+</hlm-dialog-header>
+<div class="mt-5">
+  {{ infoMessage }}
+</div>
+<hlm-dialog-footer class="mt-5">
+  <button hlmBtn (click)="closeDialog()">Ok</button>
+</hlm-dialog-footer>

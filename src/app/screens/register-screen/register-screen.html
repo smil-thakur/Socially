@@ -8,25 +8,86 @@
       <div hlmCardDescription>Register</div>
     </div>
     <div hlmCardContent>
-      <form class="space-y-4">
+      <form
+        class="space-y-4"
+        [formGroup]="registerForm!"
+        (submit)="registerWithEmail()"
+      >
         <hlm-form-field>
-          <input class="w-full" hlmInput placeholder="Username" />
+          <label hlmLabel>
+            <div class="text-xs {{ mutedStyle }}">username</div>
+            <input
+              class="w-full"
+              formControlName="username"
+              hlmInput
+              placeholder="Username"
+            />
+          </label>
+          @if (registerForm?.get('username')?.errors?.['required'] &&
+          (registerForm?.get('username')?.dirty ||
+          registerForm?.get('username')?.touched)) {
+          <hlm-error>Username is required.</hlm-error>
+          } @if (registerForm?.get('username')?.errors?.['minlength'] &&
+          (registerForm?.get('username')?.dirty ||
+          registerForm?.get('username')?.touched)) {
+          <hlm-error>Username is too short.</hlm-error>
+          } @if (registerForm?.get('username')?.errors?.['maxlength'] &&
+          (registerForm?.get('username')?.dirty ||
+          registerForm?.get('username')?.touched)) {
+          <hlm-error>Username is too long.</hlm-error>
+          }
         </hlm-form-field>
         <hlm-form-field>
-          <input class="w-full" hlmInput placeholder="Email" />
+          <label hlmLabel>
+            <div class="text-xs {{ mutedStyle }}">Email</div>
+            <input
+              class="w-full"
+              formControlName="email"
+              hlmInput
+              placeholder="Email"
+            />
+            @if (registerForm?.get('email')?.errors?.['required'] &&
+            (registerForm?.get('email')?.dirty ||
+            registerForm?.get('email')?.touched)) {
+            <hlm-error>Email is required.</hlm-error>
+            } @if (registerForm?.get('email')?.errors?.['email'] &&
+            (registerForm?.get('email')?.dirty ||
+            registerForm?.get('email')?.touched)) {
+            <hlm-error>Invalid Email.</hlm-error>
+            }
+          </label>
         </hlm-form-field>
         <hlm-form-field>
-          <input
-            class="w-full"
-            hlmInput
-            [type]="hidden ? 'password' : 'text'"
-            placeholder="Password"
-          />
+          <label hlmLabel>
+            <div class="text-xs {{ mutedStyle }}">Password</div>
+            <input
+              class="w-full"
+              hlmInput
+              [type]="hidden ? 'password' : 'text'"
+              placeholder="Password"
+              formControlName="password"
+            />
+            @if (registerForm?.get('password')?.errors?.['required'] &&
+            (registerForm?.get('password')?.dirty ||
+            registerForm?.get('password')?.touched)) {
+            <hlm-error>Password is required.</hlm-error>
+            } @if (registerForm?.get('password')?.errors?.['minlength'] &&
+            (registerForm?.get('password')?.dirty ||
+            registerForm?.get('password')?.touched)) {
+            <hlm-error>Password is too short.</hlm-error>
+            } @if (registerForm?.get('password')?.errors?.['maxlength'] &&
+            (registerForm?.get('password')?.dirty ||
+            registerForm?.get('password')?.touched)) {
+            <hlm-error>Password is too long.</hlm-error>
+            }
+          </label>
         </hlm-form-field>
-        <label hlmLabel class="flex items-center justify-end mb-4">
-          <hlm-checkbox (changed)="showPasswordToggle($event)" class="mr-2" />
-          show password
-        </label>
+        <div class="flex items-center justify-end mb-4">
+          <label hlmLabel class="flex items-center">
+            <hlm-checkbox (changed)="showPasswordToggle($event)" class="mr-2" />
+            show password
+          </label>
+        </div>
       </form>
     </div>
     <div hlmCardFooter>
@@ -46,7 +107,9 @@
           srcset=""
         />
       </button>
-      <button hlmBtn class="w-full">Register</button>
+      <button hlmBtn class="w-full" (click)="registerWithEmail()">
+        Register
+      </button>
     </div>
   </div>
 </div>
