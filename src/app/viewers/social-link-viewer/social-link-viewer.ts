@@ -27,25 +27,6 @@ export class SocialLinkViewer implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(async (params) => {
       this.id = params.get('id')!;
-      this.loading.set(true);
-      this.error.set('');
-      try {
-        const links = await this.socialLinkService.getAllSocialLinksForUser(
-          this.id
-        );
-        if (!links || links.length === 0) {
-          this.error.set('No social links found for this user.');
-          this.socialLinks.set([]);
-        } else {
-          this.socialLinks.set(links);
-        }
-      } catch (e) {
-        this.error.set('Unable to fetch social links.');
-        console.log(e);
-        this.socialLinks.set([]);
-      } finally {
-        this.loading.set(false);
-      }
     });
   }
 }
