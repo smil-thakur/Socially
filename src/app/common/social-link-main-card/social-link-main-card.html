@@ -16,12 +16,26 @@
               class="sm:size-[30px]"
             ></ng-icon>
           </div>
-          } @else {
+          } @else if (socialLink.customIcon) {
           <img
+            crossorigin="anonymous"
             [src]="socialLink.customIcon"
             alt=""
             srcset=""
-            class="w-8 h-8 sm:w-10 sm:h-10"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-md"
+          />
+          } @else {
+          <img
+            [src]="
+              'https://ui-avatars.com/api/?name=' +
+              (socialLink.platformName
+                ? socialLink.platformName.charAt(0)
+                : 'S') +
+              '&background=random&color=fff&size=48'
+            "
+            alt=""
+            srcset=""
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-md"
           />
           }
           <div>
@@ -104,7 +118,7 @@
     </div>
     <div class="flex flex-col items-center justify-center min-w-[120px]">
       <qrcode
-        [width]="90"
+        [width]="qrCodeWidth"
         [qrdata]="socialLink.url"
         class="sm:w-[150px] w-[90px] h-[90px] sm:h-[150px] flex items-center justify-center"
       ></qrcode>

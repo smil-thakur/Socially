@@ -25,10 +25,23 @@
   <div hlmCardContent>
     @if (lucideIcons.includes(socialLink().icon.toString())) {
     <ng-icon [name]="socialLink().icon" size="24px"></ng-icon>
+    } @else if (socialLink().customIcon) {
+    <img
+      class="rounded-md w-[30px] h-[30px]"
+      [src]="socialLink().customIcon"
+      alt=""
+      srcset=""
+    />
     } @else {
     <img
-      class="rounded-full"
-      [src]="socialLink().customIcon"
+      class="rounded-md w-[30px] h-[30px]"
+      [src]="
+        'https://ui-avatars.com/api/?name=' +
+        (socialLink().platformName
+          ? socialLink().platformName.charAt(0)
+          : 'S') +
+        '&background=random&color=fff&size=48'
+      "
       alt=""
       srcset=""
     />

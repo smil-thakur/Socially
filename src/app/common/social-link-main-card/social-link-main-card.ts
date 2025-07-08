@@ -141,4 +141,7 @@ export class SocialLinkMainCard extends BasePageScreen {
       return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k+';
     return num.toString();
   }
+  get qrCodeWidth(): number {
+    return window.innerWidth < 640 ? 90 : 150;
+  }
 }

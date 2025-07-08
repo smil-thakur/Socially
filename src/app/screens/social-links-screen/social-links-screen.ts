@@ -41,9 +41,13 @@ import { PreloaderService } from '../../services/preloader-service';
 import {
   addSocialLinkForUser,
   getAllSocialLinksForUser,
+  uploadIconAndGetUrl,
 } from '../../cloud-storage-methods/social-link-methods';
 import { UserService } from '../../services/user-service';
 import { v4 as uuidv4 } from 'uuid';
+import { HlmDialogService } from '@spartan-ng/helm/dialog';
+import { ErrorDialog } from '../../common/error-dialog/error-dialog';
+import { InfoDialog } from '../../common/info-dialog/info-dialog';
 
 @Component({
   selector: 'app-social-links-screen',
@@ -94,11 +98,13 @@ export class SocialLinksScreen
   layout: 'card' | 'pill' | 'icon' = 'card';
   socialLinks: SocialLink[] = [];
   customIcon: string = '';
+  customIconFile: File | null = null;
   platforms = popularSocialMediaPlatforms;
 
   private platformValueChangeSubscription: Subscription | undefined;
   private profileURLChangeSubscription: Subscription | undefined;
   private userService = inject(UserService);
+  private readonly _hlmDialogService = inject(HlmDialogService);
 
   constructor(
     private fb: FormBuilder,
@@ -120,6 +126,14 @@ export class SocialLinksScreen
         Validators.required,
         Validators.maxLength(200),
       ]),
+      customPlatformName: new FormControl(
+        {
+          value: null,
+          disabled: false,
+        },
+        [Validators.maxLength(20), Validators.required]
+      ),
+
       username: new FormControl({ value: '', disabled: false }, [
         Validators.required,
         Validators.maxLength(30),
@@ -185,6 +199,10 @@ export class SocialLinksScreen
     return this.newLinkForm?.get('following');
   }
 
+  get customPlatformName() {
+    return this.newLinkForm?.get('customPlatformName');
+  }
+
   get username() {
     return this.newLinkForm?.get('username');
   }
@@ -231,11 +249,16 @@ export class SocialLinksScreen
   onIconUpload(event: any) {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.customIcon = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      if (file.size > 5 * 1024 * 1024) {
+        this._hlmDialogService.open(InfoDialog, {
+          context: {
+            info: 'Icon file size must be less than 5MB.',
+            desc: 'File size limit',
+          },
+        });
+        return;
+      }
+      this.customIconFile = file;
     }
   }
 
@@ -247,32 +270,54 @@ export class SocialLinksScreen
     const platform = this.platforms.find(
       (p) => p.value === this.platform?.value
     );
-    const link: SocialLink = {
-      id: uuidv4(),
-      url: this.url.value,
-      username: this.username?.value,
-      platform: this.platform.value,
-      platformName: platform ? platform.label : 'Custom',
-      icon: platform ? platform.icon : '',
-      color: this.color?.value || (platform ? platform.color : '#666666'),
-      customIcon: this.platform.value === 'custom' ? this.customIcon : '',
-      followers: this.followers?.value,
-      following: this.following?.value,
-      desc: this.bio?.value,
-      handle: this.handle?.value,
-    };
-    console.log(link);
-    this.socialLinks.push(link);
-    this.newLinkForm.reset({
-      color: '#666666',
-    });
-    this.platform.disable();
-    this.customIcon = '';
-    this.preloaderService.show();
-    const res = await addSocialLinkForUser(
-      this.userService.getCurrentUserObject().uid,
-      link
-    );
-    this.preloaderService.hide();
+    let customIconUrl = '';
+    try {
+      this.preloaderService.show();
+      if (this.platform.value === 'custom' && this.customIconFile) {
+        customIconUrl = await uploadIconAndGetUrl(
+          this.userService.getCurrentUserObject().uid,
+          this.customIconFile
+        );
+      }
+      const link: SocialLink = {
+        id: uuidv4(),
+        url: this.url.value,
+        username: this.username?.value,
+        platform: this.platform.value,
+        platformName: platform
+          ? this.platform.value === 'custom'
+            ? this.customPlatformName?.value
+            : platform.value
+          : 'Custom',
+        icon: platform ? platform.icon : '',
+        color: this.color?.value || (platform ? platform.color : '#666666'),
+        customIcon: this.platform.value === 'custom' ? customIconUrl : '',
+        followers: this.followers?.value,
+        following: this.following?.value,
+        desc: this.bio?.value,
+        handle: this.handle?.value,
+      };
+      console.log(link);
+      this.socialLinks.push(link);
+      this.newLinkForm.reset({
+        color: '#666666',
+      });
+      this.platform.disable();
+      this.customIcon = '';
+      this.customIconFile = null;
+      await addSocialLinkForUser(
+        this.userService.getCurrentUserObject().uid,
+        link
+      );
+      this.preloaderService.hide();
+    } catch (error) {
+      this.preloaderService.hide();
+      this._hlmDialogService.open(ErrorDialog, {
+        context: {
+          error: (error as any)?.message || 'Unknown error',
+          desc: 'Problem while adding social link',
+        },
+      });
+    }
   }
 }

@@ -15,7 +15,7 @@
             <div class="{{ mutedStyle }} text-xs">Profile URL</div>
             <input
               hlmInput
-              class="w-full"
+              class="w-xs sm:w-xl"
               placeholder="Paste your profile URL"
               formControlName="url"
             />
@@ -31,6 +31,29 @@
         <div class="flex gap-2 mb-8 flex-col sm:ml-4 ml-0">
           <div>Additional Info</div>
           <div class="flex flex-col sm:flex-row gap-2">
+            @if (newLinkForm?.get("platform")?.value === "custom") {
+            <hlm-form-field>
+              <label hlmLabel>
+                <div class="{{ mutedStyle }} text-xs">Platform Name</div>
+                <input
+                  hlmInput
+                  type="text"
+                  placeholder="codeforces"
+                  formControlName="customPlatformName"
+                />
+                @if
+                (newLinkForm!.get('customPlatformName')?.errors?.['required'] &&
+                (newLinkForm?.get('customPlatformName')?.dirty ||
+                newLinkForm?.get('customPlatformName')?.touched)) {
+                <hlm-error>Platform name is required.</hlm-error>
+                } @if (newLinkForm!.get('username')?.errors?.['maxlength']) {
+                <hlm-error
+                  >Platform name cannot exceed 20 characters.</hlm-error
+                >
+                }
+              </label>
+            </hlm-form-field>
+            }
             <hlm-form-field>
               <label hlmLabel>
                 <div class="{{ mutedStyle }} text-xs">Username</div>
@@ -133,7 +156,9 @@
             </label>
           </hlm-form-field>
         </div>
-        <div class="flex flex-col sm:flex-row justify-center sm:space-x-2 space-y-2 sm:space-y-0">
+        <div
+          class="flex flex-col sm:flex-row justify-center sm:space-x-2 space-y-2 sm:space-y-0"
+        >
           <hlm-form-field class="flex-1">
             <brn-select
               class="inline-block w-full"
@@ -179,6 +204,7 @@
                 hlmInput
                 type="file"
                 accept="image/*"
+                class="w-xs sm:w-xl"
                 (change)="onIconUpload($event)"
               />
             </label>
@@ -197,7 +223,9 @@
     </form>
   </div>
 
-  <div class="w-full flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mb-4 mt-4">
+  <div
+    class="w-full flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mb-4 mt-4"
+  >
     <span class="flex-1 border-b border-muted"></span>
     <span class="text-muted-foreground">Your Social Links</span>
     <span class="flex-1 border-b border-muted"></span>
