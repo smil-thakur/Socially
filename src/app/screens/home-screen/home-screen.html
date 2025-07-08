@@ -30,7 +30,13 @@
         </div>
         <div hlmCardFooter>
           <button (click)="navigateToSocial(social.route)" hlmBtn>Edit</button>
-          <button hlmBtn variant="outline">View</button>
+          <button
+            hlmBtn
+            variant="outline"
+            (click)="navigateToViewer(social.type)"
+          >
+            View
+          </button>
         </div>
       </div>
       }

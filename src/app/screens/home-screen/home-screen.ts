@@ -151,4 +151,15 @@ export class HomeScreen extends BasePageScreen implements OnInit {
   public navigateToSocial(route: string) {
     this.router.navigate([route]);
   }
+
+  public navigateToViewer(type: string) {
+    switch (type) {
+      case 'social-links':
+        this.router.navigate(['/social-links', this.gUser?.uid]);
+        break;
+
+      default:
+        break;
+    }
+  }
 }
