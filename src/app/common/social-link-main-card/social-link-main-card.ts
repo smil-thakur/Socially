@@ -1,6 +1,6 @@
 import * as htmlToImage from 'html-to-image';
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { BrnDialogRef, injectBrnDialogContext } from '@spartan-ng/brain/dialog';
 import { SocialLink } from '../../interfaces/social-link';
 import { BasePageScreen } from '../base-page-screen/base-page-screen';
@@ -45,11 +45,22 @@ import { HlmSkeletonComponent } from '@spartan-ng/helm/skeleton';
     }),
   ],
 })
-export class SocialLinkMainCard extends BasePageScreen {
-  private readonly dialogRef = inject<BrnDialogRef<SocialLink>>(BrnDialogRef);
-  private readonly dialogContext = injectBrnDialogContext<SocialLink>();
+export class SocialLinkMainCard extends BasePageScreen implements OnInit {
+  socialLinkInput = input<SocialLink>();
+  private dialogRef: BrnDialogRef<SocialLink> | null = null;
+  private dialogContext: SocialLink | null = null;
 
-  protected readonly socialLink = this.dialogContext;
+  protected socialLink: SocialLink | undefined;
+
+  ngOnInit(): void {
+    if (this.socialLinkInput() !== undefined) {
+      this.socialLink = this.socialLinkInput();
+    } else {
+      this.dialogRef = inject<BrnDialogRef<SocialLink>>(BrnDialogRef);
+      this.dialogContext = injectBrnDialogContext<SocialLink>();
+      this.socialLink = this.dialogContext;
+    }
+  }
   public customImageLoaded = false;
 
   popularMediaLucideIcons = popularSocialMediaIcons;

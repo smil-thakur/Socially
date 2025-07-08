@@ -8,15 +8,15 @@
       <div>
         <div class="flex items-center gap-2 sm:gap-3">
           @if
-          (this.popularMediaLucideIcons.includes(socialLink.icon.toString())) {
+          (this.popularMediaLucideIcons.includes(socialLink!.icon.toString())) {
           <div class="flex items-center justify-center">
             <ng-icon
-              [name]="socialLink.icon"
+              [name]="socialLink!.icon"
               size="24px"
               class="sm:size-[30px]"
             ></ng-icon>
           </div>
-          } @else if (socialLink.customIcon) {
+          } @else if (socialLink!.customIcon) {
           <div class="relative w-8 h-8 sm:w-10 sm:h-10">
             @if( !customImageLoaded) {
             <hlm-skeleton
@@ -25,10 +25,10 @@
             }
             <img
               crossorigin="anonymous"
-              [src]="socialLink.customIcon"
+              [src]="socialLink!.customIcon"
               [alt]="
-                socialLink.platformName
-                  ? socialLink.platformName + ' icon'
+                socialLink!.platformName
+                  ? socialLink!.platformName + ' icon'
                   : 'Custom social icon'
               "
               (load)="onCustomImageLoaded()"
@@ -41,14 +41,14 @@
           <img
             [src]="
               'https://ui-avatars.com/api/?name=' +
-              (socialLink.platformName
-                ? socialLink.platformName.charAt(0)
+              (socialLink!.platformName
+                ? socialLink!.platformName.charAt(0)
                 : 'S') +
               '&background=random&color=fff&size=48'
             "
             [alt]="
-              socialLink.platformName
-                ? socialLink.platformName + ' avatar'
+              socialLink!.platformName
+                ? socialLink!.platformName + ' avatar'
                 : 'Default avatar'
             "
             class="w-8 h-8 sm:w-10 sm:h-10 rounded-md"
@@ -58,7 +58,7 @@
             <h2
               class="font-semibold text-xs sm:text-sm uppercase tracking-wider"
             >
-              {{ socialLink.platformName }}
+              {{ socialLink!.platformName }}
             </h2>
             <p class="{{ mutedStyle }} text-[10px] sm:text-xs">
               Social Profile
@@ -67,31 +67,31 @@
         </div>
         <div>
           <h3
-            [hlmTooltipTrigger]="socialLink.username"
-            [attr.aria-label]="socialLink.username"
+            [hlmTooltipTrigger]="socialLink!.username"
+            [attr.aria-label]="socialLink!.username"
             class="font-bold text-lg sm:text-xl tracking-wider text-ellipsis"
           >
-            {{ socialLink.username }}
+            {{ socialLink!.username }}
           </h3>
           <p
-            [hlmTooltipTrigger]="socialLink.desc"
-            [attr.aria-label]="socialLink.desc"
+            [hlmTooltipTrigger]="socialLink!.desc"
+            [attr.aria-label]="socialLink!.desc"
             class="{{
               mutedStyle
             }} text-xs sm:text-sm leading-relaxed text-ellipsis"
           >
-            {{ socialLink.desc }}
+            {{ socialLink!.desc }}
           </p>
           <div class="flex gap-2 sm:gap-4 text-xs {{ mutedStyle }} flex-wrap">
-            @if (socialLink.followers) {
+            @if (socialLink!.followers) {
             <span
-              >{{ formatFollowersCount(socialLink.followers) }} Followers</span
+              >{{ formatFollowersCount(socialLink!.followers) }} Followers</span
             >
-            }@if (socialLink.followers && socialLink.following) {
+            }@if (socialLink!.followers && socialLink!.following) {
             <span>•</span>
-            } @if (socialLink.following) {
+            } @if (socialLink!.following) {
             <span
-              >{{ formatFollowersCount(socialLink.following) }} Following</span
+              >{{ formatFollowersCount(socialLink!.following) }} Following</span
             >
             }
           </div>
@@ -99,15 +99,15 @@
       </div>
 
       <div>
-        @if (socialLink.handle) {
+        @if (socialLink!.handle) {
         <p
-          [hlmTooltipTrigger]="socialLink.handle"
-          [attr.aria-label]="socialLink.handle"
+          [hlmTooltipTrigger]="socialLink!.handle"
+          [attr.aria-label]="socialLink!.handle"
           class="{{
             mutedStyle
           }} text-[10px] sm:text-xs font-mono text-ellipsis"
         >
-          {{ socialLink.handle }}
+          {{ socialLink!.handle }}
         </p>
         }
         <div
@@ -123,11 +123,11 @@
             ></ng-icon>
           </div>
           <p
-            [hlmTooltipTrigger]="socialLink.url"
-            [attr.aria-label]="socialLink.url"
+            [hlmTooltipTrigger]="socialLink!.url"
+            [attr.aria-label]="socialLink!.url"
             class="text-[10px] sm:text-xs font-mono text-ellipsis break-all"
           >
-            {{ socialLink.url }}
+            {{ socialLink!.url }}
           </p>
         </div>
       </div>
@@ -135,7 +135,7 @@
     <div class="flex flex-col items-center justify-center min-w-[120px]">
       <qrcode
         [width]="qrCodeWidth"
-        [qrdata]="socialLink.url"
+        [qrdata]="socialLink!.url"
         class="sm:w-[150px] w-[90px] h-[90px] sm:h-[150px] flex items-center justify-center"
       ></qrcode>
       <p
