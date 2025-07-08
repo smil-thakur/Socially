@@ -22,20 +22,20 @@
               hlmInput
               placeholder="Username"
             />
+            @if (registerForm?.get('username')?.errors?.['required'] &&
+            (registerForm?.get('username')?.dirty ||
+            registerForm?.get('username')?.touched)) {
+            <hlm-error>Username is required.</hlm-error>
+            } @if (registerForm?.get('username')?.errors?.['minlength'] &&
+            (registerForm?.get('username')?.dirty ||
+            registerForm?.get('username')?.touched)) {
+            <hlm-error>Username is too short.</hlm-error>
+            } @if (registerForm?.get('username')?.errors?.['maxlength'] &&
+            (registerForm?.get('username')?.dirty ||
+            registerForm?.get('username')?.touched)) {
+            <hlm-error>Username is too long.</hlm-error>
+            }
           </label>
-          @if (registerForm?.get('username')?.errors?.['required'] &&
-          (registerForm?.get('username')?.dirty ||
-          registerForm?.get('username')?.touched)) {
-          <hlm-error>Username is required.</hlm-error>
-          } @if (registerForm?.get('username')?.errors?.['minlength'] &&
-          (registerForm?.get('username')?.dirty ||
-          registerForm?.get('username')?.touched)) {
-          <hlm-error>Username is too short.</hlm-error>
-          } @if (registerForm?.get('username')?.errors?.['maxlength'] &&
-          (registerForm?.get('username')?.dirty ||
-          registerForm?.get('username')?.touched)) {
-          <hlm-error>Username is too long.</hlm-error>
-          }
         </hlm-form-field>
         <hlm-form-field>
           <label hlmLabel>
