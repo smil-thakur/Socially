@@ -22,6 +22,7 @@ import {
 
 import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { SocialLinkMainCard } from '../social-link-main-card/social-link-main-card';
+import { HlmSkeletonComponent } from '@spartan-ng/helm/skeleton';
 @Component({
   selector: 'app-social-link-card',
   imports: [
@@ -32,6 +33,7 @@ import { SocialLinkMainCard } from '../social-link-main-card/social-link-main-ca
     HlmCardContentDirective,
     CommonModule,
     NgIconComponent,
+    HlmSkeletonComponent,
   ],
   providers: [
     provideIcons({
@@ -50,6 +52,11 @@ import { SocialLinkMainCard } from '../social-link-main-card/social-link-main-ca
 export class SocialLinkCard {
   constructor(private hlmDialogService: HlmDialogService) {}
   public socialLink = input.required<SocialLink>();
+  tinyImageLoaded = false;
+
+  public onTinyImageLoad(): void {
+    this.tinyImageLoaded = true;
+  }
 
   // List of Lucide icons provided via provideIcons
   lucideIcons = [

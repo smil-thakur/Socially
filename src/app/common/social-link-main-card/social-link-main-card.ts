@@ -19,6 +19,7 @@ import {
 import { QRCodeComponent } from 'angularx-qrcode';
 import { HlmButtonDirective } from '@spartan-ng/helm/button';
 import { HlmTooltipTriggerDirective } from '@spartan-ng/helm/tooltip';
+import { HlmSkeletonComponent } from '@spartan-ng/helm/skeleton';
 
 @Component({
   selector: 'app-social-link-main-card',
@@ -27,6 +28,7 @@ import { HlmTooltipTriggerDirective } from '@spartan-ng/helm/tooltip';
     QRCodeComponent,
     HlmButtonDirective,
     HlmTooltipTriggerDirective,
+    HlmSkeletonComponent,
   ],
   templateUrl: './social-link-main-card.html',
   styleUrl: './social-link-main-card.scss',
@@ -48,6 +50,7 @@ export class SocialLinkMainCard extends BasePageScreen {
   private readonly dialogContext = injectBrnDialogContext<SocialLink>();
 
   protected readonly socialLink = this.dialogContext;
+  public customImageLoaded = false;
 
   popularMediaLucideIcons = popularSocialMediaIcons;
 
@@ -56,6 +59,10 @@ export class SocialLinkMainCard extends BasePageScreen {
   }
   async downloadCardImage() {
     await this.captureAndHandleCardImage('download');
+  }
+
+  onCustomImageLoaded() {
+    this.customImageLoaded = true;
   }
 
   /**

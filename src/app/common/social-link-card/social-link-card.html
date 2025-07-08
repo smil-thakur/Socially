@@ -26,12 +26,22 @@
     @if (lucideIcons.includes(socialLink().icon.toString())) {
     <ng-icon [name]="socialLink().icon" size="24px"></ng-icon>
     } @else if (socialLink().customIcon) {
-    <img
-      class="rounded-md w-[30px] h-[30px]"
-      [src]="socialLink().customIcon"
-      alt=""
-      srcset=""
-    />
+    <div class="relative w-[30px] h-[30px]">
+      @if (!tinyImageLoaded) {
+      <hlm-skeleton
+        class="absolute inset-0 w-full h-full rounded-md z-10"
+      ></hlm-skeleton>
+      }
+      <img
+        class="absolute inset-0 w-full h-full rounded-md object-cover transition-opacity duration-300"
+        [src]="socialLink().customIcon"
+        alt=""
+        (load)="onTinyImageLoad()"
+        crossorigin="anonymous"
+        [class.opacity-0]="!tinyImageLoaded"
+        [class.opacity-100]="tinyImageLoaded"
+      />
+    </div>
     } @else {
     <img
       class="rounded-md w-[30px] h-[30px]"
