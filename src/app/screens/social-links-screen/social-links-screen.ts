@@ -237,9 +237,17 @@ export class SocialLinksScreen
       const platform = this.platforms.find((p) => p.value === platformValue);
       this.color?.setValue(platform ? platform.color : '#666666');
       this.customIcon = '';
+      this.customPlatformName?.setValidators(null);
+      this.customPlatformName?.updateValueAndValidity();
     } else if (platformValue === 'custom') {
       this.newLinkForm?.get('color')?.enable();
       this.color?.setValue('#666666');
+
+      this.customPlatformName?.setValidators([
+        Validators.required,
+        Validators.maxLength(20),
+      ]);
+      this.customPlatformName?.updateValueAndValidity();
     }
   }
 
@@ -262,6 +270,7 @@ export class SocialLinksScreen
   async addSocialLink() {
     if (!this.newLinkForm) return;
     this.newLinkForm.markAllAsTouched();
+    console.log(this.customPlatformName?.errors);
     if (this.newLinkForm.invalid) return;
     if (!this.url?.value || !this.platform?.value) return;
     const platform = this.platforms.find(
