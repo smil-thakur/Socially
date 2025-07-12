@@ -45,14 +45,15 @@ import { HlmSkeletonComponent } from '@spartan-ng/helm/skeleton';
     }),
   ],
 })
-export class SocialLinkMainCard extends BasePageScreen implements OnInit {
+export class SocialLinkMainCard extends BasePageScreen {
   socialLinkInput = input<SocialLink>();
   private dialogRef: BrnDialogRef<SocialLink> | null = null;
   private dialogContext: SocialLink | null = null;
 
   protected socialLink: SocialLink | undefined;
 
-  ngOnInit(): void {
+  constructor() {
+    super();
     if (this.socialLinkInput() !== undefined) {
       this.socialLink = this.socialLinkInput();
     } else {
@@ -61,6 +62,7 @@ export class SocialLinkMainCard extends BasePageScreen implements OnInit {
       this.socialLink = this.dialogContext;
     }
   }
+
   public customImageLoaded = false;
 
   popularMediaLucideIcons = popularSocialMediaIcons;
