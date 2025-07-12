@@ -113,7 +113,11 @@ export class LoginScreen extends BasePageScreen implements OnInit {
     const password = this.password?.value;
     this.preloaderService.show();
     try {
-      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        this.auth,
+        email,
+        password
+      );
       const user = userCredential.user;
       if (!user.emailVerified) {
         this.preloaderService.hide();
@@ -128,7 +132,6 @@ export class LoginScreen extends BasePageScreen implements OnInit {
       this.preloaderService.hide();
       this.router.navigate(['/home']);
     } catch (error) {
-      console.log('Login failed:', error);
       const firebaseError = error as FirebaseError;
       this.preloaderService.hide();
       this._hlmDialogService.open(ErrorDialog, {

@@ -217,7 +217,6 @@ export class SocialLinksScreen
       const match = POPULAR_SOCIAL_MEDIA_BASE_URLS.find((item) =>
         value.includes(item.baseURL)
       );
-      console.log(value, match);
       if (match) {
         const socialMediaValue = match.value;
         this.platform?.enable();
@@ -229,9 +228,7 @@ export class SocialLinksScreen
   }
 
   onPlatformChange(newPlatform: string) {
-    console.log('cahnge');
     const platformValue = newPlatform;
-    console.log(platformValue);
     if (platformValue && platformValue !== 'custom') {
       this.newLinkForm?.get('color')?.disable();
       const platform = this.platforms.find((p) => p.value === platformValue);
@@ -270,7 +267,6 @@ export class SocialLinksScreen
   async addSocialLink() {
     if (!this.newLinkForm) return;
     this.newLinkForm.markAllAsTouched();
-    console.log(this.customPlatformName?.errors);
     if (this.newLinkForm.invalid) return;
     if (!this.url?.value || !this.platform?.value) return;
     const platform = this.platforms.find(
@@ -303,7 +299,6 @@ export class SocialLinksScreen
         desc: this.bio?.value,
         handle: this.handle?.value,
       };
-      console.log(link);
       this.socialLinks.push(link);
       this.newLinkForm.reset({
         color: '#666666',
