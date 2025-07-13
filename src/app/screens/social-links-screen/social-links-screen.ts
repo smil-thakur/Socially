@@ -44,11 +44,22 @@ import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { ErrorDialog } from '../../common/error-dialog/error-dialog';
 import { InfoDialog } from '../../common/info-dialog/info-dialog';
 import { SocialLinkService } from '../../services/social-link-service';
+import {
+  HlmTabsComponent,
+  HlmTabsContentDirective,
+  HlmTabsListComponent,
+  HlmTabsTriggerDirective,
+} from '@spartan-ng/helm/tabs';
 
 @Component({
   selector: 'app-social-links-screen',
   standalone: true,
   imports: [
+    HlmTabsComponent,
+    HlmTabsListComponent,
+    HlmTabsTriggerDirective,
+    HlmTabsContentDirective,
+
     ReactiveFormsModule,
     HlmFormFieldModule,
     HlmSelectModule,
@@ -91,6 +102,7 @@ export class SocialLinksScreen
   implements OnInit, OnDestroy
 {
   newLinkForm: FormGroup | null = null;
+  greetingsForm: FormGroup | null = null;
   layout: 'card' | 'pill' | 'icon' = 'card';
   socialLinks: SocialLink[] = [];
   customIcon: string = '';
@@ -118,6 +130,14 @@ export class SocialLinksScreen
     this.preloaderService.hide();
   }
   ngOnInit(): void {
+    this.greetingsForm = this.fb.group({
+      title: new FormControl({ value: null, disabled: false }, [
+        Validators.maxLength(50),
+      ]),
+      body: new FormControl({ value: null, disabled: false }, [
+        Validators.maxLength(256),
+      ]),
+    });
     this.newLinkForm = this.fb.group({
       url: new FormControl({ value: '', disabled: false }, [
         Validators.required,

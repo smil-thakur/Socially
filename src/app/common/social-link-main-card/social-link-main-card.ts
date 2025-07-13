@@ -7,12 +7,14 @@ import { BasePageScreen } from '../base-page-screen/base-page-screen';
 import { popularSocialMediaIcons } from '../../enums/popular-social-media-icons';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
+  lucideDownload,
   lucideExternalLink,
   lucideFacebook,
   lucideGithub,
   lucideInstagram,
   lucideLinkedin,
   lucideMessageCircle,
+  lucideShare2,
   lucideTwitter,
   lucideYoutube,
 } from '@ng-icons/lucide';
@@ -20,6 +22,7 @@ import { QRCodeComponent } from 'angularx-qrcode';
 import { HlmButtonDirective } from '@spartan-ng/helm/button';
 import { HlmTooltipTriggerDirective } from '@spartan-ng/helm/tooltip';
 import { HlmSkeletonComponent } from '@spartan-ng/helm/skeleton';
+import { HlmIconDirective } from '@spartan-ng/helm/icon';
 
 @Component({
   selector: 'app-social-link-main-card',
@@ -29,6 +32,7 @@ import { HlmSkeletonComponent } from '@spartan-ng/helm/skeleton';
     HlmButtonDirective,
     HlmTooltipTriggerDirective,
     HlmSkeletonComponent,
+    HlmIconDirective,
   ],
   templateUrl: './social-link-main-card.html',
   styleUrl: './social-link-main-card.scss',
@@ -42,11 +46,14 @@ import { HlmSkeletonComponent } from '@spartan-ng/helm/skeleton';
       lucideGithub,
       lucideYoutube,
       lucideExternalLink,
+      lucideShare2,
+      lucideDownload,
     }),
   ],
 })
-export class SocialLinkMainCard extends BasePageScreen {
+export class SocialLinkMainCard extends BasePageScreen implements OnInit {
   socialLinkInput = input<SocialLink>();
+  isDialog: boolean = true;
   private dialogRef: BrnDialogRef<SocialLink> | null = null;
   private dialogContext: SocialLink | null = null;
 
@@ -54,12 +61,19 @@ export class SocialLinkMainCard extends BasePageScreen {
 
   constructor() {
     super();
-    if (this.socialLinkInput() !== undefined) {
-      this.socialLink = this.socialLinkInput();
-    } else {
+    try {
       this.dialogRef = inject<BrnDialogRef<SocialLink>>(BrnDialogRef);
       this.dialogContext = injectBrnDialogContext<SocialLink>();
       this.socialLink = this.dialogContext;
+    } catch (e) {
+      console.error('main-card not opened as dialog');
+    }
+  }
+
+  ngOnInit(): void {
+    if (this.socialLinkInput() !== undefined) {
+      this.socialLink = this.socialLinkInput();
+      this.isDialog = false;
     }
   }
 
@@ -83,7 +97,7 @@ export class SocialLinkMainCard extends BasePageScreen {
    * @param mode 'share' | 'download'
    */
   private async captureAndHandleCardImage(mode: 'share' | 'download') {
-    const card = document.getElementById('main-card');
+    const card = document.getElementById(`main-card-${this.socialLink!.id}`);
     if (!card) return;
 
     const computedStyle = window.getComputedStyle(card);

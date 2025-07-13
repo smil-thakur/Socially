@@ -16,7 +16,6 @@ export class TopNavBar {
     signOut(this.auth)
       .then(() => {
         this.router.navigate(['/login']);
-        console.log('signed out');
       })
       .catch((error) => {
         console.log('sign out error: ' + error);

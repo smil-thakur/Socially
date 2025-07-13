@@ -1,5 +1,5 @@
 <div
-  id="main-card"
+  id="main-card-{{ socialLink!.id }}"
   class="bg-[var(--card)] border rounded-xl h-[250px] sm:h-[250px] h-auto"
 >
   <div class="h-full flex flex-col sm:flex-row gap-4 sm:gap-8 p-4 sm:p-8">
@@ -122,13 +122,15 @@
               name="lucideExternalLink"
             ></ng-icon>
           </div>
-          <p
+          <a
             [hlmTooltipTrigger]="socialLink!.url"
             [attr.aria-label]="socialLink!.url"
+            [href]="socialLink?.url"
+            target="_blank"
             class="text-[10px] sm:text-xs font-mono text-ellipsis break-all"
           >
             {{ socialLink!.url }}
-          </p>
+          </a>
         </div>
       </div>
     </div>
@@ -149,9 +151,33 @@
   </div>
 </div>
 
+@if (isDialog) {
 <div class="flex items-center mt-4 sm:mt-6 gap-2 sm:gap-4 flex-wrap">
   <button hlmBtn (click)="shareCardImage()">Share</button>
   <button hlmBtn variant="outline" (click)="downloadCardImage()">
     Download
   </button>
 </div>
+} @else {
+<div class="flex items-center mt-2 gap-2 ml-4">
+  <button
+    hlmBtn
+    size="icon"
+    variant="secondary"
+    (click)="shareCardImage()"
+    class="size-8"
+  >
+    <ng-icon hlm size="sm" name="lucideShare2" />
+  </button>
+
+  <button
+    hlmBtn
+    size="icon"
+    variant="secondary"
+    (click)="downloadCardImage()"
+    class="size-8"
+  >
+    <ng-icon hlm size="sm" name="lucideDownload" />
+  </button>
+</div>
+}

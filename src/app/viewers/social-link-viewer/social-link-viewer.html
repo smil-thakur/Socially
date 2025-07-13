@@ -1,0 +1,8 @@
+@if (!fetchingLinks) {
+<div class="flex flex-wrap gap-4 items-center justify-center mt-[80px]">
+  @for (sl of socialLinks; track $index) {
+  <app-social-link-main-card [socialLinkInput]="sl"></app-social-link-main-card>
+  }
+</div>
+
+}
