@@ -4,6 +4,9 @@ import {
   collection,
   addDoc,
   getDocs,
+  doc,
+  setDoc,
+  getDoc,
 } from '@angular/fire/firestore';
 import {
   Storage,
@@ -13,6 +16,7 @@ import {
 } from '@angular/fire/storage';
 import type { SocialLink } from '../interfaces/social-link';
 import { runAsyncInInjectionContext } from '../firebase-fixes/injection-fix';
+import { SocialLinkGreeting } from '../interfaces/social-link-greeting';
 @Injectable({ providedIn: 'root' })
 export class SocialLinkService {
   constructor(
@@ -21,7 +25,7 @@ export class SocialLinkService {
     private injector: Injector
   ) {}
 
-  async addSocialLinkForUser(userId: string, socialLink: any) {
+  async addSocialLinkForUser(userId: string, socialLink: SocialLink) {
     return await runAsyncInInjectionContext(this.injector, async () => {
       const socialLinksCol = collection(
         this.firestore,
@@ -31,6 +35,23 @@ export class SocialLinkService {
       );
       const docRef = await addDoc(socialLinksCol, socialLink);
       return docRef;
+    });
+  }
+
+  async addSocialLinkGreeting(
+    userId: string,
+    socialLinkGreeting: SocialLinkGreeting
+  ) {
+    return await runAsyncInInjectionContext(this.injector, async () => {
+      const greetingDocRef = doc(
+        this.firestore,
+        'User',
+        userId,
+        'SocialLinkGreeting',
+        'greeting'
+      );
+
+      await setDoc(greetingDocRef, socialLinkGreeting);
     });
   }
 
@@ -44,6 +65,27 @@ export class SocialLinkService {
       );
       const snapshot = await getDocs(socialLinksCol);
       return snapshot.docs.map((doc) => doc.data() as SocialLink);
+    });
+  }
+
+  async getSocialLinkGreeting(
+    userId: string
+  ): Promise<SocialLinkGreeting | null> {
+    return await runAsyncInInjectionContext(this.injector, async () => {
+      const greetingDocRef = doc(
+        this.firestore,
+        'User',
+        userId,
+        'SocialLinkGreeting',
+        'greeting'
+      );
+      const greetingSnap = await getDoc(greetingDocRef);
+
+      if (greetingSnap.exists()) {
+        return greetingSnap.data() as SocialLinkGreeting;
+      } else {
+        return null;
+      }
     });
   }
 

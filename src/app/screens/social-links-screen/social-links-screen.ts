@@ -50,6 +50,7 @@ import {
   HlmTabsListComponent,
   HlmTabsTriggerDirective,
 } from '@spartan-ng/helm/tabs';
+import { SocialLinkGreeting } from '../../interfaces/social-link-greeting';
 
 @Component({
   selector: 'app-social-links-screen',
@@ -113,6 +114,7 @@ export class SocialLinksScreen
   private profileURLChangeSubscription: Subscription | undefined;
   private userService = inject(UserService);
   private readonly _hlmDialogService = inject(HlmDialogService);
+  private socialLinkGreetCloud: SocialLinkGreeting | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -127,16 +129,35 @@ export class SocialLinksScreen
     this.socialLinks = await this.socialLinkService.getAllSocialLinksForUser(
       this.userService.getCurrentUserObject().uid
     );
+    this.socialLinkGreetCloud =
+      await this.socialLinkService.getSocialLinkGreeting(
+        this.userService.getCurrentUserObject().uid
+      );
+    if (this.greetingsForm) {
+      this.greetingsForm
+        .get('title')
+        ?.setValue(this.socialLinkGreetCloud?.title);
+      this.greetingsForm.get('body')?.setValue(this.socialLinkGreetCloud?.body);
+    }
     this.preloaderService.hide();
   }
+
   ngOnInit(): void {
     this.greetingsForm = this.fb.group({
-      title: new FormControl({ value: null, disabled: false }, [
-        Validators.maxLength(50),
-      ]),
-      body: new FormControl({ value: null, disabled: false }, [
-        Validators.maxLength(256),
-      ]),
+      title: new FormControl(
+        {
+          value: null,
+          disabled: false,
+        },
+        [Validators.maxLength(50), Validators.required]
+      ),
+      body: new FormControl(
+        {
+          value: null,
+          disabled: false,
+        },
+        [Validators.maxLength(256), Validators.required]
+      ),
     });
     this.newLinkForm = this.fb.group({
       url: new FormControl({ value: '', disabled: false }, [
@@ -185,7 +206,6 @@ export class SocialLinksScreen
       ?.valueChanges.subscribe((newURL) => {
         this.onProfileURLChange(newURL);
       });
-
     this.fetchSocialLinks();
   }
 
@@ -281,6 +301,43 @@ export class SocialLinksScreen
         return;
       }
       this.customIconFile = file;
+    }
+  }
+
+  async addGreetings() {
+    if (!this.greetingsForm) return;
+    this.greetingsForm.markAllAsTouched();
+    if (this.greetingsForm.invalid) return;
+    this.preloaderService.show();
+    try {
+      const socialLinkGreet: SocialLinkGreeting = {
+        title: this.greetingsForm.get('title')?.value,
+        body: this.greetingsForm.get('body')?.value,
+      };
+      await this.socialLinkService.addSocialLinkGreeting(
+        this.userService.getCurrentUserObject().uid,
+        socialLinkGreet
+      );
+      this.preloaderService.hide();
+      this.greetingsForm.reset({
+        title: socialLinkGreet.title,
+        body: socialLinkGreet.body,
+      });
+      console.log('opening dialog');
+      this._hlmDialogService.open(InfoDialog, {
+        context: {
+          info: 'Greeting Updated',
+          desc: 'Check your view page to see updated greeting',
+        },
+      });
+    } catch (err) {
+      this.preloaderService.hide();
+      this._hlmDialogService.open(ErrorDialog, {
+        context: {
+          error: (err as any)?.message || 'Unknown error',
+          desc: 'Problem while adding greeting',
+        },
+      });
     }
   }
 

@@ -19,11 +19,9 @@ export class PreloaderService {
   }
 
   show() {
-    document.body.classList.add('overflow-hidden');
     this._loading.next(true);
   }
   hide() {
-    document.body.classList.remove('overflow-hidden');
     this._loading.next(false);
   }
 }

@@ -7,7 +7,7 @@
     </hlm-tabs-list>
     <div hlmTabsContent="socialLink">
       <div hlmCard class="max-w-[695px]">
-        <form [formGroup]="newLinkForm!">
+        <form [formGroup]="newLinkForm!" (submit)="addSocialLink()">
           <div hlmCardHeader>
             <div hlmCardTitle>Add a Social Link</div>
             <div hlmCardDescription>
@@ -226,14 +226,14 @@
             }
           </div>
           <div hlmCardFooter>
-            <button hlmBtn type="submit" (click)="addSocialLink()">Add</button>
+            <button hlmBtn type="submit">Add</button>
           </div>
         </form>
       </div>
     </div>
     <div hlmTabsContent="greet">
       <div hlmCard class="max-w-[695px]">
-        <form [formGroup]="greetingsForm!">
+        <form [formGroup]="greetingsForm!" (submit)="addGreetings()">
           <div hlmCardHeader>
             <div hlmCardTitle>Add a Greeting</div>
             <div hlmCardDescription>
@@ -253,6 +253,13 @@
                   placeholder="Welcome everyone!"
                   formControlName="title"
                 />
+                @if (greetingsForm!.get('title')?.errors?.['required'] &&
+                (greetingsForm?.get('title')?.dirty ||
+                greetingsForm?.get('title')?.touched)) {
+                <hlm-error>Title is required.</hlm-error>
+                } @if (greetingsForm!.get('title')?.errors?.['maxlength']) {
+                <hlm-error>Title cannot exceed 50 characters.</hlm-error>
+                }
               </label>
             </hlm-form-field>
             <hlm-form-field>
@@ -266,6 +273,13 @@
                   formControlName="body"
                 />
               </label>
+              @if (greetingsForm!.get('body')?.errors?.['required'] &&
+              (greetingsForm?.get('body')?.dirty ||
+              greetingsForm?.get('body')?.touched)) {
+              <hlm-error>Body is required.</hlm-error>
+              } @if (greetingsForm!.get('body')?.errors?.['maxlength']) {
+              <hlm-error>Body cannot exceed 256 characters.</hlm-error>
+              }
             </hlm-form-field>
           </div>
           <div hlmCardFooter>
