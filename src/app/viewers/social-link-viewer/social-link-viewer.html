@@ -1,8 +1,50 @@
 @if (!fetchingLinks) {
-<div class="flex flex-wrap gap-4 items-center justify-center mt-[80px]">
-  @for (sl of socialLinks; track $index) {
-  <app-social-link-main-card [socialLinkInput]="sl"></app-social-link-main-card>
-  }
+<app-static-top-bar></app-static-top-bar>
+<div class="min-h-screen">
+  <div class="p-4 mt-[80px] mb-6">
+    <h1 class="{{ h1Style }} mb-2">
+      {{
+        socialLinkGreet?.title
+          ? socialLinkGreet!.title
+          : "Hey there, welcome aboard!"
+      }}
+    </h1>
+    <p class="{{ mutedStyle }}">
+      {{socialLinkGreet?.body ? socialLinkGreet!.body : ` Here's a curated list of my social links feel free to check them out and
+    connect!`}}
+    </p>
+  </div>
+  <div hlmCard class="p-2 m-2">
+    <hlm-tabs tab="max">
+      <hlm-tabs-list>
+        <button hlmTabsTrigger="max">
+          <ng-icon name="lucideLayoutGrid"></ng-icon>
+        </button>
+        <button hlmTabsTrigger="min">
+          <ng-icon name="lucideGrid3x3"></ng-icon>
+        </button>
+      </hlm-tabs-list>
+      <div
+        hlmTabsContent="max"
+        class="flex flex-wrap gap-4 items-center justify-center mb-6"
+      >
+        @for (sl of socialLinks; track $index) {
+        <app-social-link-main-card
+          [socialLinkInput]="sl"
+        ></app-social-link-main-card>
+        }
+      </div>
+      <div
+        hlmTabsContent="min"
+        class="flex flex-wrap gap-4 items-center justify-center mb-6"
+      >
+        @for (sl of socialLinks; track $index) {
+        <app-social-link-card [socialLink]="sl"></app-social-link-card>
+        }
+      </div>
+    </hlm-tabs>
+  </div>
 </div>
 
 }
+<app-promotion-footer></app-promotion-footer>
