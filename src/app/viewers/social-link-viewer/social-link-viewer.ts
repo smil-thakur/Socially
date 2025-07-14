@@ -2,7 +2,6 @@ import { Component, signal, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { SocialLink } from '../../interfaces/social-link';
 import { CommonModule } from '@angular/common';
-import { HlmSkeletonComponent } from '@spartan-ng/helm/skeleton';
 import { SocialLinkMainCard } from '../../common/social-link-main-card/social-link-main-card';
 import { SocialLinkService } from '../../services/social-link-service';
 import { PreloaderService } from '../../services/preloader-service';
@@ -18,11 +17,7 @@ import {
 } from '@spartan-ng/helm/tabs';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { lucideGrid3x3, lucideLayoutGrid } from '@ng-icons/lucide';
-import { HlmIconDirective } from '@spartan-ng/helm/icon';
-import {
-  HlmCardContentDirective,
-  HlmCardDirective,
-} from '@spartan-ng/helm/card';
+import { HlmCardDirective } from '@spartan-ng/helm/card';
 import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
 
 @Component({
