@@ -126,7 +126,7 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       type: 'analytics',
       icon: 'lucideChartBar',
       desc: 'See who views your card and profile',
-      route: 'social-links',
+      route: 'analytics',
     },
     {
       type: 'vcard',
@@ -142,7 +142,7 @@ export class HomeScreen extends BasePageScreen implements OnInit {
     },
   ];
 
-  public navigateToSocial(route: string) {
+  public navigateToScreen(route: string) {
     this.router.navigate([route]);
   }
 

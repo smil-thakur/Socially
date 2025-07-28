@@ -143,6 +143,7 @@ export class SocialLinksScreen
   }
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     this.greetingsForm = this.fb.group({
       title: new FormControl(
         {

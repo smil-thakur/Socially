@@ -1,0 +1,204 @@
+<app-only-back-nav-bar></app-only-back-nav-bar>
+
+<div class="flex items-center justify-center px-2 py-6">
+  <div hlmCard class="w-full sm:max-w-lg md:max-w-2xl lg:max-w-4xl">
+    <div hlmCardHeader>
+      <div hlmCardTitle>Your Info.</div>
+      <div hlmCardDescription>Edit and Save.</div>
+    </div>
+
+    <div
+      hlmCardContent
+      class="flex flex-col md:flex-row-reverse md:justify-around gap-6"
+    >
+      <!-- Profile image and button -->
+      <div class="flex flex-col items-center">
+        <img
+          class="h-28 w-28 sm:h-36 sm:w-36 md:h-40 md:w-40 rounded-full object-cover"
+          [src]="userProfileURL"
+          alt="User profile image"
+        />
+        <button hlmBtn variant="outline" class="mt-4 w-full sm:w-auto">
+          Update Image
+        </button>
+      </div>
+
+      <!-- Form Section -->
+      <div class="flex-1">
+        <!-- Basic Info -->
+        <h3 class="{{ h3Style }} mb-2">Basic Info</h3>
+        <div class="flex flex-col gap-2 ml-2 sm:ml-4">
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Fullname</div>
+              <input class="w-full" hlmInput placeholder="Your full name" />
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Title</div>
+              <input class="w-full" hlmInput placeholder="A catchy oneliner" />
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Summary</div>
+              <textarea
+                class="w-full min-h-[100px]"
+                hlmInput
+                placeholder="Type your message here."
+              ></textarea>
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Skills</div>
+              <input
+                class="w-full"
+                hlmInput
+                placeholder="Your skills comma separated"
+              />
+            </label>
+          </hlm-form-field>
+        </div>
+
+        <!-- Education -->
+        <h3 class="{{ h3Style }} mt-6 mb-2">Education</h3>
+        <div class="flex flex-col gap-2 ml-2 sm:ml-4">
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Degree</div>
+              <input
+                class="w-full"
+                hlmInput
+                placeholder="You are qualified in"
+              />
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Institution</div>
+              <input class="w-full" hlmInput placeholder="You qualified from" />
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Year</div>
+              <input
+                class="w-full"
+                type="number"
+                hlmInput
+                placeholder="You qualified on"
+              />
+            </label>
+          </hlm-form-field>
+        </div>
+
+        <!-- Experience -->
+        <h3 class="{{ h3Style }} mt-6 mb-2">Experiences</h3>
+        <div class="flex flex-col gap-2 ml-2 sm:ml-4">
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Role</div>
+              <input class="w-full" hlmInput placeholder="Your role" />
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Company</div>
+              <input class="w-full" hlmInput placeholder="You worked in" />
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Years</div>
+              <input
+                class="w-full"
+                type="number"
+                hlmInput
+                placeholder="How long you worked"
+              />
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Summary</div>
+              <textarea
+                class="w-full min-h-[100px]"
+                hlmInput
+                placeholder="Type your message here."
+              ></textarea>
+            </label>
+          </hlm-form-field>
+        </div>
+
+        <!-- Projects -->
+        <h3 class="{{ h3Style }} mt-6 mb-2">Projects</h3>
+        <div class="flex flex-col gap-2 ml-2 sm:ml-4">
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Name</div>
+              <input
+                class="w-full"
+                hlmInput
+                placeholder="Name of your project"
+              />
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Techstack</div>
+              <input
+                class="w-full"
+                hlmInput
+                placeholder="Tech used in your project comma separated"
+              />
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Year</div>
+              <input
+                class="w-full"
+                type="number"
+                hlmInput
+                placeholder="Project completed on"
+              />
+            </label>
+          </hlm-form-field>
+
+          <hlm-form-field>
+            <label hlmLabel>
+              <div class="{{ mutedStyle }} text-xs">Summary</div>
+              <textarea
+                class="w-full min-h-[100px]"
+                hlmInput
+                placeholder="Type your message here."
+              ></textarea>
+            </label>
+          </hlm-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div
+      hlmCardFooter
+      class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4"
+    >
+      <button hlmBtn variant="secondary" class="w-full sm:w-auto">
+        Discard
+      </button>
+      <button hlmBtn class="w-full sm:w-auto">Save</button>
+    </div>
+  </div>
+</div>
