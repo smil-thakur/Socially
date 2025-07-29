@@ -31,36 +31,60 @@
           <div class="flex flex-col gap-2">
             <hlm-form-field>
               <label hlmLabel>
-                <div class="{{ mutedStyle }} text-xs">Fullname</div>
-                <input class="w-full" hlmInput placeholder="Your full name" />
+                <div class="text-xs">Fullname</div>
+                <input
+                  formControlName="fullname"
+                  class="w-full"
+                  hlmInput
+                  placeholder="Your full name"
+                />
+                @if (userDataForm.get('fullname')?.errors?.['required'] &&
+                (userDataForm.get('fullname')?.dirty ||
+                userDataForm.get('fullname')?.touched)) {
+                <hlm-error>Your fullname is required</hlm-error> }
               </label>
             </hlm-form-field>
 
             <hlm-form-field>
               <label hlmLabel>
-                <div class="{{ mutedStyle }} text-xs">Title</div>
+                <div class="text-xs">Title</div>
                 <input
                   class="w-full"
                   hlmInput
+                  formControlName="title"
                   placeholder="A catchy oneliner"
                 />
+                @if (userDataForm.get('title')?.errors?.['required'] &&
+                (userDataForm.get('title')?.dirty ||
+                userDataForm.get('title')?.touched)) {
+                <hlm-error
+                  >A title for your life, a catchy oneliner is
+                  required</hlm-error
+                >
+                }
               </label>
             </hlm-form-field>
 
             <hlm-form-field>
               <label hlmLabel>
-                <div class="{{ mutedStyle }} text-xs">Summary</div>
+                <div class="text-xs">Summary</div>
                 <textarea
                   class="w-full min-h-[100px]"
                   hlmInput
+                  formControlName="summary"
                   placeholder="Type your message here."
                 ></textarea>
+                @if (userDataForm.get('summary')?.errors?.['required'] &&
+                (userDataForm.get('summary')?.dirty ||
+                userDataForm.get('summary')?.touched)) {
+                <hlm-error>We need to have a summary of your life</hlm-error>
+                }
               </label>
             </hlm-form-field>
 
             <hlm-form-field>
               <label hlmLabel>
-                <div class="{{ mutedStyle }} text-xs flex items-center gap-2">
+                <div class="text-xs flex items-center gap-2">
                   Skills
                   <ng-icon
                     name="lucideInfo"
@@ -78,7 +102,9 @@
           <div hlmAccordion type="multiple">
             <div hlmAccordionItem>
               <button hlmAccordionTrigger>
-                <h3 class="{{ h3Style }}">Education</h3>
+                <h3 class="{{ h3Style }}">
+                  Education{{ educations.length > 1 ? "s" : "" }}
+                </h3>
                 <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
               </button>
               <hlm-accordion-content>
@@ -129,7 +155,6 @@
                           <div class="text-xs">Year</div>
                           <input
                             class="w-full"
-                            type="number"
                             hlmInput
                             formControlName="year"
                             placeholder="You qualified on"
@@ -167,140 +192,219 @@
             </div>
             <div hlmAccordionItem>
               <button hlmAccordionTrigger>
-                <h3 class="{{ h3Style }}">Experiences</h3>
+                <h3 class="{{ h3Style }}">
+                  Experience{{ experiences.length > 1 ? "s" : "" }}
+                </h3>
                 <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
               </button>
               <hlm-accordion-content>
-                <div class="flex flex-col gap-2 ml-2 mr-2">
-                  <hlm-form-field>
-                    <label hlmLabel>
-                      <div class="{{ mutedStyle }} text-xs">Role</div>
-                      <input class="w-full" hlmInput placeholder="Your role" />
-                    </label>
-                  </hlm-form-field>
+                <div formArrayName="experiences">
+                  @for (experienceGroup of experiences.controls; track $index;
+                  let i = $index) {
 
-                  <hlm-form-field>
-                    <label hlmLabel>
-                      <div class="{{ mutedStyle }} text-xs">Company</div>
-                      <input
-                        class="w-full"
-                        hlmInput
-                        placeholder="You worked in"
-                      />
-                    </label>
-                  </hlm-form-field>
+                  <div>
+                    <div
+                      [formGroupName]="i"
+                      class="flex flex-col gap-2 ml-2 mr-2"
+                    >
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs">Role</div>
+                          <input
+                            class="w-full"
+                            hlmInput
+                            formControlName="role"
+                            placeholder="Your role"
+                          />
+                          @if
+                          (experienceGroup.get('role')?.hasError('required')) {
+                          <hlm-error>Role is required</hlm-error>}
+                        </label>
+                      </hlm-form-field>
 
-                  <hlm-form-field>
-                    <label hlmLabel>
-                      <div class="{{ mutedStyle }} text-xs">Years</div>
-                      <input
-                        class="w-full"
-                        type="number"
-                        hlmInput
-                        placeholder="How long you worked"
-                      />
-                    </label>
-                  </hlm-form-field>
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs">Company</div>
+                          <input
+                            class="w-full"
+                            hlmInput
+                            formControlName="company"
+                            placeholder="You worked in"
+                          />
+                          @if
+                          (experienceGroup.get('company')?.hasError('required'))
+                          {<hlm-error
+                            >Company you worked at is required</hlm-error
+                          >}
+                        </label>
+                      </hlm-form-field>
 
-                  <hlm-form-field>
-                    <label hlmLabel>
-                      <div class="{{ mutedStyle }} text-xs">Summary</div>
-                      <textarea
-                        class="w-full min-h-[100px]"
-                        hlmInput
-                        placeholder="Type your message here."
-                      ></textarea>
-                    </label>
-                  </hlm-form-field>
-                </div>
-                <div class="flex items-center justify-center mt-2">
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs">Years</div>
+                          <input
+                            class="w-full"
+                            formControlName="years"
+                            hlmInput
+                            placeholder="How long you worked"
+                          />
+                          @if
+                          (experienceGroup.get('years')?.hasError('required'))
+                          {<hlm-error>Years of experience is required</hlm-error
+                          >}
+                        </label>
+                      </hlm-form-field>
+
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs">Summary</div>
+                          <textarea
+                            class="w-full min-h-[100px]"
+                            hlmInput
+                            formControlName="summary"
+                            placeholder="Type your message here."
+                          ></textarea>
+                          @if
+                          (experienceGroup.get('summary')?.hasError('required'))
+                          {<hlm-error>Summary of your work</hlm-error>}
+                        </label>
+                      </hlm-form-field>
+                    </div>
+                    <div class="flex items-center justify-end mt-2">
+                      <button
+                        hlmBtn
+                        size="icon"
+                        variant="destructive"
+                        class="size-8"
+                        (click)="removeExperience(i)"
+                      >
+                        <ng-icon hlm size="sm" name="lucideTrash" />
+                      </button>
+                    </div>
+                  </div>
+                  }
                   <button
                     hlmBtn
-                    size="icon"
-                    variant="destructive"
-                    class="size-8"
+                    (click)="addExperience()"
+                    class="mt-2"
+                    variant="secondary"
                   >
-                    <ng-icon hlm size="sm" name="lucideTrash" />
+                    Add Experience
                   </button>
                 </div>
-                <button hlmBtn class="mt-2" variant="secondary">
-                  Add Experience
-                </button>
               </hlm-accordion-content>
             </div>
             <div hlmAccordionItem>
               <button hlmAccordionTrigger>
-                <h3 class="{{ h3Style }}">Projects</h3>
+                <h3 class="{{ h3Style }}">
+                  Project{{ projects.length > 1 ? "s" : "" }}
+                </h3>
                 <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
               </button>
               <hlm-accordion-content>
-                <div class="flex flex-col gap-2 mr-2 ml-2">
-                  <hlm-form-field>
-                    <label hlmLabel>
-                      <div class="{{ mutedStyle }} text-xs">Name</div>
-                      <input
-                        class="w-full"
-                        hlmInput
-                        placeholder="Name of your project"
-                      />
-                    </label>
-                  </hlm-form-field>
+                <div formArrayName="projects">
+                  @for (projectGroup of projects.controls; track $index; let i =
+                  $index) {
+                  <div [formGroupName]="i">
+                    <div class="flex flex-col gap-2 mr-2 ml-2">
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs">Name</div>
+                          <input
+                            class="w-full"
+                            hlmInput
+                            placeholder="Name of your project"
+                            formControlName="name"
+                          />
+                          @if (projectGroup.get('name')?.hasError('required')) {
+                          <hlm-error>Name of the project is required</hlm-error>
+                          }
+                        </label>
+                      </hlm-form-field>
 
-                  <hlm-form-field>
-                    <label hlmLabel>
-                      <div
-                        class="{{ mutedStyle }} text-xs flex items-center gap-2"
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs flex items-center gap-2">
+                            Techstack
+                            <ng-icon
+                              name="lucideInfo"
+                              [hlmTooltipTrigger]="
+                                'Your input should be comma separated'
+                              "
+                            ></ng-icon>
+                          </div>
+                          <input
+                            class="w-full"
+                            hlmInput
+                            placeholder="Tech used in your project comma separated"
+                            formControlName="techStack"
+                          />
+                          @if
+                          (projectGroup.get('techStack')?.hasError('required'))
+                          {
+                          <hlm-error
+                            >Techstack used in project is required</hlm-error
+                          >
+                          }
+                        </label>
+                      </hlm-form-field>
+
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs">Year</div>
+                          <input
+                            class="w-full"
+                            hlmInput
+                            placeholder="Project completed on"
+                            formControlName="year"
+                            type="number"
+                          />
+                          @if (projectGroup.get('year')?.hasError('required')) {
+                          <hlm-error
+                            >Year on which project go completed</hlm-error
+                          >
+                          }
+                        </label>
+                      </hlm-form-field>
+
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs">Summary</div>
+                          <textarea
+                            class="w-full min-h-[100px]"
+                            hlmInput
+                            placeholder="Type your message here."
+                            formControlName="summary"
+                          ></textarea>
+                          @if
+                          (projectGroup.get('summary')?.hasError('required')) {
+                          <hlm-error
+                            >Summary of your project is required</hlm-error
+                          >
+                          }
+                        </label>
+                      </hlm-form-field>
+                    </div>
+                    <div class="flex items-center justify-center mt-2">
+                      <button
+                        (click)="removeProject(i)"
+                        hlmBtn
+                        size="icon"
+                        variant="destructive"
+                        class="size-8"
                       >
-                        Techstack
-                        <ng-icon
-                          name="lucideInfo"
-                          [hlmTooltipTrigger]="
-                            'Your input should be comma separated'
-                          "
-                        ></ng-icon>
-                      </div>
-                      <input
-                        class="w-full"
-                        hlmInput
-                        placeholder="Tech used in your project comma separated"
-                      />
-                    </label>
-                  </hlm-form-field>
-
-                  <hlm-form-field>
-                    <label hlmLabel>
-                      <div class="{{ mutedStyle }} text-xs">Year</div>
-                      <input
-                        class="w-full"
-                        type="number"
-                        hlmInput
-                        placeholder="Project completed on"
-                      />
-                    </label>
-                  </hlm-form-field>
-
-                  <hlm-form-field>
-                    <label hlmLabel>
-                      <div class="{{ mutedStyle }} text-xs">Summary</div>
-                      <textarea
-                        class="w-full min-h-[100px]"
-                        hlmInput
-                        placeholder="Type your message here."
-                      ></textarea>
-                    </label>
-                  </hlm-form-field>
+                        <ng-icon hlm size="sm" name="lucideTrash" />
+                      </button>
+                    </div>
+                  </div>
+                  }
                 </div>
-                <div class="flex items-center justify-center mt-2">
-                  <button
-                    hlmBtn
-                    size="icon"
-                    variant="destructive"
-                    class="size-8"
-                  >
-                    <ng-icon hlm size="sm" name="lucideTrash" />
-                  </button>
-                </div>
-                <button hlmBtn class="mt-2" variant="secondary">
+                <button
+                  (click)="addProject()"
+                  hlmBtn
+                  class="mt-2"
+                  variant="secondary"
+                >
                   Add Project
                 </button>
               </hlm-accordion-content>

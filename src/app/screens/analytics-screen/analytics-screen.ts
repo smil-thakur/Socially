@@ -10,11 +10,7 @@ import {
 } from '@spartan-ng/helm/card';
 import { OnlyBackNavBar } from '../../common/only-back-nav-bar/only-back-nav-bar';
 import { HlmLabelDirective } from '@spartan-ng/helm/label';
-import {
-  HlmErrorDirective,
-  HlmFormFieldComponent,
-  HlmFormFieldModule,
-} from '@spartan-ng/helm/form-field';
+import { HlmFormFieldModule } from '@spartan-ng/helm/form-field';
 import { HlmInputDirective } from '@spartan-ng/helm/input';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { UserService } from '../../services/user-service';
@@ -37,15 +33,12 @@ import {
   ResumeData,
 } from '../../interfaces/ResumeData';
 import {
-  AbstractControl,
   FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { HlmSelectModule } from '@spartan-ng/helm/select';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -90,6 +83,12 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     if (this.educations.length === 0) {
       this.addEducation();
     }
+    if (this.experiences.length === 0) {
+      this.addExperience();
+    }
+    if (this.projects.length === 0) {
+      this.addProject();
+    }
   }
   private userService = inject(UserService);
   private fb = inject(FormBuilder);
@@ -97,11 +96,24 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
   public userProfileURL = this.userService.getCurrentUserObject().photoURL;
 
   public userDataForm = this.fb.group({
+    fullname: ['', Validators.required],
+    title: ['', Validators.required],
+    summary: ['', Validators.required],
     educations: this.fb.array([]),
+    experiences: this.fb.array([]),
+    projects: this.fb.array([]),
   });
 
   get educations(): FormArray {
     return this.userDataForm.get('educations') as FormArray;
+  }
+
+  get experiences(): FormArray {
+    return this.userDataForm.get('experiences') as FormArray;
+  }
+
+  get projects(): FormArray {
+    return this.userDataForm.get('projects') as FormArray;
   }
 
   private updateEducationValidators(group: FormGroup) {
@@ -132,30 +144,98 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     }
     // Update validity
     degree?.updateValueAndValidity({ emitEvent: false });
-    degree?.markAllAsTouched();
+    degree?.markAsTouched();
     institution?.updateValueAndValidity({ emitEvent: false });
-    institution?.markAllAsTouched();
+    institution?.markAsTouched();
     year?.updateValueAndValidity({ emitEvent: false });
-    year?.markAllAsTouched();
+    year?.markAsTouched();
   }
 
-  public userExperiences: Experience[] = [
-    {
-      role: '',
-      company: '',
-      years: '',
-      summary: '',
-    },
-  ];
+  private updateExperienceValidators(group: FormGroup) {
+    const role = group.get('role');
+    const company = group.get('company');
+    const years = group.get('years');
+    const summary = group.get('summary');
+
+    const roleValue = role?.value?.trim() || '';
+    const companyValue = company?.value?.trim() || '';
+    const yearsValue = years?.value?.trim() || '';
+    const summaryValue = summary?.value.trim() || '';
+
+    // Check if any field has a value
+    const hasAnyValue = roleValue || companyValue || yearsValue || summaryValue;
+
+    console.log(hasAnyValue);
+
+    if (hasAnyValue) {
+      // If any field has value, make all fields required
+      role?.setValidators(Validators.required);
+      company?.setValidators(Validators.required);
+      years?.setValidators(Validators.required);
+      summary?.setValidators(Validators.required);
+      console.log('setting validations');
+    } else {
+      // If all fields are empty, remove validators
+      role?.clearValidators();
+      company?.clearValidators();
+      years?.clearValidators();
+      summary?.clearValidators();
+    }
+    // Update validity
+    role?.updateValueAndValidity({ emitEvent: false });
+    role?.markAsTouched();
+    company?.updateValueAndValidity({ emitEvent: false });
+    company?.markAsTouched();
+    years?.updateValueAndValidity({ emitEvent: false });
+    years?.markAsTouched();
+    summary?.updateValueAndValidity({ emitEvent: false });
+    summary?.markAsTouched();
+  }
+
+  private updateProjectValidators(group: FormGroup) {
+    const name = group.get('name');
+    const techStack = group.get('techStack');
+    const year = group.get('year');
+    const summary = group.get('summary');
+
+    const nameValue = name?.value?.trim() || '';
+    const techStackValue = techStack?.value?.trim() || '';
+    const yearValue = year?.value || '';
+    const summaryValue = summary?.value.trim() || '';
+
+    // Check if any field has a value
+    const hasAnyValue =
+      nameValue || techStackValue || yearValue || summaryValue;
+
+    console.log(hasAnyValue);
+
+    if (hasAnyValue) {
+      // If any field has value, make all fields required
+      name?.setValidators(Validators.required);
+      techStack?.setValidators(Validators.required);
+      year?.setValidators(Validators.required);
+      summary?.setValidators(Validators.required);
+    } else {
+      // If all fields are empty, remove validators
+      name?.clearValidators();
+      techStack?.clearValidators();
+      year?.clearValidators();
+      summary?.clearValidators();
+    }
+    // Update validity
+    name?.updateValueAndValidity({ emitEvent: false });
+    name?.markAsTouched();
+    techStack?.updateValueAndValidity({ emitEvent: false });
+    techStack?.markAsTouched();
+    year?.updateValueAndValidity({ emitEvent: false });
+    year?.markAsTouched();
+    summary?.updateValueAndValidity({ emitEvent: false });
+    summary?.markAsTouched();
+  }
+
+  public userExperiences: Experience[] = [];
   public userEducations: Education[] = [];
-  public userProjects: Project[] = [
-    {
-      name: '',
-      techstack: [],
-      year: '',
-      summary: '',
-    },
-  ];
+  public userProjects: Project[] = [];
   public userSkills: string[] = [];
 
   public userData: ResumeData = {
@@ -179,9 +259,43 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     this.educations.push(group);
   }
 
+  public addExperience() {
+    const group = this.fb.group({
+      role: [''],
+      company: [''],
+      years: [''],
+      summary: [''],
+    });
+    group.valueChanges.subscribe(() => this.updateExperienceValidators(group));
+    this.experiences.push(group);
+  }
+
+  public addProject() {
+    const group = this.fb.group({
+      name: [''],
+      techStack: [''],
+      year: [''],
+      summary: [''],
+    });
+    group.valueChanges.subscribe(() => this.updateProjectValidators(group));
+    this.projects.push(group);
+  }
+
   public removeEducation(index: number) {
     if (this.educations.length > 1) {
       this.educations.removeAt(index);
+    }
+  }
+
+  public removeExperience(index: number) {
+    if (this.experiences.length > 1) {
+      this.experiences.removeAt(index);
+    }
+  }
+
+  public removeProject(index: number) {
+    if (this.projects.length > 1) {
+      this.projects.removeAt(index);
     }
   }
 }
