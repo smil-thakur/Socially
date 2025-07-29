@@ -173,6 +173,7 @@
                         variant="destructive"
                         class="size-8"
                         (click)="removeEducation(i)"
+                        [disabled]="educations.length === 1"
                       >
                         <ng-icon hlm size="sm" name="lucideTrash" />
                       </button>
@@ -277,6 +278,7 @@
                         variant="destructive"
                         class="size-8"
                         (click)="removeExperience(i)"
+                        [disabled]="experiences.length === 1"
                       >
                         <ng-icon hlm size="sm" name="lucideTrash" />
                       </button>
@@ -385,13 +387,14 @@
                         </label>
                       </hlm-form-field>
                     </div>
-                    <div class="flex items-center justify-center mt-2">
+                    <div class="flex items-center justify-end mt-2">
                       <button
                         (click)="removeProject(i)"
                         hlmBtn
                         size="icon"
                         variant="destructive"
                         class="size-8"
+                        [disabled]="projects.length === 1"
                       >
                         <ng-icon hlm size="sm" name="lucideTrash" />
                       </button>
