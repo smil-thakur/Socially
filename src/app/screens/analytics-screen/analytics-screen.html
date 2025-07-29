@@ -30,21 +30,21 @@
         <div class="flex flex-col gap-2">
           <hlm-form-field>
             <label hlmLabel>
-              <div class="{{ mutedStyle }} text-xs">Fullname</div>
+              <div class="text-xs">Fullname</div>
               <input class="w-full" hlmInput placeholder="Your full name" />
             </label>
           </hlm-form-field>
 
           <hlm-form-field>
             <label hlmLabel>
-              <div class="{{ mutedStyle }} text-xs">Title</div>
+              <div class="text-xs">Title</div>
               <input class="w-full" hlmInput placeholder="A catchy oneliner" />
             </label>
           </hlm-form-field>
 
           <hlm-form-field>
             <label hlmLabel>
-              <div class="{{ mutedStyle }} text-xs">Summary</div>
+              <div class="text-xs">Summary</div>
               <textarea
                 class="w-full min-h-[100px]"
                 hlmInput
@@ -55,7 +55,7 @@
 
           <hlm-form-field>
             <label hlmLabel>
-              <div class="{{ mutedStyle }} text-xs flex items-center gap-2">
+              <div class="text-xs flex items-center gap-2">
                 Skills
                 <ng-icon
                   name="lucideInfo"
@@ -77,42 +77,87 @@
               <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
             </button>
             <hlm-accordion-content>
-              <div class="flex flex-col gap-2 ml-2 mr-2">
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="{{ mutedStyle }} text-xs">Degree</div>
-                    <input
-                      class="w-full"
-                      hlmInput
-                      placeholder="You are qualified in"
-                    />
-                  </label>
-                </hlm-form-field>
+              <form [formGroup]="educationForm">
+                <div formArrayName="educations">
+                  @for (educationGroup of educations.controls; let i = $index;
+                  track $index;) {
+                  <div>
+                    <div
+                      [formGroupName]="i"
+                      class="flex flex-col gap-2 ml-2 mr-2"
+                    >
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs">Degree</div>
+                          <input
+                            class="w-full"
+                            hlmInput
+                            placeholder="You are qualified in"
+                            formControlName="degree"
+                          />
 
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="{{ mutedStyle }} text-xs">Institution</div>
-                    <input
-                      class="w-full"
-                      hlmInput
-                      placeholder="You qualified from"
-                    />
-                  </label>
-                </hlm-form-field>
+                          @if
+                          (educationGroup.get('degree')?.hasError('required')) {
+                          <hlm-error>Degree is required</hlm-error>
+                          }
+                        </label>
+                      </hlm-form-field>
 
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="{{ mutedStyle }} text-xs">Year</div>
-                    <input
-                      class="w-full"
-                      type="number"
-                      hlmInput
-                      placeholder="You qualified on"
-                    />
-                  </label>
-                </hlm-form-field>
-              </div>
-              <button hlmBtn class="mt-2" variant="secondary">
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs">Institution</div>
+                          <input
+                            class="w-full"
+                            hlmInput
+                            formControlName="institution"
+                            placeholder="You qualified from"
+                          />
+                          @if
+                          (educationGroup.get('institution')?.hasError('required'))
+                          {
+                          <hlm-error>Institution is required</hlm-error>
+                          }
+                        </label>
+                      </hlm-form-field>
+
+                      <hlm-form-field>
+                        <label hlmLabel>
+                          <div class="text-xs">Year</div>
+                          <input
+                            class="w-full"
+                            type="number"
+                            hlmInput
+                            formControlName="year"
+                            placeholder="You qualified on"
+                          />
+                          @if (educationGroup.get('year')?.hasError('required'))
+                          {
+                          <hlm-error>Year is required</hlm-error>
+                          }
+                        </label>
+                      </hlm-form-field>
+                    </div>
+                    <div class="flex items-center justify-end mt-2">
+                      <button
+                        hlmBtn
+                        size="icon"
+                        variant="destructive"
+                        class="size-8"
+                        (click)="removeEducation(i)"
+                      >
+                        <ng-icon hlm size="sm" name="lucideTrash" />
+                      </button>
+                    </div>
+                  </div>
+                  }
+                </div>
+              </form>
+              <button
+                hlmBtn
+                (click)="addEducation()"
+                class="mt-2"
+                variant="secondary"
+              >
                 Add Education
               </button>
             </hlm-accordion-content>
@@ -126,14 +171,14 @@
               <div class="flex flex-col gap-2 ml-2 mr-2">
                 <hlm-form-field>
                   <label hlmLabel>
-                    <div class="{{ mutedStyle }} text-xs">Role</div>
+                    <div class="text-xs">Role</div>
                     <input class="w-full" hlmInput placeholder="Your role" />
                   </label>
                 </hlm-form-field>
 
                 <hlm-form-field>
                   <label hlmLabel>
-                    <div class="{{ mutedStyle }} text-xs">Company</div>
+                    <div class="text-xs">Company</div>
                     <input
                       class="w-full"
                       hlmInput
@@ -144,7 +189,7 @@
 
                 <hlm-form-field>
                   <label hlmLabel>
-                    <div class="{{ mutedStyle }} text-xs">Years</div>
+                    <div class="text-xs">Years</div>
                     <input
                       class="w-full"
                       type="number"
@@ -156,7 +201,7 @@
 
                 <hlm-form-field>
                   <label hlmLabel>
-                    <div class="{{ mutedStyle }} text-xs">Summary</div>
+                    <div class="text-xs">Summary</div>
                     <textarea
                       class="w-full min-h-[100px]"
                       hlmInput
@@ -164,6 +209,11 @@
                     ></textarea>
                   </label>
                 </hlm-form-field>
+              </div>
+              <div class="flex items-center justify-center mt-2">
+                <button hlmBtn size="icon" variant="destructive" class="size-8">
+                  <ng-icon hlm size="sm" name="lucideTrash" />
+                </button>
               </div>
               <button hlmBtn class="mt-2" variant="secondary">
                 Add Experience
@@ -179,7 +229,7 @@
               <div class="flex flex-col gap-2 mr-2 ml-2">
                 <hlm-form-field>
                   <label hlmLabel>
-                    <div class="{{ mutedStyle }} text-xs">Name</div>
+                    <div class="text-xs">Name</div>
                     <input
                       class="w-full"
                       hlmInput
@@ -190,9 +240,7 @@
 
                 <hlm-form-field>
                   <label hlmLabel>
-                    <div
-                      class="{{ mutedStyle }} text-xs flex items-center gap-2"
-                    >
+                    <div class="text-xs flex items-center gap-2">
                       Techstack
                       <ng-icon
                         name="lucideInfo"
@@ -211,7 +259,7 @@
 
                 <hlm-form-field>
                   <label hlmLabel>
-                    <div class="{{ mutedStyle }} text-xs">Year</div>
+                    <div class="text-xs">Year</div>
                     <input
                       class="w-full"
                       type="number"
@@ -223,7 +271,7 @@
 
                 <hlm-form-field>
                   <label hlmLabel>
-                    <div class="{{ mutedStyle }} text-xs">Summary</div>
+                    <div class="text-xs">Summary</div>
                     <textarea
                       class="w-full min-h-[100px]"
                       hlmInput
@@ -231,6 +279,11 @@
                     ></textarea>
                   </label>
                 </hlm-form-field>
+              </div>
+              <div class="flex items-center justify-center mt-2">
+                <button hlmBtn size="icon" variant="destructive" class="size-8">
+                  <ng-icon hlm size="sm" name="lucideTrash" />
+                </button>
               </div>
               <button hlmBtn class="mt-2" variant="secondary">
                 Add Project
