@@ -26,58 +26,62 @@
       <!-- Form Section -->
       <div class="flex-1">
         <!-- Basic Info -->
-        <h3 class="{{ h3Style }} mb-2">Basic Info</h3>
-        <div class="flex flex-col gap-2">
-          <hlm-form-field>
-            <label hlmLabel>
-              <div class="text-xs">Fullname</div>
-              <input class="w-full" hlmInput placeholder="Your full name" />
-            </label>
-          </hlm-form-field>
+        <form [formGroup]="userDataForm">
+          <h3 class="{{ h3Style }} mb-2">Basic Info</h3>
+          <div class="flex flex-col gap-2">
+            <hlm-form-field>
+              <label hlmLabel>
+                <div class="{{ mutedStyle }} text-xs">Fullname</div>
+                <input class="w-full" hlmInput placeholder="Your full name" />
+              </label>
+            </hlm-form-field>
 
-          <hlm-form-field>
-            <label hlmLabel>
-              <div class="text-xs">Title</div>
-              <input class="w-full" hlmInput placeholder="A catchy oneliner" />
-            </label>
-          </hlm-form-field>
+            <hlm-form-field>
+              <label hlmLabel>
+                <div class="{{ mutedStyle }} text-xs">Title</div>
+                <input
+                  class="w-full"
+                  hlmInput
+                  placeholder="A catchy oneliner"
+                />
+              </label>
+            </hlm-form-field>
 
-          <hlm-form-field>
-            <label hlmLabel>
-              <div class="text-xs">Summary</div>
-              <textarea
-                class="w-full min-h-[100px]"
-                hlmInput
-                placeholder="Type your message here."
-              ></textarea>
-            </label>
-          </hlm-form-field>
+            <hlm-form-field>
+              <label hlmLabel>
+                <div class="{{ mutedStyle }} text-xs">Summary</div>
+                <textarea
+                  class="w-full min-h-[100px]"
+                  hlmInput
+                  placeholder="Type your message here."
+                ></textarea>
+              </label>
+            </hlm-form-field>
 
-          <hlm-form-field>
-            <label hlmLabel>
-              <div class="text-xs flex items-center gap-2">
-                Skills
-                <ng-icon
-                  name="lucideInfo"
-                  [hlmTooltipTrigger]="'Your input should be comma separated'"
-                ></ng-icon>
-              </div>
-              <input
-                class="w-full"
-                hlmInput
-                placeholder="Your skills comma separated"
-              />
-            </label>
-          </hlm-form-field>
-        </div>
-        <div hlmAccordion type="multiple">
-          <div hlmAccordionItem>
-            <button hlmAccordionTrigger>
-              <h3 class="{{ h3Style }}">Education</h3>
-              <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
-            </button>
-            <hlm-accordion-content>
-              <form [formGroup]="educationForm">
+            <hlm-form-field>
+              <label hlmLabel>
+                <div class="{{ mutedStyle }} text-xs flex items-center gap-2">
+                  Skills
+                  <ng-icon
+                    name="lucideInfo"
+                    [hlmTooltipTrigger]="'Your input should be comma separated'"
+                  ></ng-icon>
+                </div>
+                <input
+                  class="w-full"
+                  hlmInput
+                  placeholder="Your skills comma separated"
+                />
+              </label>
+            </hlm-form-field>
+          </div>
+          <div hlmAccordion type="multiple">
+            <div hlmAccordionItem>
+              <button hlmAccordionTrigger>
+                <h3 class="{{ h3Style }}">Education</h3>
+                <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
+              </button>
+              <hlm-accordion-content>
                 <div formArrayName="educations">
                   @for (educationGroup of educations.controls; let i = $index;
                   track $index;) {
@@ -151,146 +155,158 @@
                   </div>
                   }
                 </div>
-              </form>
-              <button
-                hlmBtn
-                (click)="addEducation()"
-                class="mt-2"
-                variant="secondary"
-              >
-                Add Education
-              </button>
-            </hlm-accordion-content>
-          </div>
-          <div hlmAccordionItem>
-            <button hlmAccordionTrigger>
-              <h3 class="{{ h3Style }}">Experiences</h3>
-              <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
-            </button>
-            <hlm-accordion-content>
-              <div class="flex flex-col gap-2 ml-2 mr-2">
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="text-xs">Role</div>
-                    <input class="w-full" hlmInput placeholder="Your role" />
-                  </label>
-                </hlm-form-field>
-
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="text-xs">Company</div>
-                    <input
-                      class="w-full"
-                      hlmInput
-                      placeholder="You worked in"
-                    />
-                  </label>
-                </hlm-form-field>
-
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="text-xs">Years</div>
-                    <input
-                      class="w-full"
-                      type="number"
-                      hlmInput
-                      placeholder="How long you worked"
-                    />
-                  </label>
-                </hlm-form-field>
-
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="text-xs">Summary</div>
-                    <textarea
-                      class="w-full min-h-[100px]"
-                      hlmInput
-                      placeholder="Type your message here."
-                    ></textarea>
-                  </label>
-                </hlm-form-field>
-              </div>
-              <div class="flex items-center justify-center mt-2">
-                <button hlmBtn size="icon" variant="destructive" class="size-8">
-                  <ng-icon hlm size="sm" name="lucideTrash" />
+                <button
+                  hlmBtn
+                  (click)="addEducation()"
+                  class="mt-2"
+                  variant="secondary"
+                >
+                  Add Education
                 </button>
-              </div>
-              <button hlmBtn class="mt-2" variant="secondary">
-                Add Experience
+              </hlm-accordion-content>
+            </div>
+            <div hlmAccordionItem>
+              <button hlmAccordionTrigger>
+                <h3 class="{{ h3Style }}">Experiences</h3>
+                <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
               </button>
-            </hlm-accordion-content>
-          </div>
-          <div hlmAccordionItem>
-            <button hlmAccordionTrigger>
-              <h3 class="{{ h3Style }}">Projects</h3>
-              <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
-            </button>
-            <hlm-accordion-content>
-              <div class="flex flex-col gap-2 mr-2 ml-2">
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="text-xs">Name</div>
-                    <input
-                      class="w-full"
-                      hlmInput
-                      placeholder="Name of your project"
-                    />
-                  </label>
-                </hlm-form-field>
+              <hlm-accordion-content>
+                <div class="flex flex-col gap-2 ml-2 mr-2">
+                  <hlm-form-field>
+                    <label hlmLabel>
+                      <div class="{{ mutedStyle }} text-xs">Role</div>
+                      <input class="w-full" hlmInput placeholder="Your role" />
+                    </label>
+                  </hlm-form-field>
 
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="text-xs flex items-center gap-2">
-                      Techstack
-                      <ng-icon
-                        name="lucideInfo"
-                        [hlmTooltipTrigger]="
-                          'Your input should be comma separated'
-                        "
-                      ></ng-icon>
-                    </div>
-                    <input
-                      class="w-full"
-                      hlmInput
-                      placeholder="Tech used in your project comma separated"
-                    />
-                  </label>
-                </hlm-form-field>
+                  <hlm-form-field>
+                    <label hlmLabel>
+                      <div class="{{ mutedStyle }} text-xs">Company</div>
+                      <input
+                        class="w-full"
+                        hlmInput
+                        placeholder="You worked in"
+                      />
+                    </label>
+                  </hlm-form-field>
 
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="text-xs">Year</div>
-                    <input
-                      class="w-full"
-                      type="number"
-                      hlmInput
-                      placeholder="Project completed on"
-                    />
-                  </label>
-                </hlm-form-field>
+                  <hlm-form-field>
+                    <label hlmLabel>
+                      <div class="{{ mutedStyle }} text-xs">Years</div>
+                      <input
+                        class="w-full"
+                        type="number"
+                        hlmInput
+                        placeholder="How long you worked"
+                      />
+                    </label>
+                  </hlm-form-field>
 
-                <hlm-form-field>
-                  <label hlmLabel>
-                    <div class="text-xs">Summary</div>
-                    <textarea
-                      class="w-full min-h-[100px]"
-                      hlmInput
-                      placeholder="Type your message here."
-                    ></textarea>
-                  </label>
-                </hlm-form-field>
-              </div>
-              <div class="flex items-center justify-center mt-2">
-                <button hlmBtn size="icon" variant="destructive" class="size-8">
-                  <ng-icon hlm size="sm" name="lucideTrash" />
+                  <hlm-form-field>
+                    <label hlmLabel>
+                      <div class="{{ mutedStyle }} text-xs">Summary</div>
+                      <textarea
+                        class="w-full min-h-[100px]"
+                        hlmInput
+                        placeholder="Type your message here."
+                      ></textarea>
+                    </label>
+                  </hlm-form-field>
+                </div>
+                <div class="flex items-center justify-center mt-2">
+                  <button
+                    hlmBtn
+                    size="icon"
+                    variant="destructive"
+                    class="size-8"
+                  >
+                    <ng-icon hlm size="sm" name="lucideTrash" />
+                  </button>
+                </div>
+                <button hlmBtn class="mt-2" variant="secondary">
+                  Add Experience
                 </button>
-              </div>
-              <button hlmBtn class="mt-2" variant="secondary">
-                Add Project
+              </hlm-accordion-content>
+            </div>
+            <div hlmAccordionItem>
+              <button hlmAccordionTrigger>
+                <h3 class="{{ h3Style }}">Projects</h3>
+                <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
               </button>
-            </hlm-accordion-content>
+              <hlm-accordion-content>
+                <div class="flex flex-col gap-2 mr-2 ml-2">
+                  <hlm-form-field>
+                    <label hlmLabel>
+                      <div class="{{ mutedStyle }} text-xs">Name</div>
+                      <input
+                        class="w-full"
+                        hlmInput
+                        placeholder="Name of your project"
+                      />
+                    </label>
+                  </hlm-form-field>
+
+                  <hlm-form-field>
+                    <label hlmLabel>
+                      <div
+                        class="{{ mutedStyle }} text-xs flex items-center gap-2"
+                      >
+                        Techstack
+                        <ng-icon
+                          name="lucideInfo"
+                          [hlmTooltipTrigger]="
+                            'Your input should be comma separated'
+                          "
+                        ></ng-icon>
+                      </div>
+                      <input
+                        class="w-full"
+                        hlmInput
+                        placeholder="Tech used in your project comma separated"
+                      />
+                    </label>
+                  </hlm-form-field>
+
+                  <hlm-form-field>
+                    <label hlmLabel>
+                      <div class="{{ mutedStyle }} text-xs">Year</div>
+                      <input
+                        class="w-full"
+                        type="number"
+                        hlmInput
+                        placeholder="Project completed on"
+                      />
+                    </label>
+                  </hlm-form-field>
+
+                  <hlm-form-field>
+                    <label hlmLabel>
+                      <div class="{{ mutedStyle }} text-xs">Summary</div>
+                      <textarea
+                        class="w-full min-h-[100px]"
+                        hlmInput
+                        placeholder="Type your message here."
+                      ></textarea>
+                    </label>
+                  </hlm-form-field>
+                </div>
+                <div class="flex items-center justify-center mt-2">
+                  <button
+                    hlmBtn
+                    size="icon"
+                    variant="destructive"
+                    class="size-8"
+                  >
+                    <ng-icon hlm size="sm" name="lucideTrash" />
+                  </button>
+                </div>
+                <button hlmBtn class="mt-2" variant="secondary">
+                  Add Project
+                </button>
+              </hlm-accordion-content>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 

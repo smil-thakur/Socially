@@ -96,12 +96,12 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
   public dummyData = dummyData;
   public userProfileURL = this.userService.getCurrentUserObject().photoURL;
 
-  public educationForm = this.fb.group({
+  public userDataForm = this.fb.group({
     educations: this.fb.array([]),
   });
 
   get educations(): FormArray {
-    return this.educationForm.get('educations') as FormArray;
+    return this.userDataForm.get('educations') as FormArray;
   }
 
   private updateEducationValidators(group: FormGroup) {
@@ -132,8 +132,11 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     }
     // Update validity
     degree?.updateValueAndValidity({ emitEvent: false });
+    degree?.markAllAsTouched();
     institution?.updateValueAndValidity({ emitEvent: false });
+    institution?.markAllAsTouched();
     year?.updateValueAndValidity({ emitEvent: false });
+    year?.markAllAsTouched();
   }
 
   public userExperiences: Experience[] = [
