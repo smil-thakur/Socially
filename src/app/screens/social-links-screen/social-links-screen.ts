@@ -315,10 +315,7 @@ export class SocialLinksScreen
         title: this.greetingsForm.get('title')?.value,
         body: this.greetingsForm.get('body')?.value,
       };
-      await this.socialLinkService.addSocialLinkGreeting(
-        this.userService.getCurrentUserObject().uid,
-        socialLinkGreet
-      );
+      await this.socialLinkService.addSocialLinkGreeting(socialLinkGreet);
       this.preloaderService.hide();
       this.greetingsForm.reset({
         title: socialLinkGreet.title,

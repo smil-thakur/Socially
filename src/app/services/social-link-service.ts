@@ -17,12 +17,16 @@ import {
 import type { SocialLink } from '../interfaces/social-link';
 import { runAsyncInInjectionContext } from '../firebase-fixes/injection-fix';
 import { SocialLinkGreeting } from '../interfaces/social-link-greeting';
+import { APIservice } from './apiservice';
+import { UserService } from './user-service';
 @Injectable({ providedIn: 'root' })
 export class SocialLinkService {
   constructor(
     private firestore: Firestore,
     private storage: Storage,
-    private injector: Injector
+    private injector: Injector,
+    private apiService: APIservice,
+    private userService: UserService
   ) {}
 
   async addSocialLinkForUser(userId: string, socialLink: SocialLink) {
@@ -39,20 +43,20 @@ export class SocialLinkService {
   }
 
   async addSocialLinkGreeting(
-    userId: string,
-    socialLinkGreeting: SocialLinkGreeting
+    socialLinkGreeting: SocialLinkGreeting,
+    onStart?: () => void,
+    onComplete?: () => void,
+    onError?: () => void
   ) {
-    return await runAsyncInInjectionContext(this.injector, async () => {
-      const greetingDocRef = doc(
-        this.firestore,
-        'User',
-        userId,
-        'SocialLinkGreeting',
-        'greeting'
-      );
-
-      await setDoc(greetingDocRef, socialLinkGreeting);
-    });
+    const idTocken = await this.userService.getCurrentUserObject().getIdToken();
+    await this.apiService.post<SocialLinkGreeting>(
+      '/addSocialGreeting',
+      socialLinkGreeting,
+      idTocken,
+      onStart,
+      onComplete,
+      onError
+    );
   }
 
   async getAllSocialLinksForUser(userId: string): Promise<SocialLink[]> {
