@@ -2,18 +2,11 @@ import { Injectable, Injector } from '@angular/core';
 import {
   Firestore,
   collection,
-  addDoc,
   getDocs,
   doc,
-  setDoc,
   getDoc,
 } from '@angular/fire/firestore';
-import {
-  Storage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} from '@angular/fire/storage';
+import { Storage } from '@angular/fire/storage';
 import type { SocialLink } from '../interfaces/social-link';
 import { runAsyncInInjectionContext } from '../firebase-fixes/injection-fix';
 import { SocialLinkGreeting } from '../interfaces/social-link-greeting';
