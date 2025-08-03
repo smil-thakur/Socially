@@ -51,7 +51,7 @@ export class APIservice {
     onStart?: () => void,
     onComplete?: () => void,
     onError?: () => void
-  ): Promise<T> {
+  ): Promise<any> {
     const url =
       environment.backend.baseURL + ':' + environment.backend.port + api;
     if (onStart) {
@@ -69,7 +69,7 @@ export class APIservice {
             if (onError) {
               onError();
             }
-            throw Error(`api post to url ${url} failed ${err}`);
+            throw Error(`${api} is not reachable!`);
           }),
           finalize(() => {
             if (onComplete) {

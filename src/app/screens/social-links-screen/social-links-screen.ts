@@ -180,11 +180,11 @@ export class SocialLinksScreen
       handle: new FormControl({ value: '', disabled: false }, [
         Validators.maxLength(30),
       ]),
-      follower: new FormControl({ value: '', disabled: false }, [
+      follower: new FormControl({ value: null, disabled: false }, [
         Validators.max(999999999),
         Validators.pattern(/^[0-9]+$/),
       ]),
-      following: new FormControl({ value: '', disabled: false }, [
+      following: new FormControl({ value: null, disabled: false }, [
         Validators.max(999999999),
         Validators.pattern(/^[0-9]+$/),
       ]),
@@ -289,8 +289,9 @@ export class SocialLinksScreen
     }
   }
 
-  onIconUpload(event: any) {
-    const file = event.target.files[0];
+  onIconUpload(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file: File = input.files![0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         this._hlmDialogService.open(InfoDialog, {
@@ -352,7 +353,6 @@ export class SocialLinksScreen
       this.preloaderService.show();
       if (this.platform.value === 'custom' && this.customIconFile) {
         customIconUrl = await this.socialLinkService.uploadIconAndGetUrl(
-          this.userService.getCurrentUserObject().uid,
           this.customIconFile
         );
       }
@@ -381,10 +381,7 @@ export class SocialLinksScreen
       this.platform.disable();
       this.customIcon = '';
       this.customIconFile = null;
-      await this.socialLinkService.addSocialLinkForUser(
-        this.userService.getCurrentUserObject().uid,
-        link
-      );
+      await this.socialLinkService.addSocialLinkForUser(link);
       this.preloaderService.hide();
     } catch (error) {
       this.preloaderService.hide();

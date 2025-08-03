@@ -7,8 +7,8 @@ export interface SocialLink {
   color: string;
   customIcon: string;
   desc: string;
-  followers?: string;
-  following?: string;
+  followers?: number;
+  following?: number;
   username: string;
   handle?: string;
 }

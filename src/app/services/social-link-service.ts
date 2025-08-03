@@ -19,6 +19,7 @@ import { runAsyncInInjectionContext } from '../firebase-fixes/injection-fix';
 import { SocialLinkGreeting } from '../interfaces/social-link-greeting';
 import { APIservice } from './apiservice';
 import { UserService } from './user-service';
+import { API } from '../enums/APIenums';
 @Injectable({ providedIn: 'root' })
 export class SocialLinkService {
   constructor(
@@ -29,33 +30,21 @@ export class SocialLinkService {
     private userService: UserService
   ) {}
 
-  async addSocialLinkForUser(userId: string, socialLink: SocialLink) {
-    return await runAsyncInInjectionContext(this.injector, async () => {
-      const socialLinksCol = collection(
-        this.firestore,
-        'User',
-        userId,
-        'SocialLinks'
-      );
-      const docRef = await addDoc(socialLinksCol, socialLink);
-      return docRef;
-    });
+  async addSocialLinkForUser(socialLink: SocialLink) {
+    const idTocken = await this.userService.getCurrentUserObject().getIdToken();
+    await this.apiService.post<SocialLink>(
+      API.ADDSOCIALLINK,
+      socialLink,
+      idTocken
+    );
   }
 
-  async addSocialLinkGreeting(
-    socialLinkGreeting: SocialLinkGreeting,
-    onStart?: () => void,
-    onComplete?: () => void,
-    onError?: () => void
-  ) {
+  async addSocialLinkGreeting(socialLinkGreeting: SocialLinkGreeting) {
     const idTocken = await this.userService.getCurrentUserObject().getIdToken();
     await this.apiService.post<SocialLinkGreeting>(
-      '/addSocialGreeting',
+      API.ADDSOCIALGREETING,
       socialLinkGreeting,
-      idTocken,
-      onStart,
-      onComplete,
-      onError
+      idTocken
     );
   }
 
@@ -93,19 +82,15 @@ export class SocialLinkService {
     });
   }
 
-  async uploadIconAndGetUrl(
-    userId: string,
-    file: File | Blob
-  ): Promise<string> {
-    return await runAsyncInInjectionContext(this.injector, async () => {
-      const storage = this.storage;
-      const fileName = file instanceof File ? file.name : 'icon.png';
-      const iconRef = ref(
-        storage,
-        `user-icons/${userId}/${Date.now()}_${fileName}`
-      );
-      await uploadBytes(iconRef, file);
-      return await getDownloadURL(iconRef);
-    });
+  async uploadIconAndGetUrl(file: File): Promise<string> {
+    const idTocken = await this.userService.getCurrentUserObject().getIdToken();
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await this.apiService.post(
+      API.UPLOADICON,
+      formData,
+      idTocken
+    );
+    return response['url'];
   }
 }
