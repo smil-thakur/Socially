@@ -322,7 +322,6 @@ export class SocialLinksScreen
         title: socialLinkGreet.title,
         body: socialLinkGreet.body,
       });
-      console.log('opening dialog');
       this._hlmDialogService.open(InfoDialog, {
         context: {
           info: 'Greeting Updated',

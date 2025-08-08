@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { dummyData } from '../../enums/dummy-data';
 import {
   HlmCardContentDirective,
@@ -40,6 +40,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { ResumeDataService } from '../../services/resume-data-service';
+import { ResumeDataDTO } from '../../interfaces/ResumeDataDTO';
 
 @Component({
   selector: 'app-analytics-screen',
@@ -89,16 +92,90 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     if (this.projects.length === 0) {
       this.addProject();
     }
+    if (this.resumeData) {
+      this.setResumeDatatoForm(this.resumeData);
+    }
   }
+
+  public setResumeDatatoForm(resumeData: ResumeDataDTO) {
+    if (resumeData.fullName) {
+      this.userDataForm.get('fullname')?.setValue(this.resumeData?.fullName!);
+    }
+    if (resumeData.title) {
+      this.userDataForm.get('title')?.setValue(this.resumeData?.title!);
+    }
+    if (resumeData.summary) {
+      this.userDataForm.get('summary')?.setValue(this.resumeData?.summary!);
+    }
+    if (resumeData.skills) {
+      const skills = (resumeData?.skills ?? []).filter((s) => s !== null);
+      this.userDataForm.get('skills')?.setValue(skills.join(', '));
+    }
+    if (resumeData.educations) {
+      const educations = (resumeData?.educations ?? []).filter(
+        (s) => s !== null
+      );
+      this.educations.clear();
+      this._isEducationAccOpen.set(true);
+      for (let i = 0; i < educations.length; i++) {
+        const group = this.fb.group({
+          degree: [educations[i].degree ?? '', Validators.required],
+          institution: [educations[i].institution ?? '', Validators.required],
+          year: [educations[i].year ?? '', Validators.required],
+        });
+        this.educations.push(group);
+      }
+    }
+    if (resumeData.experiences) {
+      const experiences = (resumeData.experiences ?? []).filter(
+        (s) => s !== null
+      );
+      this.experiences.clear();
+      this._isExperienceAccOpen.set(true);
+      for (let i = 0; i < experiences.length; i++) {
+        const group = this.fb.group({
+          role: [experiences[i].role ?? '', Validators.required],
+          company: [experiences[i].company ?? '', Validators.required],
+          years: [experiences[i].years ?? '', Validators.required],
+          summary: [experiences[i].summary ?? '', Validators.required],
+        });
+        this.experiences.push(group);
+      }
+    }
+    if (resumeData.projects) {
+      const projects = (resumeData.projects ?? []).filter((s) => s !== null);
+      this.projects.clear();
+      this._isProjectAccOpen.set(true);
+      for (let i = 0; i < projects.length; i++) {
+        const techStack = (projects[i].techstack ?? [])
+          .filter((s) => s !== null)
+          .join(', ');
+        const group = this.fb.group({
+          name: [projects[i].name ?? '', Validators.required],
+          techStack: [techStack ?? '', Validators.required],
+          year: [projects[i].year ?? '', Validators.required],
+          summary: [projects[i].summary ?? '', Validators.required],
+        });
+        this.projects.push(group);
+      }
+    }
+  }
+  protected readonly _isExperienceAccOpen = signal(false);
+  protected readonly _isEducationAccOpen = signal(false);
+  protected readonly _isProjectAccOpen = signal(false);
+  private resumeDataService = inject(ResumeDataService);
   private userService = inject(UserService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
   public dummyData = dummyData;
   public userProfileURL = this.userService.getCurrentUserObject().photoURL;
+  public resumeData = this.resumeDataService.resumeDataDTO;
 
   public userDataForm = this.fb.group({
     fullname: ['', Validators.required],
     title: ['', Validators.required],
     summary: ['', Validators.required],
+    skills: ['', Validators.required],
     educations: this.fb.array([]),
     experiences: this.fb.array([]),
     projects: this.fb.array([]),
@@ -128,14 +205,11 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     // Check if any field has a value
     const hasAnyValue = degreeValue || institutionValue || yearValue;
 
-    console.log(hasAnyValue);
-
     if (hasAnyValue) {
       // If any field has value, make all fields required
       degree?.setValidators(Validators.required);
       institution?.setValidators(Validators.required);
       year?.setValidators(Validators.required);
-      console.log('setting validations');
     } else {
       // If all fields are empty, remove validators
       degree?.clearValidators();
@@ -165,15 +239,12 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     // Check if any field has a value
     const hasAnyValue = roleValue || companyValue || yearsValue || summaryValue;
 
-    console.log(hasAnyValue);
-
     if (hasAnyValue) {
       // If any field has value, make all fields required
       role?.setValidators(Validators.required);
       company?.setValidators(Validators.required);
       years?.setValidators(Validators.required);
       summary?.setValidators(Validators.required);
-      console.log('setting validations');
     } else {
       // If all fields are empty, remove validators
       role?.clearValidators();
@@ -206,8 +277,6 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     // Check if any field has a value
     const hasAnyValue =
       nameValue || techStackValue || yearValue || summaryValue;
-
-    console.log(hasAnyValue);
 
     if (hasAnyValue) {
       // If any field has value, make all fields required
@@ -297,5 +366,10 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     if (this.projects.length > 1) {
       this.projects.removeAt(index);
     }
+  }
+
+  public saveProfile() {
+    this.userDataForm.markAllAsTouched();
+    this.userDataForm.markAllAsDirty();
   }
 }

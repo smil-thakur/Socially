@@ -27,8 +27,13 @@ import { Social } from '../../interfaces/socials';
 import { HlmButtonDirective } from '@spartan-ng/helm/button';
 import { Router } from '@angular/router';
 import { TopNavBar } from '../../common/top-nav-bar/top-nav-bar';
-import { Auth, User, user } from '@angular/fire/auth';
+import { Auth, idToken, User, user } from '@angular/fire/auth';
 import { UserService } from '../../services/user-service';
+import { APIservice } from '../../services/apiservice';
+import { API } from '../../enums/APIenums';
+import { PreloaderService } from '../../services/preloader-service';
+import { ResumeDataDTO } from '../../interfaces/ResumeDataDTO';
+import { ResumeDataService } from '../../services/resume-data-service';
 
 @Component({
   selector: 'app-home-screen',
@@ -63,7 +68,13 @@ import { UserService } from '../../services/user-service';
   ],
 })
 export class HomeScreen extends BasePageScreen implements OnInit {
-  constructor(private router: Router, private userService: UserService) {
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private apiService: APIservice,
+    private preloaderService: PreloaderService,
+    private resumeDataService: ResumeDataService
+  ) {
     super();
   }
 
@@ -144,6 +155,36 @@ export class HomeScreen extends BasePageScreen implements OnInit {
 
   public navigateToScreen(route: string) {
     this.router.navigate([route]);
+  }
+
+  public async pdfSelection(event: Event) {
+    this.preloaderService.show();
+    const input = event.target as HTMLInputElement;
+    if (input) {
+      if (input.files) {
+        if (input.files[0]) {
+          const formData = new FormData();
+          formData.append('file', input.files[0]);
+          const tokenId = await this.userService
+            .getCurrentUserObject()
+            .getIdToken();
+          const res = await this.apiService.post(
+            API.SCANPDF,
+            formData,
+            tokenId
+          );
+          try {
+            const resumeData = res as ResumeDataDTO;
+            this.resumeDataService.setResumeDataDTO(resumeData);
+            this.router.navigate(['/analytics']);
+          } catch (err) {
+            console.error(err);
+          }
+          this.preloaderService.hide();
+        }
+      }
+    }
+    this.preloaderService.hide();
   }
 
   public navigateToViewer(type: string) {
