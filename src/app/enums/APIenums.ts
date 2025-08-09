@@ -3,4 +3,6 @@ export const API = {
   ADDSOCIALLINK: '/addSocialLink',
   UPLOADICON: '/uploadIconAndGetURL',
   SCANPDF: '/scanpdf',
+  UPDATEUSERPROFILE: '/updateProfile',
+  GETUSERPROFILE: '/userProfile',
 };

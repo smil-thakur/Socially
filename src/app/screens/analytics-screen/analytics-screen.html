@@ -33,15 +33,15 @@
               <label hlmLabel>
                 <div class="text-xs">Fullname</div>
                 <input
-                  formControlName="fullname"
+                  formControlName="fullName"
                   class="w-full"
                   hlmInput
                   placeholder="Your full name"
                 />
-                @if (userDataForm.get('fullname')?.errors?.['required'] &&
-                (userDataForm.get('fullname')?.dirty ||
-                userDataForm.get('fullname')?.touched)) {
-                <hlm-error>Your fullname is required</hlm-error> }
+                @if (userDataForm.get('fullName')?.errors?.['required'] &&
+                (userDataForm.get('fullName')?.dirty ||
+                userDataForm.get('fullName')?.touched)) {
+                <hlm-error>Your fullName is required</hlm-error> }
               </label>
             </hlm-form-field>
 
@@ -354,11 +354,11 @@
                             class="w-full"
                             hlmInput
                             placeholder="Tech used in your project comma separated"
-                            formControlName="techStack"
+                            formControlName="techstack"
                           />
-                          @if (( projectGroup.get('techStack')?.dirty ||
-                          projectGroup.get('techStack')?.touched ) &&
-                          projectGroup.get('techStack')?.hasError('required')) {
+                          @if (( projectGroup.get('techstack')?.dirty ||
+                          projectGroup.get('techstack')?.touched ) &&
+                          projectGroup.get('techstack')?.hasError('required')) {
                           <hlm-error
                             >Techstack used in project is required</hlm-error
                           >
@@ -441,7 +441,12 @@
       <button hlmBtn variant="secondary" class="w-full sm:w-auto">
         Discard
       </button>
-      <button hlmBtn (click)="saveProfile()" class="w-full sm:w-auto">
+      <button
+        hlmBtn
+        [disabled]="canSave()"
+        (click)="saveProfile()"
+        class="w-full sm:w-auto"
+      >
         Save
       </button>
     </div>

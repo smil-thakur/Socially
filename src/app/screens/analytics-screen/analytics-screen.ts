@@ -43,6 +43,13 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ResumeDataService } from '../../services/resume-data-service';
 import { ResumeDataDTO } from '../../interfaces/ResumeDataDTO';
+import { APIservice } from '../../services/apiservice';
+import { API } from '../../enums/APIenums';
+import { ErrorDialog } from '../../common/error-dialog/error-dialog';
+import { HlmDialogService } from '@spartan-ng/helm/dialog';
+import { InfoDialog } from '../../common/info-dialog/info-dialog';
+import { PreloaderService } from '../../services/preloader-service';
+import { isEqual } from 'lodash';
 
 @Component({
   selector: 'app-analytics-screen',
@@ -82,30 +89,73 @@ import { ResumeDataDTO } from '../../interfaces/ResumeDataDTO';
   ],
 })
 export class AnalyticsScreen extends BasePageScreen implements OnInit {
+  protected readonly _isExperienceAccOpen = signal(false);
+  protected readonly _isEducationAccOpen = signal(false);
+  protected readonly _isProjectAccOpen = signal(false);
+  private resumeDataService = inject(ResumeDataService);
+  private userService = inject(UserService);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private apiService = inject(APIservice);
+  private readonly _hlmDialogService = inject(HlmDialogService);
+  private preloaderService = inject(PreloaderService);
+  public dummyData = dummyData;
+  public userProfileURL = this.userService.getCurrentUserObject().photoURL;
+  public resumeData = this.resumeDataService.resumeDataDTO;
+  public initialFormData: any | null = null;
+  public resumeDataSaved: ResumeData | null = null;
+  public userDataForm = this.fb.group({
+    fullName: ['', Validators.required],
+    title: ['', Validators.required],
+    summary: ['', Validators.required],
+    skills: ['', Validators.required],
+    educations: this.fb.array([]),
+    experiences: this.fb.array([]),
+    projects: this.fb.array([]),
+  });
+
   ngOnInit(): void {
-    if (this.educations.length === 0) {
-      this.addEducation();
-    }
-    if (this.experiences.length === 0) {
-      this.addExperience();
-    }
-    if (this.projects.length === 0) {
-      this.addProject();
-    }
-    if (this.resumeData) {
-      this.setResumeDatatoForm(this.resumeData);
+    this.loadSavedProfile();
+  }
+
+  public async loadSavedProfile() {
+    this.preloaderService.show();
+    try {
+      this.resumeDataSaved =
+        await this.resumeDataService.getResumeDataFirebase();
+      if (this.resumeDataSaved) {
+        this.setResumeDatatoForm(this.resumeDataSaved);
+      } else {
+        if (this.resumeData) {
+          this.setResumeDatatoForm(this.resumeData);
+        } else {
+          if (this.educations.length === 0) this.addEducation();
+          if (this.experiences.length === 0) this.addExperience();
+          if (this.projects.length === 0) this.addProject();
+        }
+      }
+      this.initialFormData = this.userDataForm.value;
+      this.preloaderService.hide();
+    } catch (err) {
+      this.preloaderService.hide();
+      this._hlmDialogService.open(ErrorDialog, {
+        context: {
+          error: 'Profile not loaded',
+          desc: 'Sorry we are not able to fetch your saved profile, try again!',
+        },
+      });
     }
   }
 
-  public setResumeDatatoForm(resumeData: ResumeDataDTO) {
+  public setResumeDatatoForm(resumeData: ResumeDataDTO | ResumeData) {
     if (resumeData.fullName) {
-      this.userDataForm.get('fullname')?.setValue(this.resumeData?.fullName!);
+      this.userDataForm.get('fullName')?.setValue(resumeData?.fullName!);
     }
     if (resumeData.title) {
-      this.userDataForm.get('title')?.setValue(this.resumeData?.title!);
+      this.userDataForm.get('title')?.setValue(resumeData?.title!);
     }
     if (resumeData.summary) {
-      this.userDataForm.get('summary')?.setValue(this.resumeData?.summary!);
+      this.userDataForm.get('summary')?.setValue(resumeData?.summary!);
     }
     if (resumeData.skills) {
       const skills = (resumeData?.skills ?? []).filter((s) => s !== null);
@@ -119,9 +169,9 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
       this._isEducationAccOpen.set(true);
       for (let i = 0; i < educations.length; i++) {
         const group = this.fb.group({
-          degree: [educations[i].degree ?? '', Validators.required],
-          institution: [educations[i].institution ?? '', Validators.required],
-          year: [educations[i].year ?? '', Validators.required],
+          degree: [educations[i]!.degree ?? '', Validators.required],
+          institution: [educations[i]!.institution ?? '', Validators.required],
+          year: [educations[i]!.year ?? '', Validators.required],
         });
         this.educations.push(group);
       }
@@ -134,10 +184,10 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
       this._isExperienceAccOpen.set(true);
       for (let i = 0; i < experiences.length; i++) {
         const group = this.fb.group({
-          role: [experiences[i].role ?? '', Validators.required],
-          company: [experiences[i].company ?? '', Validators.required],
-          years: [experiences[i].years ?? '', Validators.required],
-          summary: [experiences[i].summary ?? '', Validators.required],
+          role: [experiences[i]!.role ?? '', Validators.required],
+          company: [experiences[i]!.company ?? '', Validators.required],
+          years: [experiences[i]!.years ?? '', Validators.required],
+          summary: [experiences[i]!.summary ?? '', Validators.required],
         });
         this.experiences.push(group);
       }
@@ -147,39 +197,19 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
       this.projects.clear();
       this._isProjectAccOpen.set(true);
       for (let i = 0; i < projects.length; i++) {
-        const techStack = (projects[i].techstack ?? [])
+        const techstack = (projects[i]!.techstack ?? [])
           .filter((s) => s !== null)
           .join(', ');
         const group = this.fb.group({
-          name: [projects[i].name ?? '', Validators.required],
-          techStack: [techStack ?? '', Validators.required],
-          year: [projects[i].year ?? '', Validators.required],
-          summary: [projects[i].summary ?? '', Validators.required],
+          name: [projects[i]!.name ?? '', Validators.required],
+          techstack: [techstack ?? '', Validators.required],
+          year: [projects[i]!.year ?? '', Validators.required],
+          summary: [projects[i]!.summary ?? '', Validators.required],
         });
         this.projects.push(group);
       }
     }
   }
-  protected readonly _isExperienceAccOpen = signal(false);
-  protected readonly _isEducationAccOpen = signal(false);
-  protected readonly _isProjectAccOpen = signal(false);
-  private resumeDataService = inject(ResumeDataService);
-  private userService = inject(UserService);
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
-  public dummyData = dummyData;
-  public userProfileURL = this.userService.getCurrentUserObject().photoURL;
-  public resumeData = this.resumeDataService.resumeDataDTO;
-
-  public userDataForm = this.fb.group({
-    fullname: ['', Validators.required],
-    title: ['', Validators.required],
-    summary: ['', Validators.required],
-    skills: ['', Validators.required],
-    educations: this.fb.array([]),
-    experiences: this.fb.array([]),
-    projects: this.fb.array([]),
-  });
 
   get educations(): FormArray {
     return this.userDataForm.get('educations') as FormArray;
@@ -265,37 +295,37 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
 
   private updateProjectValidators(group: FormGroup) {
     const name = group.get('name');
-    const techStack = group.get('techStack');
+    const techstack = group.get('techstack');
     const year = group.get('year');
     const summary = group.get('summary');
 
     const nameValue = name?.value?.trim() || '';
-    const techStackValue = techStack?.value?.trim() || '';
+    const techstackValue = techstack?.value?.trim() || '';
     const yearValue = year?.value || '';
     const summaryValue = summary?.value.trim() || '';
 
     // Check if any field has a value
     const hasAnyValue =
-      nameValue || techStackValue || yearValue || summaryValue;
+      nameValue || techstackValue || yearValue || summaryValue;
 
     if (hasAnyValue) {
       // If any field has value, make all fields required
       name?.setValidators(Validators.required);
-      techStack?.setValidators(Validators.required);
+      techstack?.setValidators(Validators.required);
       year?.setValidators(Validators.required);
       summary?.setValidators(Validators.required);
     } else {
       // If all fields are empty, remove validators
       name?.clearValidators();
-      techStack?.clearValidators();
+      techstack?.clearValidators();
       year?.clearValidators();
       summary?.clearValidators();
     }
     // Update validity
     name?.updateValueAndValidity({ emitEvent: false });
     name?.markAsTouched();
-    techStack?.updateValueAndValidity({ emitEvent: false });
-    techStack?.markAsTouched();
+    techstack?.updateValueAndValidity({ emitEvent: false });
+    techstack?.markAsTouched();
     year?.updateValueAndValidity({ emitEvent: false });
     year?.markAsTouched();
     summary?.updateValueAndValidity({ emitEvent: false });
@@ -306,16 +336,6 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
   public userEducations: Education[] = [];
   public userProjects: Project[] = [];
   public userSkills: string[] = [];
-
-  public userData: ResumeData = {
-    fullName: '',
-    title: '',
-    summary: '',
-    skills: this.userSkills,
-    educations: this.userEducations,
-    experiences: this.userExperiences,
-    projects: this.userProjects,
-  };
 
   public addEducation() {
     const group = this.fb.group({
@@ -342,7 +362,7 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
   public addProject() {
     const group = this.fb.group({
       name: [''],
-      techStack: [''],
+      techstack: [''],
       year: [''],
       summary: [''],
     });
@@ -368,8 +388,87 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     }
   }
 
-  public saveProfile() {
+  public canSave() {
+    if (this.initialFormData) {
+      return isEqual(this.initialFormData, this.userDataForm.value);
+    }
+    return true;
+  }
+
+  public async saveProfile() {
     this.userDataForm.markAllAsTouched();
     this.userDataForm.markAllAsDirty();
+    if (this.userDataForm.valid) {
+      try {
+        this.preloaderService.show();
+        const educationData: Education[] = [];
+        for (let i = 0; i < this.educations.controls.length; i++) {
+          const tempEducation: Education = {
+            degree: this.educations.controls[i].get('degree')?.value,
+            institution: this.educations.controls[i].get('institution')?.value,
+            year: this.educations.controls[i].get('year')?.value,
+          };
+          educationData.push(tempEducation);
+        }
+        const experienceData: Experience[] = [];
+        for (let i = 0; i < this.experiences.controls.length; i++) {
+          const tempExperience: Experience = {
+            role: this.experiences.controls[i].get('role')?.value,
+            company: this.experiences.controls[i].get('company')?.value,
+            years: this.experiences.controls[i].get('years')?.value,
+            summary: this.experiences.controls[i].get('summary')?.value,
+          };
+          experienceData.push(tempExperience);
+        }
+        const projectData: Project[] = [];
+        for (let i = 0; i < this.projects.controls.length; i++) {
+          const tempProject: Project = {
+            name: this.projects.controls[i].get('name')?.value,
+            techstack: (
+              this.projects.controls[i].get('techstack')?.value as string
+            )
+              .split(',')
+              .map((s) => s.trim()),
+            year: this.projects.controls[i].get('year')?.value,
+            summary: this.projects.controls[i].get('summary')?.value,
+          };
+
+          projectData.push(tempProject);
+        }
+        const resumeData: ResumeData = {
+          fullName: this.userDataForm.get('fullName')?.value!,
+          title: this.userDataForm.get('title')?.value!,
+          summary: this.userDataForm.get('summary')?.value!,
+          skills:
+            this.userDataForm
+              .get('skills')
+              ?.value!.split(',')
+              .map((s) => s.trim()) ?? [],
+          educations: educationData,
+          experiences: experienceData,
+          projects: projectData,
+        };
+        await this.apiService.post(
+          API.UPDATEUSERPROFILE,
+          resumeData,
+          await this.userService.getCurrentUserObject().getIdToken()
+        );
+        this.preloaderService.hide();
+        this._hlmDialogService.open(InfoDialog, {
+          context: {
+            error: 'Profile Updated',
+            desc: 'Your Profile is Updated Successfully',
+          },
+        });
+      } catch (err) {
+        this.preloaderService.hide();
+        this._hlmDialogService.open(ErrorDialog, {
+          context: {
+            error: 'Unable to Update Your Profile',
+            desc: `Please check internet connection or Try again ${err}`,
+          },
+        });
+      }
+    }
   }
 }
