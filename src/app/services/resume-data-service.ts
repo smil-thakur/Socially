@@ -17,6 +17,10 @@ export class ResumeDataService {
     this.resumeDataDTO = resumeDataDTO;
   }
 
+  public clearResumeDataDTO() {
+    this.resumeDataDTO = null;
+  }
+
   public async getResumeDataFirebase(): Promise<ResumeData | null> {
     const res: ResumeData = await this.apiService.get<ResumeData>(
       API.GETUSERPROFILE,

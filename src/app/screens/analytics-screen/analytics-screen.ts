@@ -50,6 +50,8 @@ import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { InfoDialog } from '../../common/info-dialog/info-dialog';
 import { PreloaderService } from '../../services/preloader-service';
 import { isEqual } from 'lodash';
+import { toast } from 'ngx-sonner';
+import { HlmToasterComponent } from '@spartan-ng/helm/sonner';
 
 @Component({
   selector: 'app-analytics-screen',
@@ -77,6 +79,8 @@ import { isEqual } from 'lodash';
     HlmIconDirective,
     HlmTooltipTriggerDirective,
     CommonModule,
+
+    HlmToasterComponent,
   ],
   templateUrl: './analytics-screen.html',
   styleUrl: './analytics-screen.scss',
@@ -123,7 +127,21 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     try {
       this.resumeDataSaved =
         await this.resumeDataService.getResumeDataFirebase();
-      if (this.resumeDataSaved) {
+      if (this.resumeDataSaved && this.resumeData) {
+        this.setResumeDatatoForm(this.resumeData);
+        toast('This data will override your current Data!', {
+          description:
+            'You can scanned a new PDF which has different data that will override the current data',
+          action: {
+            label: 'Discard',
+            onClick: () => {
+              this.setResumeDatatoForm(this.resumeDataSaved!);
+              this.resumeDataService.clearResumeDataDTO();
+              this.initialFormData = this.resumeDataSaved;
+            },
+          },
+        });
+      } else if (this.resumeDataSaved) {
         this.setResumeDatatoForm(this.resumeDataSaved);
       } else {
         if (this.resumeData) {
@@ -388,11 +406,16 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     }
   }
 
-  public canSave() {
-    if (this.initialFormData) {
-      return isEqual(this.initialFormData, this.userDataForm.value);
+  public canSave(): boolean {
+    if (this.resumeDataService.resumeDataDTO) {
+      return true;
+    } else {
+      if (isEqual(this.userDataForm.value, this.initialFormData)) {
+        return false;
+      } else {
+        return true;
+      }
     }
-    return true;
   }
 
   public async saveProfile() {
@@ -470,5 +493,10 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
         });
       }
     }
+  }
+
+  public cancel() {
+    this.resumeDataService.clearResumeDataDTO();
+    this.router.navigate(['/home']);
   }
 }

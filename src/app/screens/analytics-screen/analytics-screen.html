@@ -1,5 +1,5 @@
 <app-only-back-nav-bar></app-only-back-nav-bar>
-
+<hlm-toaster [duration]="5000" [closeButton]="true"></hlm-toaster>
 <div class="flex items-center justify-center px-2 py-6">
   <div hlmCard class="w-full sm:max-w-lg md:max-w-2xl lg:max-w-4xl">
     <div hlmCardHeader>
@@ -438,12 +438,17 @@
       hlmCardFooter
       class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4"
     >
-      <button hlmBtn variant="secondary" class="w-full sm:w-auto">
+      <button
+        (click)="cancel()"
+        hlmBtn
+        variant="secondary"
+        class="w-full sm:w-auto"
+      >
         Discard
       </button>
       <button
         hlmBtn
-        [disabled]="canSave()"
+        [disabled]="!canSave()"
         (click)="saveProfile()"
         class="w-full sm:w-auto"
       >
