@@ -7,6 +7,7 @@ import { authGuard } from './guards/auth-guard';
 import { guestGuard } from './guards/guest-guard';
 import { SocialLinkViewer } from './viewers/social-link-viewer/social-link-viewer';
 import { AnalyticsScreen } from './screens/analytics-screen/analytics-screen';
+import { AnalyticsViewer } from './viewers/analytics-viewer/analytics-viewer';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterScreen, canActivate: [guestGuard] },
@@ -20,6 +21,11 @@ export const routes: Routes = [
   {
     path: 'analytics',
     component: AnalyticsScreen,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'analytics-viewer',
+    component: AnalyticsViewer,
     canActivate: [authGuard],
   },
   {

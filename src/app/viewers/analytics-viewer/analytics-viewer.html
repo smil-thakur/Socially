@@ -1,0 +1,66 @@
+<app-only-back-nav-bar></app-only-back-nav-bar>
+
+@if (resumeData) {
+<div class="container mx-auto p-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Left Column: Personal Information -->
+    <div>
+      <div class="mb-4">
+        <h1 class="text-2xl font-bold">{{ resumeData.fullName }}</h1>
+        <p class="text-muted-foreground">{{ resumeData.title }}</p>
+      </div>
+      <div class="mb-4">
+        <h2 class="text-lg font-semibold">Summary</h2>
+        <p>{{ resumeData.summary }}</p>
+      </div>
+      <div class="mb-4">
+        <h2 class="text-lg font-semibold">Skills</h2>
+        <ul class="list-disc list-inside">
+          <li *ngFor="let skill of resumeData?.skills">{{ skill }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right Column: Education, Experience, Projects -->
+    <div>
+      <div class="mb-4">
+        <h2 class="text-lg font-semibold">Education</h2>
+        @for (education of resumeData.educations; track $index) {
+        <div class="mb-2">
+          <h3 class="font-semibold">{{ education?.degree }}</h3>
+          <p class="text-muted-foreground">
+            {{ education?.institution }} - {{ education?.year }}
+          </p>
+        </div>
+        }
+      </div>
+
+      <div class="mb-4">
+        <h2 class="text-lg font-semibold">Experience</h2>
+        @for (experience of resumeData.experiences; track $index) {
+        <div class="mb-2">
+          <h3 class="font-semibold">{{ experience?.role }}</h3>
+          <p class="text-muted-foreground">
+            {{ experience?.company }} - {{ experience?.years }}
+          </p>
+          <p>{{ experience?.summary }}</p>
+        </div>
+        }
+      </div>
+
+      <div class="mb-4">
+        <h2 class="text-lg font-semibold">Projects</h2>
+        @for (project of resumeData.projects; track $index) {
+        <div class="mb-2">
+          <h3 class="font-semibold">{{ project?.name }}</h3>
+          <p class="text-muted-foreground">
+            Tech Stack: {{ project?.techstack }} - {{ project?.year }}
+          </p>
+          <p>{{ project?.summary }}</p>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}

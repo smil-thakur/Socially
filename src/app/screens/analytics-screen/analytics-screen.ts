@@ -52,6 +52,7 @@ import { PreloaderService } from '../../services/preloader-service';
 import { isEqual } from 'lodash';
 import { toast } from 'ngx-sonner';
 import { HlmToasterComponent } from '@spartan-ng/helm/sonner';
+import { UserCacheManager } from '../../cache/user-cache-manager';
 
 @Component({
   selector: 'app-analytics-screen',
@@ -108,6 +109,7 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
   public resumeData = this.resumeDataService.resumeDataDTO;
   public initialFormData: any | null = null;
   public resumeDataSaved: ResumeData | null = null;
+  private userCacheManager = inject(UserCacheManager);
   public userDataForm = this.fb.group({
     fullName: ['', Validators.required],
     title: ['', Validators.required],
@@ -125,8 +127,13 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
   public async loadSavedProfile() {
     this.preloaderService.show();
     try {
-      this.resumeDataSaved =
-        await this.resumeDataService.getResumeDataFirebase();
+      if (!this.userCacheManager.getCache()) {
+        this.resumeDataSaved =
+          await this.resumeDataService.getResumeDataFirebase();
+        this.userCacheManager.setCache(this.resumeDataSaved!);
+      } else {
+        this.resumeDataSaved = this.userCacheManager.getCache();
+      }
       if (this.resumeDataSaved && this.resumeData) {
         this.setResumeDatatoForm(this.resumeData);
         toast('This data will override your current Data!', {
@@ -476,6 +483,7 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
           resumeData,
           await this.userService.getCurrentUserObject().getIdToken()
         );
+        this.userCacheManager.setCache(resumeData);
         this.preloaderService.hide();
         this._hlmDialogService.open(InfoDialog, {
           context: {

@@ -192,7 +192,9 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       case 'social-links':
         this.router.navigate(['/social-links', this.gUser?.uid]);
         break;
-
+      case 'analytics':
+        this.router.navigate(['analytics-viewer']);
+        break;
       default:
         break;
     }
