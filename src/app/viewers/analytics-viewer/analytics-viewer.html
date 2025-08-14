@@ -16,7 +16,9 @@
       <div class="mb-4">
         <h2 class="text-lg font-semibold">Skills</h2>
         <ul class="list-disc list-inside">
-          <li *ngFor="let skill of resumeData?.skills">{{ skill }}</li>
+          @for (skill of resumeData.skills; track $index) {
+          <li>{{ skill }}</li>
+          }
         </ul>
       </div>
     </div>
