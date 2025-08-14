@@ -17,151 +17,158 @@
           </div>
           <div hlmCardContent>
             <hlm-form-field class="flex-1 mb-4">
-              <label hlmLabel>
+              <label for="profileURL" hlmLabel>
                 <div class="text-xs">Profile URL</div>
-                <input
-                  hlmInput
-                  class="w-xs sm:w-xl"
-                  placeholder="Paste your profile URL"
-                  formControlName="url"
-                />
-                @if (newLinkForm!.get('url')?.errors?.['required'] &&
-                (newLinkForm?.get("url")?.dirty ||
-                newLinkForm?.get("url")?.touched)) {
-                <hlm-error>Profile URL is required.</hlm-error>
-                } @if (newLinkForm!.get('url')?.errors?.['maxlength']) {
-                <hlm-error>Profile URL cannot exceed 200 characters.</hlm-error>
-                }
               </label>
+              <input
+                id="profileURL"
+                hlmInput
+                class="w-xs sm:w-xl"
+                placeholder="Paste your profile URL"
+                formControlName="url"
+              />
+              @if (newLinkForm!.get('url')?.errors?.['required'] &&
+              (newLinkForm?.get("url")?.dirty ||
+              newLinkForm?.get("url")?.touched)) {
+              <hlm-error>Profile URL is required.</hlm-error>
+              } @if (newLinkForm!.get('url')?.errors?.['maxlength']) {
+              <hlm-error>Profile URL cannot exceed 200 characters.</hlm-error>
+              }
             </hlm-form-field>
             <div class="flex gap-2 mb-8 flex-col sm:ml-4 ml-0">
               <div>Additional Info</div>
               <div class="flex flex-col sm:flex-row gap-2">
                 @if (newLinkForm?.get("platform")?.value === "custom") {
                 <hlm-form-field>
-                  <label hlmLabel>
+                  <label for="platformName" hlmLabel>
                     <div class="text-xs">Platform Name</div>
-                    <input
-                      hlmInput
-                      type="text"
-                      placeholder="codeforces"
-                      formControlName="customPlatformName"
-                    />
-                    @if
-                    (newLinkForm!.get('customPlatformName')?.errors?.['required']
-                    && (newLinkForm?.get('customPlatformName')?.dirty ||
-                    newLinkForm?.get('customPlatformName')?.touched)) {
-                    <hlm-error>Platform name is required.</hlm-error>
-                    } @if (newLinkForm!.get('username')?.errors?.['maxlength'])
-                    {
-                    <hlm-error
-                      >Platform name cannot exceed 20 characters.</hlm-error
-                    >
-                    }
                   </label>
+                  <input
+                    id="platformName"
+                    hlmInput
+                    type="text"
+                    placeholder="codeforces"
+                    formControlName="customPlatformName"
+                  />
+                  @if
+                  (newLinkForm!.get('customPlatformName')?.errors?.['required']
+                  && (newLinkForm?.get('customPlatformName')?.dirty ||
+                  newLinkForm?.get('customPlatformName')?.touched)) {
+                  <hlm-error>Platform name is required.</hlm-error>
+                  } @if (newLinkForm!.get('username')?.errors?.['maxlength'])
+                  {
+                  <hlm-error
+                    >Platform name cannot exceed 20 characters.</hlm-error
+                  >
+                  }
                 </hlm-form-field>
                 }
                 <hlm-form-field>
-                  <label hlmLabel>
+                  <label for="username" hlmLabel>
                     <div class="text-xs">Username</div>
-                    <input
-                      hlmInput
-                      type="text"
-                      placeholder="Smil_thakur"
-                      formControlName="username"
-                    />
-                    @if (newLinkForm!.get('username')?.errors?.['required'] &&
-                    (newLinkForm?.get('username')?.dirty ||
-                    newLinkForm?.get('username')?.touched)) {
-                    <hlm-error>Username is required.</hlm-error>
-                    } @if (newLinkForm!.get('username')?.errors?.['maxlength'])
-                    {
-                    <hlm-error>Username cannot exceed 30 characters.</hlm-error>
-                    }
                   </label>
+                  <input
+                    id="username"
+                    hlmInput
+                    type="text"
+                    placeholder="Smil_thakur"
+                    formControlName="username"
+                  />
+                  @if (newLinkForm!.get('username')?.errors?.['required'] &&
+                  (newLinkForm?.get('username')?.dirty ||
+                  newLinkForm?.get('username')?.touched)) {
+                  <hlm-error>Username is required.</hlm-error>
+                  } @if (newLinkForm!.get('username')?.errors?.['maxlength'])
+                  {
+                  <hlm-error>Username cannot exceed 30 characters.</hlm-error>
+                  }
                 </hlm-form-field>
                 <hlm-form-field>
-                  <label hlmLabel>
+                  <label for="handle" hlmLabel>
                     <div class="text-xs">handle</div>
-                    <input
-                      hlmInput
-                      type="text"
-                      formControlName="handle"
-                      placeholder="@SmilThakur"
-                    />
-                    @if (newLinkForm!.get('handle')?.errors?.['required'] &&
-                    (newLinkForm?.get('handle')?.dirty ||
-                    newLinkForm?.get('handle')?.touched)) {
-                    <hlm-error>Handle is required.</hlm-error>
-                    } @if (newLinkForm!.get('handle')?.errors?.['maxlength']) {
-                    <hlm-error>Handle cannot exceed 30 characters.</hlm-error>
-                    }
                   </label>
+                  <input
+                    id="handle"
+                    hlmInput
+                    type="text"
+                    formControlName="handle"
+                    placeholder="@SmilThakur"
+                  />
+                  @if (newLinkForm!.get('handle')?.errors?.['required'] &&
+                  (newLinkForm?.get('handle')?.dirty ||
+                  newLinkForm?.get('handle')?.touched)) {
+                  <hlm-error>Handle is required.</hlm-error>
+                  } @if (newLinkForm!.get('handle')?.errors?.['maxlength']) {
+                  <hlm-error>Handle cannot exceed 30 characters.</hlm-error>
+                  }
                 </hlm-form-field>
               </div>
 
               <div class="flex flex-col sm:flex-row gap-2 sm:gap-6">
                 <hlm-form-field>
-                  <label hlmLabel>
+                  <label for="follower" hlmLabel>
                     <div class="text-xs">Followers</div>
-                    <input
-                      hlmInput
-                      type="number"
-                      class="w-[72px]"
-                      placeholder="25"
-                      formControlName="follower"
-                    />
-                    @if (newLinkForm!.get('follower')?.errors?.['max'] &&
-                    (newLinkForm?.get('follower')?.dirty ||
-                    newLinkForm?.get('follower')?.touched)) {
-                    <hlm-error>Followers cannot exceed 9 digits.</hlm-error>
-                    } @if (newLinkForm!.get('follower')?.errors?.['pattern'] &&
-                    (newLinkForm?.get('follower')?.dirty ||
-                    newLinkForm?.get('follower')?.touched)) {
-                    <hlm-error>Followers must be a number.</hlm-error>
-                    }
                   </label>
+                  <input
+                    id="follower"
+                    hlmInput
+                    type="number"
+                    class="w-[72px]"
+                    placeholder="25"
+                    formControlName="follower"
+                  />
+                  @if (newLinkForm!.get('follower')?.errors?.['max'] &&
+                  (newLinkForm?.get('follower')?.dirty ||
+                  newLinkForm?.get('follower')?.touched)) {
+                  <hlm-error>Followers cannot exceed 9 digits.</hlm-error>
+                  } @if (newLinkForm!.get('follower')?.errors?.['pattern'] &&
+                  (newLinkForm?.get('follower')?.dirty ||
+                  newLinkForm?.get('follower')?.touched)) {
+                  <hlm-error>Followers must be a number.</hlm-error>
+                  }
                 </hlm-form-field>
                 <hlm-form-field>
-                  <label hlmLabel>
+                  <label for="following" hlmLabel>
                     <div class="text-xs">Following</div>
-                    <input
-                      hlmInput
-                      type="number"
-                      class="w-[72px]"
-                      placeholder="65"
-                      formControlName="following"
-                    />
-                    @if (newLinkForm!.get('following')?.errors?.['max'] &&
-                    (newLinkForm?.get('following')?.dirty ||
-                    newLinkForm?.get('following')?.touched)) {
-                    <hlm-error>Following cannot exceed 9 digits.</hlm-error>
-                    } @if (newLinkForm!.get('following')?.errors?.['pattern'] &&
-                    (newLinkForm?.get('following')?.dirty ||
-                    newLinkForm?.get('following')?.touched)) {
-                    <hlm-error>Following must be a number.</hlm-error>
-                    }
                   </label>
+                  <input
+                    id="following"
+                    hlmInput
+                    type="number"
+                    class="w-[72px]"
+                    placeholder="65"
+                    formControlName="following"
+                  />
+                  @if (newLinkForm!.get('following')?.errors?.['max'] &&
+                  (newLinkForm?.get('following')?.dirty ||
+                  newLinkForm?.get('following')?.touched)) {
+                  <hlm-error>Following cannot exceed 9 digits.</hlm-error>
+                  } @if (newLinkForm!.get('following')?.errors?.['pattern'] &&
+                  (newLinkForm?.get('following')?.dirty ||
+                  newLinkForm?.get('following')?.touched)) {
+                  <hlm-error>Following must be a number.</hlm-error>
+                  }
                 </hlm-form-field>
               </div>
               <hlm-form-field>
-                <label hlmLabel>
+                <label for="bio" hlmLabel>
                   <div class="text-xs">Bio</div>
-                  <input
-                    type="text"
-                    hlmInput
-                    placeholder="you know who I am"
-                    class="w-xs sm:w-md"
-                    formControlName="bio"
-                  />
-                  @if (newLinkForm!.get('bio')?.errors?.['required'] &&
-                  (newLinkForm?.get('bio')?.dirty ||
-                  newLinkForm?.get('bio')?.touched)) {
-                  <hlm-error>Bio is required.</hlm-error>
-                  } @if (newLinkForm!.get('bio')?.errors?.['maxlength']) {
-                  <hlm-error>Bio cannot exceed 160 characters.</hlm-error>
-                  }
                 </label>
+                <input
+                  id="bio"
+                  type="text"
+                  hlmInput
+                  placeholder="you know who I am"
+                  class="w-xs sm:w-md"
+                  formControlName="bio"
+                />
+                @if (newLinkForm!.get('bio')?.errors?.['required'] &&
+                (newLinkForm?.get('bio')?.dirty ||
+                newLinkForm?.get('bio')?.touched)) {
+                <hlm-error>Bio is required.</hlm-error>
+                } @if (newLinkForm!.get('bio')?.errors?.['maxlength']) {
+                <hlm-error>Bio cannot exceed 160 characters.</hlm-error>
+                }
               </hlm-form-field>
             </div>
             <div
@@ -244,35 +251,37 @@
           </div>
           <div hlmCardContent>
             <hlm-form-field class="mb-4">
-              <label hlmLabel>
+              <label for="greetingTitle" hlmLabel>
                 <div class="text-xs">Title</div>
-                <input
-                  class="w-xs sm:w-xl"
-                  hlmInput
-                  type="text"
-                  placeholder="Welcome everyone!"
-                  formControlName="title"
-                />
-                @if (greetingsForm!.get('title')?.errors?.['required'] &&
-                (greetingsForm?.get('title')?.dirty ||
-                greetingsForm?.get('title')?.touched)) {
-                <hlm-error>Title is required.</hlm-error>
-                } @if (greetingsForm!.get('title')?.errors?.['maxlength']) {
-                <hlm-error>Title cannot exceed 50 characters.</hlm-error>
-                }
               </label>
+              <input
+                id="greetingTitle"
+                class="w-xs sm:w-xl"
+                hlmInput
+                type="text"
+                placeholder="Welcome everyone!"
+                formControlName="title"
+              />
+              @if (greetingsForm!.get('title')?.errors?.['required'] &&
+              (greetingsForm?.get('title')?.dirty ||
+              greetingsForm?.get('title')?.touched)) {
+              <hlm-error>Title is required.</hlm-error>
+              } @if (greetingsForm!.get('title')?.errors?.['maxlength']) {
+              <hlm-error>Title cannot exceed 50 characters.</hlm-error>
+              }
             </hlm-form-field>
             <hlm-form-field>
-              <label hlmLabel>
+              <label for="greetingBody" hlmLabel>
                 <div class="text-xs">Body</div>
-                <input
-                  class="w-xs sm:w-xl"
-                  hlmInput
-                  type="text"
-                  placeholder="Here are my social Links"
-                  formControlName="body"
-                />
               </label>
+              <input
+                id="greetingBody"
+                class="w-xs sm:w-xl"
+                hlmInput
+                type="text"
+                placeholder="Here are my social Links"
+                formControlName="body"
+              />
               @if (greetingsForm!.get('body')?.errors?.['required'] &&
               (greetingsForm?.get('body')?.dirty ||
               greetingsForm?.get('body')?.touched)) {

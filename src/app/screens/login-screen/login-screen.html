@@ -14,42 +14,44 @@
         (submit)="loginWithEmail()"
       >
         <hlm-form-field>
-          <label hlmLabel>
+          <label for="loginEmail" hlmLabel>
             <div class="text-xs {{ mutedStyle }}">Email</div>
-            <input
-              class="w-full"
-              hlmInput
-              placeholder="Email"
-              formControlName="email"
-            />
-            @if (email?.errors?.["required"] && (email?.dirty ||
-            email?.touched)) {
-            <hlm-error>Email is required.</hlm-error>
-            } @if (email?.errors?.['email'] && (email?.dirty || email?.touched))
-            {
-            <hlm-error>Invalid Email.</hlm-error>
-            }
           </label>
+          <input
+            id="loginEmail"
+            class="w-full"
+            hlmInput
+            placeholder="Email"
+            formControlName="email"
+          />
+          @if (email?.errors?.["required"] && (email?.dirty ||
+          email?.touched)) {
+          <hlm-error>Email is required.</hlm-error>
+          } @if (email?.errors?.['email'] && (email?.dirty || email?.touched))
+          {
+          <hlm-error>Invalid Email.</hlm-error>
+          }
         </hlm-form-field>
         <hlm-form-field>
-          <label hlmLabel>
+          <label for="loginPassword" hlmLabel>
             <div class="text-xs {{ mutedStyle }}">Password</div>
-            <input
-              class="w-full"
-              hlmInput
-              [type]="hidden ? 'password' : 'text'"
-              placeholder="Password"
-              formControlName="password"
-            />
-            @if (password?.errors?.["required"] && (password?.dirty ||
-            password?.touched)) {
-            <hlm-error>Password is required.</hlm-error>
-            }
           </label>
+          <input
+            id="loginPassword"
+            class="w-full"
+            hlmInput
+            [type]="hidden ? 'password' : 'text'"
+            placeholder="Password"
+            formControlName="password"
+          />
+          @if (password?.errors?.["required"] && (password?.dirty ||
+          password?.touched)) {
+          <hlm-error>Password is required.</hlm-error>
+          }
         </hlm-form-field>
         <div class="flex items-center justify-end mb-4">
-          <label hlmLabel class="flex items-center">
-            <hlm-checkbox (changed)="showPasswordToggle($event)" class="mr-2" />
+          <label for="loginShowPassword" hlmLabel class="flex items-center">
+            <hlm-checkbox id="loginShowPassword" (changed)="showPasswordToggle($event)" class="mr-2" />
             show password
           </label>
         </div>

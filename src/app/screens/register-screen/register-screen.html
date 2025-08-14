@@ -14,77 +14,80 @@
         (submit)="registerWithEmail()"
       >
         <hlm-form-field>
-          <label hlmLabel>
+          <label for="registerUsername" hlmLabel>
             <div class="text-xs {{ mutedStyle }}">username</div>
-            <input
-              class="w-full"
-              formControlName="username"
-              hlmInput
-              placeholder="Username"
-            />
-            @if (registerForm?.get('username')?.errors?.['required'] &&
-            (registerForm?.get('username')?.dirty ||
-            registerForm?.get('username')?.touched)) {
-            <hlm-error>Username is required.</hlm-error>
-            } @if (registerForm?.get('username')?.errors?.['minlength'] &&
-            (registerForm?.get('username')?.dirty ||
-            registerForm?.get('username')?.touched)) {
-            <hlm-error>Username is too short.</hlm-error>
-            } @if (registerForm?.get('username')?.errors?.['maxlength'] &&
-            (registerForm?.get('username')?.dirty ||
-            registerForm?.get('username')?.touched)) {
-            <hlm-error>Username is too long.</hlm-error>
-            }
           </label>
+          <input
+            id="registerUsername"
+            class="w-full"
+            formControlName="username"
+            hlmInput
+            placeholder="Username"
+          />
+          @if (registerForm?.get('username')?.errors?.['required'] &&
+          (registerForm?.get('username')?.dirty ||
+          registerForm?.get('username')?.touched)) {
+          <hlm-error>Username is required.</hlm-error>
+          } @if (registerForm?.get('username')?.errors?.['minlength'] &&
+          (registerForm?.get('username')?.dirty ||
+          registerForm?.get('username')?.touched)) {
+          <hlm-error>Username is too short.</hlm-error>
+          } @if (registerForm?.get('username')?.errors?.['maxlength'] &&
+          (registerForm?.get('username')?.dirty ||
+          registerForm?.get('username')?.touched)) {
+          <hlm-error>Username is too long.</hlm-error>
+          }
         </hlm-form-field>
         <hlm-form-field>
-          <label hlmLabel>
+          <label for="registerEmail" hlmLabel>
             <div class="text-xs {{ mutedStyle }}">Email</div>
-            <input
-              class="w-full"
-              formControlName="email"
-              hlmInput
-              placeholder="Email"
-            />
-            @if (registerForm?.get('email')?.errors?.['required'] &&
-            (registerForm?.get('email')?.dirty ||
-            registerForm?.get('email')?.touched)) {
-            <hlm-error>Email is required.</hlm-error>
-            } @if (registerForm?.get('email')?.errors?.['email'] &&
-            (registerForm?.get('email')?.dirty ||
-            registerForm?.get('email')?.touched)) {
-            <hlm-error>Invalid Email.</hlm-error>
-            }
           </label>
+          <input
+            id="registerEmail"
+            class="w-full"
+            formControlName="email"
+            hlmInput
+            placeholder="Email"
+          />
+          @if (registerForm?.get('email')?.errors?.['required'] &&
+          (registerForm?.get('email')?.dirty ||
+          registerForm?.get('email')?.touched)) {
+          <hlm-error>Email is required.</hlm-error>
+          } @if (registerForm?.get('email')?.errors?.['email'] &&
+          (registerForm?.get('email')?.dirty ||
+          registerForm?.get('email')?.touched)) {
+          <hlm-error>Invalid Email.</hlm-error>
+          }
         </hlm-form-field>
         <hlm-form-field>
-          <label hlmLabel>
+          <label for="registerPassword" hlmLabel>
             <div class="text-xs {{ mutedStyle }}">Password</div>
-            <input
-              class="w-full"
-              hlmInput
-              [type]="hidden ? 'password' : 'text'"
-              placeholder="Password"
-              formControlName="password"
-            />
-            @if (registerForm?.get('password')?.errors?.['required'] &&
-            (registerForm?.get('password')?.dirty ||
-            registerForm?.get('password')?.touched)) {
-            <hlm-error>Password is required.</hlm-error>
-            } @if (registerForm?.get('password')?.errors?.['minlength'] &&
-            (registerForm?.get('password')?.dirty ||
-            registerForm?.get('password')?.touched)) {
-            <hlm-error>Password is too short.</hlm-error>
-            } @if (registerForm?.get('password')?.errors?.['maxlength'] &&
-            (registerForm?.get('password')?.dirty ||
-            registerForm?.get('password')?.touched)) {
-            <hlm-error>Password is too long.</hlm-error>
-            }
           </label>
+          <input
+            id="registerPassword"
+            class="w-full"
+            hlmInput
+            [type]="hidden ? 'password' : 'text'"
+            placeholder="Password"
+            formControlName="password"
+          />
+          @if (registerForm?.get('password')?.errors?.['required'] &&
+          (registerForm?.get('password')?.dirty ||
+          registerForm?.get('password')?.touched)) {
+          <hlm-error>Password is required.</hlm-error>
+          } @if (registerForm?.get('password')?.errors?.['minlength'] &&
+          (registerForm?.get('password')?.dirty ||
+          registerForm?.get('password')?.touched)) {
+          <hlm-error>Password is too short.</hlm-error>
+          } @if (registerForm?.get('password')?.errors?.['maxlength'] &&
+          (registerForm?.get('password')?.dirty ||
+          registerForm?.get('password')?.touched)) {
+          <hlm-error>Password is too long.</hlm-error>
+          }
         </hlm-form-field>
         <div class="flex items-center justify-end mb-4">
-          <label hlmLabel class="flex items-center">
-            <hlm-checkbox (changed)="showPasswordToggle($event)" class="mr-2" />
+          <label for="showPassword" hlmLabel class="flex items-center">
+            <hlm-checkbox id="showPassword" (changed)="showPasswordToggle($event)" class="mr-2" />
             show password
           </label>
         </div>
