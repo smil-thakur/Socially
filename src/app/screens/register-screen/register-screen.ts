@@ -1,21 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
+import { HlmButton } from '@spartan-ng/helm/button';
 import { HlmFormFieldModule } from '@spartan-ng/helm/form-field';
-import { HlmInputDirective } from '@spartan-ng/helm/input';
-import { HlmCheckboxComponent } from '@spartan-ng/helm/checkbox';
+import { HlmInput } from '@spartan-ng/helm/input';
+import { HlmCheckbox } from '@spartan-ng/helm/checkbox';
 
-import {
-  HlmCardDirective,
-  HlmCardContentDirective,
-  HlmCardHeaderDirective,
-  HlmCardFooterDirective,
-  HlmCardDescriptionDirective,
-  HlmCardTitleDirective,
-} from '@spartan-ng/helm/card';
+import { HlmCardImports } from '@spartan-ng/helm/card';
 import { Logo } from '../../common/logo/logo';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
-import { HlmLabelDirective } from '@spartan-ng/helm/label';
+import { HlmLabel } from '@spartan-ng/helm/label';
 import {
   FormControl,
   FormGroup,
@@ -40,18 +33,12 @@ import {
   selector: 'app-register-screen',
   imports: [
     ReactiveFormsModule,
-    HlmButtonDirective,
+    HlmButton,
     HlmFormFieldModule,
-    HlmInputDirective,
-    HlmCheckboxComponent,
-    HlmCardDirective,
-    HlmCardHeaderDirective,
-    HlmCardContentDirective,
-    HlmLabelDirective,
-    HlmCardFooterDirective,
-    HlmCardDescriptionDirective,
-    HlmCardTitleDirective,
-    HlmLabelDirective,
+    HlmInput,
+    HlmCheckbox,
+    HlmCardImports,
+    HlmLabel,
     Logo,
   ],
   templateUrl: './register-screen.html',

@@ -1,13 +1,6 @@
 import { Component, input } from '@angular/core';
 import { SocialLink } from '../../interfaces/social-link';
-import {
-  HlmCardContentDirective,
-  HlmCardDescriptionDirective,
-  HlmCardDirective,
-  HlmCardFooterDirective,
-  HlmCardHeaderDirective,
-  HlmCardTitleDirective,
-} from '@spartan-ng/helm/card';
+import { HlmCardImports } from '@spartan-ng/helm/card';
 import { CommonModule } from '@angular/common';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
@@ -22,19 +15,10 @@ import {
 
 import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { SocialLinkMainCard } from '../social-link-main-card/social-link-main-card';
-import { HlmSkeletonComponent } from '@spartan-ng/helm/skeleton';
+import { HlmSkeleton } from '@spartan-ng/helm/skeleton';
 @Component({
   selector: 'app-social-link-card',
-  imports: [
-    HlmCardDirective,
-    HlmCardHeaderDirective,
-    HlmCardTitleDirective,
-    HlmCardDescriptionDirective,
-    HlmCardContentDirective,
-    CommonModule,
-    NgIconComponent,
-    HlmSkeletonComponent,
-  ],
+  imports: [HlmCardImports, CommonModule, NgIconComponent, HlmSkeleton],
   providers: [
     provideIcons({
       lucideLinkedin,

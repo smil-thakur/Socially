@@ -1,21 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { BrnDialogRef, injectBrnDialogContext } from '@spartan-ng/brain/dialog';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
-import {
-  HlmDialogDescriptionDirective,
-  HlmDialogFooterComponent,
-  HlmDialogHeaderComponent,
-  HlmDialogTitleDirective,
-} from '@spartan-ng/helm/dialog';
+import { HlmButton } from '@spartan-ng/helm/button';
+import { HlmDialogImports } from '@spartan-ng/helm/dialog';
 @Component({
   selector: 'app-error-dialog',
-  imports: [
-    HlmDialogDescriptionDirective,
-    HlmDialogFooterComponent,
-    HlmDialogHeaderComponent,
-    HlmDialogTitleDirective,
-    HlmButtonDirective,
-  ],
+  imports: [HlmDialogImports, HlmButton],
   templateUrl: './error-dialog.html',
   styleUrl: './error-dialog.scss',
 })

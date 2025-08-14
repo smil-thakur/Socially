@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { HlmIconDirective } from '@spartan-ng/helm/icon';
+import { HlmIcon } from '@spartan-ng/helm/icon';
 import {
   lucideBadgeCheck,
   lucideChartBar,
@@ -15,16 +15,9 @@ import {
   lucideQrCode,
   lucideVideo,
 } from '@ng-icons/lucide';
-import {
-  HlmCardDirective,
-  HlmCardContentDirective,
-  HlmCardHeaderDirective,
-  HlmCardFooterDirective,
-  HlmCardDescriptionDirective,
-  HlmCardTitleDirective,
-} from '@spartan-ng/helm/card';
+import { HlmCardImports } from '@spartan-ng/helm/card';
 import { Social } from '../../interfaces/socials';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
+import { HlmButton } from '@spartan-ng/helm/button';
 import { Router } from '@angular/router';
 import { TopNavBar } from '../../common/top-nav-bar/top-nav-bar';
 import { Auth, idToken, User, user } from '@angular/fire/auth';
@@ -37,18 +30,7 @@ import { ResumeDataService } from '../../services/resume-data-service';
 
 @Component({
   selector: 'app-home-screen',
-  imports: [
-    NgIcon,
-    HlmIconDirective,
-    HlmCardDirective,
-    HlmCardTitleDirective,
-    HlmCardContentDirective,
-    HlmCardHeaderDirective,
-    HlmCardDescriptionDirective,
-    HlmCardFooterDirective,
-    HlmButtonDirective,
-    TopNavBar,
-  ],
+  imports: [NgIcon, HlmIcon, HlmCardImports, HlmButton, TopNavBar],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.scss',
   providers: [

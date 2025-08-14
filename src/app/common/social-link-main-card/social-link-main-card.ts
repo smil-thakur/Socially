@@ -19,20 +19,20 @@ import {
   lucideYoutube,
 } from '@ng-icons/lucide';
 import { QRCodeComponent } from 'angularx-qrcode';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
-import { HlmTooltipTriggerDirective } from '@spartan-ng/helm/tooltip';
-import { HlmSkeletonComponent } from '@spartan-ng/helm/skeleton';
-import { HlmIconDirective } from '@spartan-ng/helm/icon';
+import { HlmButton } from '@spartan-ng/helm/button';
+import { HlmTooltipTrigger } from '@spartan-ng/helm/tooltip';
+import { HlmSkeleton } from '@spartan-ng/helm/skeleton';
+import { HlmIcon } from '@spartan-ng/helm/icon';
 
 @Component({
   selector: 'app-social-link-main-card',
   imports: [
     NgIconComponent,
     QRCodeComponent,
-    HlmButtonDirective,
-    HlmTooltipTriggerDirective,
-    HlmSkeletonComponent,
-    HlmIconDirective,
+    HlmButton,
+    HlmTooltipTrigger,
+    HlmSkeleton,
+    HlmIcon,
   ],
   templateUrl: './social-link-main-card.html',
   styleUrl: './social-link-main-card.scss',

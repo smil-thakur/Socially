@@ -9,15 +9,10 @@ import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { StaticTopBar } from '../../common/static-top-bar/static-top-bar';
 import { SocialLinkGreeting } from '../../interfaces/social-link-greeting';
 import { PromotionFooter } from '../../common/promotion-footer/promotion-footer';
-import {
-  HlmTabsComponent,
-  HlmTabsContentDirective,
-  HlmTabsListComponent,
-  HlmTabsTriggerDirective,
-} from '@spartan-ng/helm/tabs';
+import { HlmTabsImports } from '@spartan-ng/helm/tabs';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { lucideGrid3x3, lucideLayoutGrid } from '@ng-icons/lucide';
-import { HlmCardDirective } from '@spartan-ng/helm/card';
+import { HlmCard } from '@spartan-ng/helm/card';
 import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
 
 @Component({
@@ -28,12 +23,9 @@ import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
     SocialLinkMainCard,
     StaticTopBar,
     PromotionFooter,
-    HlmTabsComponent,
-    HlmTabsContentDirective,
-    HlmTabsListComponent,
-    HlmTabsTriggerDirective,
+    HlmTabsImports,
     NgIconComponent,
-    HlmCardDirective,
+    HlmCard,
     SocialLinkCard,
   ],
   templateUrl: './social-link-viewer.html',

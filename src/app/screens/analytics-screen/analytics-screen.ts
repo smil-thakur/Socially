@@ -1,31 +1,24 @@
 import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { dummyData } from '../../enums/dummy-data';
-import {
-  HlmCardContentDirective,
-  HlmCardDescriptionDirective,
-  HlmCardDirective,
-  HlmCardFooterDirective,
-  HlmCardHeaderDirective,
-  HlmCardTitleDirective,
-} from '@spartan-ng/helm/card';
+import { HlmCardImports } from '@spartan-ng/helm/card';
 import { OnlyBackNavBar } from '../../common/only-back-nav-bar/only-back-nav-bar';
-import { HlmLabelDirective } from '@spartan-ng/helm/label';
+import { HlmLabel } from '@spartan-ng/helm/label';
 import { HlmFormFieldModule } from '@spartan-ng/helm/form-field';
-import { HlmInputDirective } from '@spartan-ng/helm/input';
+import { HlmInput } from '@spartan-ng/helm/input';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { UserService } from '../../services/user-service';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
+import { HlmButton } from '@spartan-ng/helm/button';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
-  HlmAccordionContentComponent,
-  HlmAccordionDirective,
-  HlmAccordionIconDirective,
-  HlmAccordionItemDirective,
-  HlmAccordionTriggerDirective,
+  HlmAccordion,
+  HlmAccordionContent,
+  HlmAccordionIcon,
+  HlmAccordionItem,
+  HlmAccordionTrigger,
 } from '@spartan-ng/helm/accordion';
-import { HlmIconDirective } from '@spartan-ng/helm/icon';
+import { HlmIcon } from '@spartan-ng/helm/icon';
 import { lucideChevronDown, lucideInfo, lucideTrash } from '@ng-icons/lucide';
-import { HlmTooltipTriggerDirective } from '@spartan-ng/helm/tooltip';
+import { HlmTooltipTrigger } from '@spartan-ng/helm/tooltip';
 import {
   Education,
   Experience,
@@ -51,37 +44,32 @@ import { InfoDialog } from '../../common/info-dialog/info-dialog';
 import { PreloaderService } from '../../services/preloader-service';
 import { isEqual } from 'lodash';
 import { toast } from 'ngx-sonner';
-import { HlmToasterComponent } from '@spartan-ng/helm/sonner';
+import { HlmToaster } from '@spartan-ng/helm/sonner';
 import { UserCacheManager } from '../../cache/user-cache-manager';
 
 @Component({
   selector: 'app-analytics-screen',
   imports: [
-    HlmCardDirective,
-    HlmCardTitleDirective,
-    HlmCardContentDirective,
-    HlmCardHeaderDirective,
-    HlmCardDescriptionDirective,
+    HlmCardImports,
 
     ReactiveFormsModule,
     HlmFormFieldModule,
-    HlmInputDirective,
-    HlmLabelDirective,
+    HlmInput,
+    HlmLabel,
 
     OnlyBackNavBar,
-    HlmButtonDirective,
-    HlmCardFooterDirective,
-    HlmAccordionItemDirective,
-    HlmAccordionTriggerDirective,
-    HlmAccordionIconDirective,
-    HlmAccordionContentComponent,
-    HlmAccordionDirective,
+    HlmButton,
+    HlmAccordion,
+    HlmAccordionContent,
+    HlmAccordionIcon,
+    HlmAccordionItem,
+    HlmAccordionTrigger,
     NgIcon,
-    HlmIconDirective,
-    HlmTooltipTriggerDirective,
+    HlmIcon,
+    HlmTooltipTrigger,
     CommonModule,
 
-    HlmToasterComponent,
+    HlmToaster,
   ],
   templateUrl: './analytics-screen.html',
   styleUrl: './analytics-screen.scss',

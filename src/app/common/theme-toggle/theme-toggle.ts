@@ -1,6 +1,6 @@
 import { Component, DOCUMENT, Inject, OnInit, Renderer2 } from '@angular/core';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
-import { HlmIconDirective } from '@spartan-ng/helm/icon';
+import { HlmButton } from '@spartan-ng/helm/button';
+import { HlmIcon } from '@spartan-ng/helm/icon';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideSun, lucideMoon } from '@ng-icons/lucide';
 import { LocalStorageService } from '../../services/local-storage-service';
@@ -8,7 +8,7 @@ import { ToggleThemeService } from '../../services/toggle-theme-service';
 
 @Component({
   selector: 'app-theme-toggle',
-  imports: [HlmButtonDirective, HlmIconDirective, NgIcon],
+  imports: [HlmButton, HlmIcon, NgIcon],
   templateUrl: './theme-toggle.html',
   styleUrl: './theme-toggle.scss',
   providers: [provideIcons({ lucideSun, lucideMoon })],

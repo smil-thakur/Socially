@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
+import { HlmButton } from '@spartan-ng/helm/button';
 import { Auth, signOut } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-top-nav-bar',
-  imports: [HlmButtonDirective],
+  imports: [HlmButton],
   templateUrl: './top-nav-bar.html',
   styleUrl: './top-nav-bar.scss',
 })

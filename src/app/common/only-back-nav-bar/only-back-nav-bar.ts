@@ -2,11 +2,11 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideArrowLeft } from '@ng-icons/lucide';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
+import { HlmButton } from '@spartan-ng/helm/button';
 
 @Component({
   selector: 'app-only-back-nav-bar',
-  imports: [NgIcon, HlmButtonDirective],
+  imports: [NgIcon, HlmButton],
   templateUrl: './only-back-nav-bar.html',
   styleUrl: './only-back-nav-bar.scss',
   providers: [

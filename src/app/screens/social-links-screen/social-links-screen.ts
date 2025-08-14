@@ -8,16 +8,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { HlmFormFieldModule } from '@spartan-ng/helm/form-field';
-import { HlmInputDirective } from '@spartan-ng/helm/input';
-import {
-  HlmCardDirective,
-  HlmCardHeaderDirective,
-  HlmCardContentDirective,
-  HlmCardTitleDirective,
-  HlmCardDescriptionDirective,
-  HlmCardFooterDirective,
-} from '@spartan-ng/helm/card';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
+import { HlmInput } from '@spartan-ng/helm/input';
+import { HlmCardImports } from '@spartan-ng/helm/card';
+import { HlmButton } from '@spartan-ng/helm/button';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   lucideLinkedin,
@@ -31,7 +24,7 @@ import {
 import { HlmSelectImports, HlmSelectModule } from '@spartan-ng/helm/select';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { Subscription } from 'rxjs';
-import { HlmLabelDirective } from '@spartan-ng/helm/label';
+import { HlmLabel } from '@spartan-ng/helm/label';
 import { SocialLink } from '../../interfaces/social-link';
 import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
@@ -44,41 +37,27 @@ import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { ErrorDialog } from '../../common/error-dialog/error-dialog';
 import { InfoDialog } from '../../common/info-dialog/info-dialog';
 import { SocialLinkService } from '../../services/social-link-service';
-import {
-  HlmTabsComponent,
-  HlmTabsContentDirective,
-  HlmTabsListComponent,
-  HlmTabsTriggerDirective,
-} from '@spartan-ng/helm/tabs';
+import { HlmTabsImports } from '@spartan-ng/helm/tabs';
 import { SocialLinkGreeting } from '../../interfaces/social-link-greeting';
 
 @Component({
   selector: 'app-social-links-screen',
   standalone: true,
   imports: [
-    HlmTabsComponent,
-    HlmTabsListComponent,
-    HlmTabsTriggerDirective,
-    HlmTabsContentDirective,
+    HlmTabsImports,
 
     ReactiveFormsModule,
     HlmFormFieldModule,
     HlmSelectModule,
-    HlmInputDirective,
+    HlmInput,
     HlmSelectImports,
     BrnSelectImports,
-    HlmLabelDirective,
+    HlmLabel,
 
-    HlmButtonDirective,
+    HlmButton,
 
     NgIconComponent,
-
-    HlmCardDirective,
-    HlmCardHeaderDirective,
-    HlmCardContentDirective,
-    HlmCardTitleDirective,
-    HlmCardDescriptionDirective,
-    HlmCardFooterDirective,
+    HlmCardImports,
 
     SocialLinkCard,
 

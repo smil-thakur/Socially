@@ -1,18 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
+import { HlmButton } from '@spartan-ng/helm/button';
 import { HlmFormFieldModule } from '@spartan-ng/helm/form-field';
-import { HlmInputDirective } from '@spartan-ng/helm/input';
-import { HlmCheckboxComponent } from '@spartan-ng/helm/checkbox';
-import { HlmLabelDirective } from '@spartan-ng/helm/label';
-import {
-  HlmCardDirective,
-  HlmCardContentDirective,
-  HlmCardHeaderDirective,
-  HlmCardFooterDirective,
-  HlmCardDescriptionDirective,
-  HlmCardTitleDirective,
-} from '@spartan-ng/helm/card';
+import { HlmInput } from '@spartan-ng/helm/input';
+import { HlmCheckbox } from '@spartan-ng/helm/checkbox';
+import { HlmLabel } from '@spartan-ng/helm/label';
+import { HlmCardImports } from '@spartan-ng/helm/card';
 import { Logo } from '../../common/logo/logo';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import {
@@ -36,18 +29,12 @@ import { FirebaseError } from '@angular/fire/app';
   selector: 'app-login-screen',
   imports: [
     ReactiveFormsModule,
-    HlmButtonDirective,
+    HlmButton,
     HlmFormFieldModule,
-    HlmInputDirective,
-    HlmCardDirective,
-    HlmCardHeaderDirective,
-    HlmCardContentDirective,
-    HlmCardFooterDirective,
-    HlmCardDescriptionDirective,
-    HlmCheckboxComponent,
-    HlmLabelDirective,
-    HlmCardTitleDirective,
-    HlmLabelDirective,
+    HlmInput,
+    HlmCardImports,
+    HlmCheckbox,
+    HlmLabel,
     Logo,
   ],
   templateUrl: './login-screen.html',
