@@ -1,7 +1,7 @@
 <div class="main">
   <app-logo></app-logo>
   <h3 class="{{ h3Style }}">Socially</h3>
-  <h4 class="mb-8 {{ mutedStyle }}">Create your account</h4>
+  <h4 class="mb-8">Create your account</h4>
   <div hlmCard class="min-w-xs md:min-w-md">
     <div hlmCardHeader>
       <div hlmCardTitle>Welcome!</div>
@@ -15,7 +15,7 @@
       >
         <hlm-form-field>
           <label for="registerUsername" hlmLabel>
-            <div class="text-xs {{ mutedStyle }}">username</div>
+            <div class="text-xs">username</div>
           </label>
           <input
             id="registerUsername"
@@ -40,7 +40,7 @@
         </hlm-form-field>
         <hlm-form-field>
           <label for="registerEmail" hlmLabel>
-            <div class="text-xs {{ mutedStyle }}">Email</div>
+            <div class="text-xs">Email</div>
           </label>
           <input
             id="registerEmail"
@@ -61,7 +61,7 @@
         </hlm-form-field>
         <hlm-form-field>
           <label for="registerPassword" hlmLabel>
-            <div class="text-xs {{ mutedStyle }}">Password</div>
+            <div class="text-xs">Password</div>
           </label>
           <input
             id="registerPassword"
@@ -86,20 +86,19 @@
           }
         </hlm-form-field>
         <div class="flex items-center justify-end mb-4">
+          <hlm-checkbox
+            id="showPassword"
+            (changed)="showPasswordToggle($event)"
+            class="mr-2"
+          />
           <label for="showPassword" hlmLabel class="flex items-center">
-            <hlm-checkbox id="showPassword" (changed)="showPasswordToggle($event)" class="mr-2" />
             show password
           </label>
         </div>
       </form>
     </div>
     <div hlmCardFooter>
-      <button
-        hlmBtn
-        class="shrink-0"
-        variant="secondary"
-        (click)="navigateToLoginScreen()"
-      >
+      <button hlmBtn variant="secondary" (click)="navigateToLoginScreen()">
         Log In
       </button>
       <button class="shrink-0" hlmBtn variant="outline">
@@ -110,7 +109,7 @@
           srcset=""
         />
       </button>
-      <button hlmBtn class="w-full" (click)="registerWithEmail()">
+      <button hlmBtn class="flex-1" (click)="registerWithEmail()">
         Register
       </button>
     </div>

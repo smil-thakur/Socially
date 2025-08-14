@@ -55,8 +55,7 @@
                   && (newLinkForm?.get('customPlatformName')?.dirty ||
                   newLinkForm?.get('customPlatformName')?.touched)) {
                   <hlm-error>Platform name is required.</hlm-error>
-                  } @if (newLinkForm!.get('username')?.errors?.['maxlength'])
-                  {
+                  } @if (newLinkForm!.get('username')?.errors?.['maxlength']) {
                   <hlm-error
                     >Platform name cannot exceed 20 characters.</hlm-error
                   >
@@ -78,8 +77,7 @@
                   (newLinkForm?.get('username')?.dirty ||
                   newLinkForm?.get('username')?.touched)) {
                   <hlm-error>Username is required.</hlm-error>
-                  } @if (newLinkForm!.get('username')?.errors?.['maxlength'])
-                  {
+                  } @if (newLinkForm!.get('username')?.errors?.['maxlength']) {
                   <hlm-error>Username cannot exceed 30 characters.</hlm-error>
                   }
                 </hlm-form-field>
@@ -172,7 +170,7 @@
               </hlm-form-field>
             </div>
             <div
-              class="flex flex-col sm:flex-row justify-center sm:space-x-2 space-y-2 sm:space-y-0"
+              class="flex flex-col sm:flex-row items-center justify-center sm:space-x-2 space-y-2 sm:space-y-0"
             >
               <hlm-form-field class="flex-1">
                 <brn-select

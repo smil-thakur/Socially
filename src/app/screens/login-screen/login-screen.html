@@ -1,7 +1,7 @@
 <div class="main">
   <app-logo></app-logo>
   <h3 class="{{ h3Style }}">Socially</h3>
-  <h4 class="mb-8 {{ mutedStyle }}">Your personal social Butler</h4>
+  <h4 class="mb-8">Your personal social Butler</h4>
   <div hlmCard class="min-w-xs md:min-w-md">
     <div hlmCardHeader>
       <div hlmCardTitle>Welcome Back!</div>
@@ -15,7 +15,7 @@
       >
         <hlm-form-field>
           <label for="loginEmail" hlmLabel>
-            <div class="text-xs {{ mutedStyle }}">Email</div>
+            <div class="text-xs">Email</div>
           </label>
           <input
             id="loginEmail"
@@ -24,17 +24,16 @@
             placeholder="Email"
             formControlName="email"
           />
-          @if (email?.errors?.["required"] && (email?.dirty ||
-          email?.touched)) {
-          <hlm-error>Email is required.</hlm-error>
-          } @if (email?.errors?.['email'] && (email?.dirty || email?.touched))
+          @if (email?.errors?.["required"] && (email?.dirty || email?.touched))
           {
+          <hlm-error>Email is required.</hlm-error>
+          } @if (email?.errors?.['email'] && (email?.dirty || email?.touched)) {
           <hlm-error>Invalid Email.</hlm-error>
           }
         </hlm-form-field>
         <hlm-form-field>
           <label for="loginPassword" hlmLabel>
-            <div class="text-xs {{ mutedStyle }}">Password</div>
+            <div class="text-xs">Password</div>
           </label>
           <input
             id="loginPassword"
@@ -50,8 +49,12 @@
           }
         </hlm-form-field>
         <div class="flex items-center justify-end mb-4">
+          <hlm-checkbox
+            id="loginShowPassword"
+            (changed)="showPasswordToggle($event)"
+            class="mr-2"
+          />
           <label for="loginShowPassword" hlmLabel class="flex items-center">
-            <hlm-checkbox id="loginShowPassword" (changed)="showPasswordToggle($event)" class="mr-2" />
             show password
           </label>
         </div>
@@ -74,7 +77,7 @@
           srcset=""
         />
       </button>
-      <button hlmBtn class="w-full" (click)="loginWithEmail()">Log In</button>
+      <button hlmBtn class="flex-1" (click)="loginWithEmail()">Log In</button>
     </div>
   </div>
 </div>
