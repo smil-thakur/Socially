@@ -127,3 +127,15 @@ div[hlmcardfooter] {
 div[hlmcardcontent] {
   margin-top: 8px;
 }
+
+//fix for code editor blank code suggestion
+.suggest-icon.codicon {
+  right: 0;
+  position: absolute;
+}
+
+body:has(app-resume-viewer) {
+  #themeToggleBtn {
+    display: none;
+  }
+}

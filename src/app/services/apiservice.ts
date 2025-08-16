@@ -69,12 +69,44 @@ export class APIservice {
             if (onError) {
               onError();
             }
-            throw Error(`${api} is not reachable!`);
+            throw Error(`${api} has ${err.toString()}`);
           }),
           finalize(() => {
             if (onComplete) {
               onComplete();
             }
+          })
+        )
+    );
+  }
+  public postBlob<T>(
+    api: string,
+    body: T,
+    idTocken?: string,
+    onStart?: () => void,
+    onComplete?: () => void,
+    onError?: () => void
+  ): Promise<Blob> {
+    const url =
+      environment.backend.baseURL + ':' + environment.backend.port + api;
+    if (onStart) onStart();
+
+    return firstValueFrom(
+      this.httpclient
+        .post(url, body, {
+          headers: {
+            Authorization: idTocken ? idTocken : '',
+          },
+          responseType: 'blob',
+        })
+        .pipe(
+          catchError((err) => {
+            if (onError) onError();
+            console.error('API error', err);
+            throw Error(`${err.message}`);
+          }),
+          finalize(() => {
+            if (onComplete) onComplete();
           })
         )
     );

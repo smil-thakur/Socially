@@ -1,0 +1,34 @@
+<div class="flex justify-between items-center w-[100%] p-4">
+  <div>
+    <button hlmBtn>
+      <ng-icon size="25px" name="lucideArrowLeft"></ng-icon>
+    </button>
+  </div>
+  <div class="">{{ username }}'s Resume</div>
+  <div>
+    <button hlmBtn (click)="recompilePDF()">Compile</button>
+  </div>
+</div>
+
+<div class="flex">
+  <div class="flex-1">
+    <ngs-code-editor
+      [options]="codeOption"
+      [theme]="theme"
+      [codeModel]="codeModel"
+      (valueChanged)="contentChange($event)"
+    ></ngs-code-editor>
+  </div>
+  <div class="flex flex-1 items-center justify-center text-center border">
+    @if (this.pdfSource) {
+    <pdf-viewer
+      [src]="pdfSource"
+      [render-text]="true"
+      [original-size]="false"
+      style="width: 100%; height: 100%"
+    ></pdf-viewer>
+    } @if (!this.pdfSource) {
+    <h3 class="{{ h3Style }}">Click on Compile button to see your resume.</h3>
+    }
+  </div>
+</div>

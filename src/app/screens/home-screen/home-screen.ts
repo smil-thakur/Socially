@@ -177,6 +177,9 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       case 'analytics':
         this.router.navigate(['analytics-viewer']);
         break;
+      case 'resume':
+        this.router.navigate(['resume-viewer']);
+        break;
       default:
         break;
     }

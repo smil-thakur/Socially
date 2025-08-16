@@ -5,4 +5,6 @@ export const API = {
   SCANPDF: '/scanpdf',
   UPDATEUSERPROFILE: '/updateProfile',
   GETUSERPROFILE: '/userProfile',
+  GETLATEXFROMUSERPROFILE: '/getTexFromProfile',
+  GETPDFFROMLATEX: '/convert-tex',
 };

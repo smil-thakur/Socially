@@ -10,7 +10,7 @@ export class ToggleThemeService {
     private localStorageService: LocalStorageService
   ) {}
 
-  getCurrentMode(): string {
+  getCurrentMode(): 'dark' | 'light' {
     if (this.localStorageService.getItem('mode') == 'dark') {
       return 'dark';
     } else if (this.localStorageService.getItem('mode') == 'light') {
