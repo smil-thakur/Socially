@@ -10,14 +10,13 @@ import { UserService } from '../../services/user-service';
 import { HlmButton } from '@spartan-ng/helm/button';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
-  HlmAccordion,
-  HlmAccordionContent,
-  HlmAccordionIcon,
-  HlmAccordionItem,
-  HlmAccordionTrigger,
-} from '@spartan-ng/helm/accordion';
+  HlmTabs,
+  HlmTabsContent,
+  HlmTabsList,
+  HlmTabsTrigger,
+} from '@spartan-ng/helm/tabs';
 import { HlmIcon } from '@spartan-ng/helm/icon';
-import { lucideChevronDown, lucideInfo, lucideTrash } from '@ng-icons/lucide';
+import { lucideInfo, lucideTrash } from '@ng-icons/lucide';
 import { HlmTooltipTrigger } from '@spartan-ng/helm/tooltip';
 import {
   Education,
@@ -59,11 +58,10 @@ import { UserCacheManager } from '../../cache/user-cache-manager';
 
     OnlyBackNavBar,
     HlmButton,
-    HlmAccordion,
-    HlmAccordionContent,
-    HlmAccordionIcon,
-    HlmAccordionItem,
-    HlmAccordionTrigger,
+    HlmTabs,
+    HlmTabsContent,
+    HlmTabsList,
+    HlmTabsTrigger,
     NgIcon,
     HlmIcon,
     HlmTooltipTrigger,
@@ -75,16 +73,12 @@ import { UserCacheManager } from '../../cache/user-cache-manager';
   styleUrl: './analytics-screen.scss',
   providers: [
     provideIcons({
-      lucideChevronDown,
       lucideInfo,
       lucideTrash,
     }),
   ],
 })
 export class AnalyticsScreen extends BasePageScreen implements OnInit {
-  protected readonly _isExperienceAccOpen = signal(false);
-  protected readonly _isEducationAccOpen = signal(false);
-  protected readonly _isProjectAccOpen = signal(false);
   private resumeDataService = inject(ResumeDataService);
   private userService = inject(UserService);
   private fb = inject(FormBuilder);
@@ -139,13 +133,9 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
       } else if (this.resumeDataSaved) {
         this.setResumeDatatoForm(this.resumeDataSaved);
       } else {
-        if (this.resumeData) {
-          this.setResumeDatatoForm(this.resumeData);
-        } else {
-          if (this.educations.length === 0) this.addEducation();
-          if (this.experiences.length === 0) this.addExperience();
-          if (this.projects.length === 0) this.addProject();
-        }
+        if (this.educations.length === 0) this.addEducation();
+        if (this.experiences.length === 0) this.addExperience();
+        if (this.projects.length === 0) this.addProject();
       }
       this.initialFormData = this.userDataForm.value;
       this.preloaderService.hide();
@@ -179,7 +169,6 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
         (s) => s !== null
       );
       this.educations.clear();
-      this._isEducationAccOpen.set(true);
       for (let i = 0; i < educations.length; i++) {
         const group = this.fb.group({
           degree: [educations[i]!.degree ?? '', Validators.required],
@@ -194,7 +183,6 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
         (s) => s !== null
       );
       this.experiences.clear();
-      this._isExperienceAccOpen.set(true);
       for (let i = 0; i < experiences.length; i++) {
         const group = this.fb.group({
           role: [experiences[i]!.role ?? '', Validators.required],
@@ -208,7 +196,6 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     if (resumeData.projects) {
       const projects = (resumeData.projects ?? []).filter((s) => s !== null);
       this.projects.clear();
-      this._isProjectAccOpen.set(true);
       for (let i = 0; i < projects.length; i++) {
         const techstack = (projects[i]!.techstack ?? [])
           .filter((s) => s !== null)
@@ -236,115 +223,6 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     return this.userDataForm.get('projects') as FormArray;
   }
 
-  private updateEducationValidators(group: FormGroup) {
-    const degree = group.get('degree');
-    const institution = group.get('institution');
-    const year = group.get('year');
-
-    const degreeValue = degree?.value?.trim() || '';
-    const institutionValue = institution?.value?.trim() || '';
-    const yearValue = year?.value?.trim() || '';
-
-    // Check if any field has a value
-    const hasAnyValue = degreeValue || institutionValue || yearValue;
-
-    if (hasAnyValue) {
-      // If any field has value, make all fields required
-      degree?.setValidators(Validators.required);
-      institution?.setValidators(Validators.required);
-      year?.setValidators(Validators.required);
-    } else {
-      // If all fields are empty, remove validators
-      degree?.clearValidators();
-      institution?.clearValidators();
-      year?.clearValidators();
-    }
-    // Update validity
-    degree?.updateValueAndValidity({ emitEvent: false });
-    degree?.markAsTouched();
-    institution?.updateValueAndValidity({ emitEvent: false });
-    institution?.markAsTouched();
-    year?.updateValueAndValidity({ emitEvent: false });
-    year?.markAsTouched();
-  }
-
-  private updateExperienceValidators(group: FormGroup) {
-    const role = group.get('role');
-    const company = group.get('company');
-    const years = group.get('years');
-    const summary = group.get('summary');
-
-    const roleValue = role?.value?.trim() || '';
-    const companyValue = company?.value?.trim() || '';
-    const yearsValue = years?.value?.trim() || '';
-    const summaryValue = summary?.value.trim() || '';
-
-    // Check if any field has a value
-    const hasAnyValue = roleValue || companyValue || yearsValue || summaryValue;
-
-    if (hasAnyValue) {
-      // If any field has value, make all fields required
-      role?.setValidators(Validators.required);
-      company?.setValidators(Validators.required);
-      years?.setValidators(Validators.required);
-      summary?.setValidators(Validators.required);
-    } else {
-      // If all fields are empty, remove validators
-      role?.clearValidators();
-      company?.clearValidators();
-      years?.clearValidators();
-      summary?.clearValidators();
-    }
-    // Update validity
-    role?.updateValueAndValidity({ emitEvent: false });
-    role?.markAsTouched();
-    company?.updateValueAndValidity({ emitEvent: false });
-    company?.markAsTouched();
-    years?.updateValueAndValidity({ emitEvent: false });
-    years?.markAsTouched();
-    summary?.updateValueAndValidity({ emitEvent: false });
-    summary?.markAsTouched();
-  }
-
-  private updateProjectValidators(group: FormGroup) {
-    const name = group.get('name');
-    const techstack = group.get('techstack');
-    const year = group.get('year');
-    const summary = group.get('summary');
-
-    const nameValue = name?.value?.trim() || '';
-    const techstackValue = techstack?.value?.trim() || '';
-    const yearValue = year?.value || '';
-    const summaryValue = summary?.value.trim() || '';
-
-    // Check if any field has a value
-    const hasAnyValue =
-      nameValue || techstackValue || yearValue || summaryValue;
-
-    if (hasAnyValue) {
-      // If any field has value, make all fields required
-      name?.setValidators(Validators.required);
-      techstack?.setValidators(Validators.required);
-      year?.setValidators(Validators.required);
-      summary?.setValidators(Validators.required);
-    } else {
-      // If all fields are empty, remove validators
-      name?.clearValidators();
-      techstack?.clearValidators();
-      year?.clearValidators();
-      summary?.clearValidators();
-    }
-    // Update validity
-    name?.updateValueAndValidity({ emitEvent: false });
-    name?.markAsTouched();
-    techstack?.updateValueAndValidity({ emitEvent: false });
-    techstack?.markAsTouched();
-    year?.updateValueAndValidity({ emitEvent: false });
-    year?.markAsTouched();
-    summary?.updateValueAndValidity({ emitEvent: false });
-    summary?.markAsTouched();
-  }
-
   public userExperiences: Experience[] = [];
   public userEducations: Education[] = [];
   public userProjects: Project[] = [];
@@ -352,34 +230,31 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
 
   public addEducation() {
     const group = this.fb.group({
-      degree: [''],
-      institution: [''],
-      year: [''],
+      degree: ['', Validators.required],
+      institution: ['', Validators.required],
+      year: ['', Validators.required],
     });
 
-    group.valueChanges.subscribe(() => this.updateEducationValidators(group));
     this.educations.push(group);
   }
 
   public addExperience() {
     const group = this.fb.group({
-      role: [''],
-      company: [''],
-      years: [''],
-      summary: [''],
+      role: ['', Validators.required],
+      company: ['', Validators.required],
+      years: ['', Validators.required],
+      summary: ['', Validators.required],
     });
-    group.valueChanges.subscribe(() => this.updateExperienceValidators(group));
     this.experiences.push(group);
   }
 
   public addProject() {
     const group = this.fb.group({
-      name: [''],
-      techstack: [''],
-      year: [''],
-      summary: [''],
+      name: ['', Validators.required],
+      techstack: ['', Validators.required],
+      year: ['', Validators.required],
+      summary: ['', Validators.required],
     });
-    group.valueChanges.subscribe(() => this.updateProjectValidators(group));
     this.projects.push(group);
   }
 
@@ -488,6 +363,11 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
           },
         });
       }
+    } else {
+      toast('Field Contains Error', {
+        description:
+          'Go through the tabs to check whether you missed a field or a field contains an error',
+      });
     }
   }
 

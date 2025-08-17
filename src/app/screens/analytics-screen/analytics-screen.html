@@ -25,287 +25,317 @@
 
       <!-- Form Section -->
       <div class="flex-1">
-        <!-- Basic Info -->
         <form [formGroup]="userDataForm">
-          <h3 class="{{ h3Style }} mb-2">Basic Info</h3>
-          <div class="flex flex-col gap-2">
-            <hlm-form-field>
-              <label for="fullName" hlmLabel>
-                <div class="text-xs">Fullname</div>
-              </label>
-              <input
-                id="fullName"
-                formControlName="fullName"
-                class="w-full"
-                hlmInput
-                placeholder="Your full name"
-              />
-              @if (userDataForm.get('fullName')?.errors?.['required'] &&
-              (userDataForm.get('fullName')?.dirty ||
-              userDataForm.get('fullName')?.touched)) {
-              <hlm-error>Your fullName is required</hlm-error> }
-            </hlm-form-field>
+          <hlm-tabs tab="basic">
+            <hlm-tabs-list class="ml-[-10px] sm:ml-0">
+              <button hlmTabsTrigger="basic">Basic</button>
+              <button hlmTabsTrigger="education">Education</button>
+              <button hlmTabsTrigger="experience">Experience</button>
+              <button hlmTabsTrigger="project">Project</button>
+            </hlm-tabs-list>
 
-            <hlm-form-field>
-              <label for="title" hlmLabel>
-                <div class="text-xs">Title</div>
-              </label>
-              <input
-                id="title"
-                class="w-full"
-                hlmInput
-                formControlName="title"
-                placeholder="A catchy oneliner"
-              />
-              @if (userDataForm.get('title')?.errors?.['required'] &&
-              (userDataForm.get('title')?.dirty ||
-              userDataForm.get('title')?.touched)) {
-              <hlm-error
-                >A title for your life, a catchy oneliner is required</hlm-error
-              >
-              }
-            </hlm-form-field>
+            <!-- Basic Info Tab -->
+            <div hlmTabsContent="basic">
+              <div hlmCard>
+                <h3 hlmCardHeader class="{{ h3Style }}">Basic Info</h3>
+                <div hlmCardContent class="flex flex-col gap-4">
+                  <hlm-form-field>
+                    <label for="fullName" hlmLabel>
+                      <div class="text-xs">Fullname</div>
+                    </label>
+                    <input
+                      id="fullName"
+                      formControlName="fullName"
+                      class="w-full"
+                      hlmInput
+                      placeholder="Your full name"
+                    />
+                    @if (userDataForm.get('fullName')?.errors?.['required'] &&
+                    (userDataForm.get('fullName')?.dirty ||
+                    userDataForm.get('fullName')?.touched)) {
+                    <hlm-error>Your fullName is required</hlm-error> }
+                  </hlm-form-field>
 
-            <hlm-form-field>
-              <label for="summary" hlmLabel>
-                <div class="text-xs">Summary</div>
-              </label>
-              <textarea
-                id="summary"
-                class="w-full min-h-[100px]"
-                hlmInput
-                formControlName="summary"
-                placeholder="Type your message here."
-              ></textarea>
-              @if (userDataForm.get('summary')?.errors?.['required'] &&
-              (userDataForm.get('summary')?.dirty ||
-              userDataForm.get('summary')?.touched)) {
-              <hlm-error>We need to have a summary of your life</hlm-error>
-              }
-            </hlm-form-field>
+                  <hlm-form-field>
+                    <label for="title" hlmLabel>
+                      <div class="text-xs">Title</div>
+                    </label>
+                    <input
+                      id="title"
+                      class="w-full"
+                      hlmInput
+                      formControlName="title"
+                      placeholder="A catchy oneliner"
+                    />
+                    @if (userDataForm.get('title')?.errors?.['required'] &&
+                    (userDataForm.get('title')?.dirty ||
+                    userDataForm.get('title')?.touched)) {
+                    <hlm-error
+                      >A title for your life, a catchy oneliner is
+                      required</hlm-error
+                    >
+                    }
+                  </hlm-form-field>
 
-            <hlm-form-field>
-              <label for="skills" hlmLabel>
-                <div class="text-xs flex items-center gap-2">
-                  Skills
-                  <ng-icon
-                    name="lucideInfo"
-                    [hlmTooltipTrigger]="'Your input should be comma separated'"
-                  ></ng-icon>
+                  <hlm-form-field>
+                    <label for="summary" hlmLabel>
+                      <div class="text-xs">Summary</div>
+                    </label>
+                    <textarea
+                      id="summary"
+                      class="w-full min-h-[100px]"
+                      hlmInput
+                      formControlName="summary"
+                      placeholder="Type your message here."
+                    ></textarea>
+                    @if (userDataForm.get('summary')?.errors?.['required'] &&
+                    (userDataForm.get('summary')?.dirty ||
+                    userDataForm.get('summary')?.touched)) {
+                    <hlm-error
+                      >We need to have a summary of your life</hlm-error
+                    >
+                    }
+                  </hlm-form-field>
+
+                  <hlm-form-field>
+                    <label for="skills" hlmLabel>
+                      <div class="text-xs flex items-center gap-2">
+                        Skills
+                        <ng-icon
+                          name="lucideInfo"
+                          [hlmTooltipTrigger]="
+                            'Your input should be comma separated'
+                          "
+                        ></ng-icon>
+                      </div>
+                    </label>
+                    <input
+                      id="skills"
+                      class="w-full"
+                      formControlName="skills"
+                      hlmInput
+                      placeholder="Your skills comma separated"
+                    />
+                    @if (userDataForm.get('skills')?.errors?.['required'] &&
+                    (userDataForm.get('skills')?.dirty ||
+                    userDataForm.get('skills')?.touched)) {
+                    <hlm-error>Come on showoff some skills</hlm-error>
+                    }
+                  </hlm-form-field>
                 </div>
-              </label>
-              <input
-                id="skills"
-                class="w-full"
-                formControlName="skills"
-                hlmInput
-                placeholder="Your skills comma separated"
-              />
-              @if (userDataForm.get('skills')?.errors?.['required'] &&
-              (userDataForm.get('skills')?.dirty ||
-              userDataForm.get('skills')?.touched)) {
-              <hlm-error>Come on showoff some skills</hlm-error>
-              }
-            </hlm-form-field>
-          </div>
-          <div hlmAccordion type="multiple">
-            <div hlmAccordionItem [isOpened]="_isEducationAccOpen()">
-              <button hlmAccordionTrigger>
-                <h3 class="{{ h3Style }}">
+              </div>
+            </div>
+
+            <!-- Education Tab -->
+            <div hlmTabsContent="education">
+              <div hlmCard>
+                <h3 hlmCardContent class="{{ h3Style }} mb-2">
                   Education{{ educations.length > 1 ? "s" : "" }}
                 </h3>
-                <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
-              </button>
-              <hlm-accordion-content>
-                <div formArrayName="educations">
+                <div hlmCardContent formArrayName="educations">
                   @for (educationGroup of educations.controls; let i = $index;
-                  track $index;) {
+                  track $index; let last = $last) {
                   <div>
                     <div
                       [formGroupName]="i"
                       class="flex flex-col gap-2 ml-2 mr-2"
                     >
-                      <hlm-form-field>
-                        <label for="degree{{ i }}" hlmLabel>
-                          <div class="text-xs">Degree</div>
-                        </label>
-                        <input
-                          id="degree{{ i }}"
-                          class="w-full"
-                          hlmInput
-                          placeholder="You are qualified in"
-                          formControlName="degree"
-                        />
+                      <div hlmCard [class]="{ 'mb-4': !last }">
+                        <div hlmCardContent class="flex flex-col gap-4">
+                          <hlm-form-field>
+                            <label for="degree{{ i }}" hlmLabel>
+                              <div class="text-xs">Degree</div>
+                            </label>
+                            <input
+                              id="degree{{ i }}"
+                              class="w-full"
+                              hlmInput
+                              placeholder="You are qualified in"
+                              formControlName="degree"
+                            />
 
-                        @if ((educationGroup.get('degree')?.dirty ||
-                        educationGroup.get('degree')?.touched) &&
-                        educationGroup.get('degree')?.hasError('required')) {
-                        <hlm-error>Degree is required</hlm-error>
-                        }
-                      </hlm-form-field>
+                            @if ((educationGroup.get('degree')?.dirty ||
+                            educationGroup.get('degree')?.touched) &&
+                            educationGroup.get('degree')?.hasError('required'))
+                            {
+                            <hlm-error>Degree is required</hlm-error>
+                            }
+                          </hlm-form-field>
 
-                      <hlm-form-field>
-                        <label for="institution{{ i }}" hlmLabel>
-                          <div class="text-xs">Institution</div>
-                        </label>
-                        <input
-                          id="institution{{ i }}"
-                          class="w-full"
-                          hlmInput
-                          formControlName="institution"
-                          placeholder="You qualified from"
-                        />
-                        @if (( educationGroup.get('institution')?.dirty ||
-                        educationGroup.get('institution')?.touched ) &&
-                        educationGroup.get('institution')?.hasError('required'))
-                        {
-                        <hlm-error>Institution is required</hlm-error>
-                        }
-                      </hlm-form-field>
+                          <hlm-form-field>
+                            <label for="institution{{ i }}" hlmLabel>
+                              <div class="text-xs">Institution</div>
+                            </label>
+                            <input
+                              id="institution{{ i }}"
+                              class="w-full"
+                              hlmInput
+                              formControlName="institution"
+                              placeholder="You qualified from"
+                            />
+                            @if (( educationGroup.get('institution')?.dirty ||
+                            educationGroup.get('institution')?.touched ) &&
+                            educationGroup.get('institution')?.hasError('required'))
+                            {
+                            <hlm-error>Institution is required</hlm-error>
+                            }
+                          </hlm-form-field>
 
-                      <hlm-form-field>
-                        <label for="year{{ i }}" hlmLabel>
-                          <div class="text-xs">Year</div>
-                        </label>
-                        <input
-                          id="year{{ i }}"
-                          class="w-full"
-                          hlmInput
-                          formControlName="year"
-                          placeholder="You qualified on"
-                        />
-                        @if ((educationGroup.get('year')?.dirty ||
-                        educationGroup.get('year')?.touched) &&
-                        educationGroup.get('year')?.hasError('required')) {
-                        <hlm-error>Year is required</hlm-error>
-                        }
-                      </hlm-form-field>
-                    </div>
-                    <div class="flex items-center justify-end mt-2">
-                      <button
-                        hlmBtn
-                        size="icon"
-                        variant="destructive"
-                        class="size-8"
-                        (click)="removeEducation(i)"
-                        [disabled]="educations.length === 1"
-                      >
-                        <ng-icon hlm size="sm" name="lucideTrash" />
-                      </button>
+                          <hlm-form-field>
+                            <label for="year{{ i }}" hlmLabel>
+                              <div class="text-xs">Year</div>
+                            </label>
+                            <input
+                              id="year{{ i }}"
+                              class="w-full"
+                              hlmInput
+                              formControlName="year"
+                              placeholder="You qualified on"
+                            />
+                            @if ((educationGroup.get('year')?.dirty ||
+                            educationGroup.get('year')?.touched) &&
+                            educationGroup.get('year')?.hasError('required')) {
+                            <hlm-error>Year is required</hlm-error>
+                            }
+                          </hlm-form-field>
+                        </div>
+                        <div hlmCardFooter>
+                          <button
+                            hlmBtn
+                            size="icon"
+                            variant="destructive"
+                            class="size-8"
+                            (click)="removeEducation(i)"
+                            [disabled]="educations.length === 1"
+                          >
+                            <ng-icon hlm size="sm" name="lucideTrash" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   }
                 </div>
-                <button
-                  hlmBtn
-                  (click)="addEducation()"
-                  class="mt-2 w-fit"
-                  variant="secondary"
-                >
-                  Add Education
-                </button>
-              </hlm-accordion-content>
+                <div hlmCardFooter>
+                  <button
+                    hlmBtn
+                    (click)="addEducation()"
+                    class="mt-2 w-fit"
+                    variant="secondary"
+                  >
+                    Add Education
+                  </button>
+                </div>
+              </div>
             </div>
-            <div hlmAccordionItem [isOpened]="_isExperienceAccOpen()">
-              <button hlmAccordionTrigger>
-                <h3 class="{{ h3Style }}">
+
+            <!-- Experience Tab -->
+            <div hlmTabsContent="experience">
+              <div hlmCard>
+                <h3 hlmCardContent class="{{ h3Style }} mb-2">
                   Experience{{ experiences.length > 1 ? "s" : "" }}
                 </h3>
-                <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
-              </button>
-              <hlm-accordion-content>
-                <div formArrayName="experiences">
+                <div hlmCardContent formArrayName="experiences">
                   @for (experienceGroup of experiences.controls; track $index;
-                  let i = $index) {
+                  let i = $index; let last = $last) {
 
                   <div>
                     <div
                       [formGroupName]="i"
                       class="flex flex-col gap-2 ml-2 mr-2"
                     >
-                      <hlm-form-field>
-                        <label for="role{{ i }}" hlmLabel>
-                          <div class="text-xs">Role</div>
-                        </label>
-                        <input
-                          id="role{{ i }}"
-                          class="w-full"
-                          hlmInput
-                          formControlName="role"
-                          placeholder="Your role"
-                        />
-                        @if ((experienceGroup.get('role')?.dirty ||
-                        experienceGroup.get('role')?.touched) &&
-                        experienceGroup.get('role')?.hasError('required')) {
-                        <hlm-error>Role is required</hlm-error>}
-                      </hlm-form-field>
+                      <div hlmCard [class]="{ 'mb-4': !last }">
+                        <div hlmCardContent class="flex flex-col gap-4">
+                          <hlm-form-field>
+                            <label for="role{{ i }}" hlmLabel>
+                              <div class="text-xs">Role</div>
+                            </label>
+                            <input
+                              id="role{{ i }}"
+                              class="w-full"
+                              hlmInput
+                              formControlName="role"
+                              placeholder="Your role"
+                            />
+                            @if ((experienceGroup.get('role')?.dirty ||
+                            experienceGroup.get('role')?.touched) &&
+                            experienceGroup.get('role')?.hasError('required')) {
+                            <hlm-error>Role is required</hlm-error>}
+                          </hlm-form-field>
 
-                      <hlm-form-field>
-                        <label for="company{{ i }}" hlmLabel>
-                          <div class="text-xs">Company</div>
-                        </label>
-                        <input
-                          id="company{{ i }}"
-                          class="w-full"
-                          hlmInput
-                          formControlName="company"
-                          placeholder="You worked in"
-                        />
-                        @if ((experienceGroup.get('company')?.dirty ||
-                        experienceGroup.get('company')?.touched) &&
-                        experienceGroup.get('company')?.hasError('required'))
-                        {<hlm-error>Company you worked at is required</hlm-error
-                        >}
-                      </hlm-form-field>
+                          <hlm-form-field>
+                            <label for="company{{ i }}" hlmLabel>
+                              <div class="text-xs">Company</div>
+                            </label>
+                            <input
+                              id="company{{ i }}"
+                              class="w-full"
+                              hlmInput
+                              formControlName="company"
+                              placeholder="You worked in"
+                            />
+                            @if ((experienceGroup.get('company')?.dirty ||
+                            experienceGroup.get('company')?.touched ) &&
+                            experienceGroup.get('company')?.hasError('required'))
+                            {<hlm-error
+                              >Company you worked at is required</hlm-error
+                            >}
+                          </hlm-form-field>
 
-                      <hlm-form-field>
-                        <label for="years{{ i }}" hlmLabel>
-                          <div class="text-xs">Years</div>
-                        </label>
-                        <input
-                          id="years{{ i }}"
-                          class="w-full"
-                          formControlName="years"
-                          hlmInput
-                          placeholder="How long you worked"
-                        />
-                        @if ((experienceGroup.get('years')?.dirty ||
-                        experienceGroup.get('years')?.touched ) &&
-                        experienceGroup.get('years')?.hasError('required'))
-                        {<hlm-error>Years of experience is required</hlm-error>}
-                      </hlm-form-field>
+                          <hlm-form-field>
+                            <label for="years{{ i }}" hlmLabel>
+                              <div class="text-xs">Years</div>
+                            </label>
+                            <input
+                              id="years{{ i }}"
+                              class="w-full"
+                              hlmInput
+                              formControlName="years"
+                              placeholder="How long you worked"
+                            />
+                            @if ((experienceGroup.get('years')?.dirty ||
+                            experienceGroup.get('years')?.touched ) &&
+                            experienceGroup.get('years')?.hasError('required'))
+                            {<hlm-error
+                              >Years of experience is required</hlm-error
+                            >}
+                          </hlm-form-field>
 
-                      <hlm-form-field>
-                        <label for="summary{{ i }}" hlmLabel>
-                          <div class="text-xs">Summary</div>
-                        </label>
-                        <textarea
-                          id="summary{{ i }}"
-                          class="w-full min-h-[100px]"
-                          hlmInput
-                          formControlName="summary"
-                          placeholder="Type your message here."
-                        ></textarea>
-                        @if (( experienceGroup.get('summary')?.dirty ||
-                        experienceGroup.get('summary')?.touched ) &&
-                        experienceGroup.get('summary')?.hasError('required'))
-                        {<hlm-error>Summary of your work</hlm-error>}
-                      </hlm-form-field>
-                    </div>
-                    <div class="flex items-center justify-end mt-2">
-                      <button
-                        hlmBtn
-                        size="icon"
-                        variant="destructive"
-                        class="size-8"
-                        (click)="removeExperience(i)"
-                        [disabled]="experiences.length === 1"
-                      >
-                        <ng-icon hlm size="sm" name="lucideTrash" />
-                      </button>
+                          <hlm-form-field>
+                            <label for="summary{{ i }}" hlmLabel>
+                              <div class="text-xs">Summary</div>
+                            </label>
+                            <textarea
+                              id="summary{{ i }}"
+                              class="w-full min-h-[100px]"
+                              hlmInput
+                              formControlName="summary"
+                              placeholder="Type your message here."
+                            ></textarea>
+                            @if (( experienceGroup.get('summary')?.dirty ||
+                            experienceGroup.get('summary')?.touched ) &&
+                            experienceGroup.get('summary')?.hasError('required'))
+                            {<hlm-error>Summary of your work</hlm-error>}
+                          </hlm-form-field>
+                        </div>
+                        <div hlmCardFooter>
+                          <button
+                            hlmBtn
+                            size="icon"
+                            variant="destructive"
+                            class="size-8"
+                            (click)="removeExperience(i)"
+                            [disabled]="experiences.length === 1"
+                          >
+                            <ng-icon hlm size="sm" name="lucideTrash" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   }
+                </div>
+                <div hlmCardFooter>
                   <button
                     hlmBtn
                     (click)="addExperience()"
@@ -315,133 +345,141 @@
                     Add Experience
                   </button>
                 </div>
-              </hlm-accordion-content>
+              </div>
             </div>
-            <div hlmAccordionItem [isOpened]="_isProjectAccOpen()">
-              <button hlmAccordionTrigger>
-                <h3 class="{{ h3Style }}">
+
+            <!-- Project Tab -->
+            <div hlmTabsContent="project">
+              <div hlmCard>
+                <h3 hlmCardContent class="{{ h3Style }} mb-2">
                   Project{{ projects.length > 1 ? "s" : "" }}
                 </h3>
-                <ng-icon name="lucideChevronDown" hlm hlmAccIcon></ng-icon>
-              </button>
-              <hlm-accordion-content>
-                <div formArrayName="projects">
+                <div hlmCardContent formArrayName="projects">
                   @for (projectGroup of projects.controls; track $index; let i =
-                  $index) {
+                  $index; let last = $last) {
                   <div [formGroupName]="i">
                     <div class="flex flex-col gap-2 mr-2 ml-2">
-                      <hlm-form-field>
-                        <label for="name{{ i }}" hlmLabel>
-                          <div class="text-xs">Name</div>
-                        </label>
-                        <input
-                          id="name{{ i }}"
-                          class="w-full"
-                          hlmInput
-                          placeholder="Name of your project"
-                          formControlName="name"
-                        />
-                        @if (( projectGroup.get('name')?.dirty ||
-                        projectGroup.get('name')?.touched ) &&
-                        projectGroup.get('name')?.hasError('required')) {
-                        <hlm-error>Name of the project is required</hlm-error>
-                        }
-                      </hlm-form-field>
+                      <div hlmCard [class]="{ 'mb-4': !last }">
+                        <div hlmCardContent class="flex flex-col gap-4">
+                          <hlm-form-field>
+                            <label for="name{{ i }}" hlmLabel>
+                              <div class="text-xs">Name</div>
+                            </label>
+                            <input
+                              id="name{{ i }}"
+                              class="w-full"
+                              hlmInput
+                              placeholder="Name of your project"
+                              formControlName="name"
+                            />
+                            @if (( projectGroup.get('name')?.dirty ||
+                            projectGroup.get('name')?.touched ) &&
+                            projectGroup.get('name')?.hasError('required')) {
+                            <hlm-error
+                              >Name of the project is required</hlm-error
+                            >
+                            }
+                          </hlm-form-field>
 
-                      <hlm-form-field>
-                        <label for="techstack{{ i }}" hlmLabel>
-                          <div class="text-xs flex items-center gap-2">
-                            Techstack
-                            <ng-icon
-                              name="lucideInfo"
-                              [hlmTooltipTrigger]="
-                                'Your input should be comma separated'
-                              "
-                            ></ng-icon>
-                          </div>
-                        </label>
-                        <input
-                          id="techstack{{ i }}"
-                          class="w-full"
-                          hlmInput
-                          placeholder="Tech used in your project comma separated"
-                          formControlName="techstack"
-                        />
-                        @if (( projectGroup.get('techstack')?.dirty ||
-                        projectGroup.get('techstack')?.touched ) &&
-                        projectGroup.get('techstack')?.hasError('required')) {
-                        <hlm-error
-                          >Techstack used in project is required</hlm-error
-                        >
-                        }
-                      </hlm-form-field>
+                          <hlm-form-field>
+                            <label for="techstack{{ i }}" hlmLabel>
+                              <div class="text-xs flex items-center gap-2">
+                                Techstack
+                                <ng-icon
+                                  name="lucideInfo"
+                                  [hlmTooltipTrigger]="
+                                    'Your input should be comma separated'
+                                  "
+                                ></ng-icon>
+                              </div>
+                            </label>
+                            <input
+                              id="techstack{{ i }}"
+                              class="w-full"
+                              hlmInput
+                              placeholder="Tech used in your project comma separated"
+                              formControlName="techstack"
+                            />
+                            @if (( projectGroup.get('techstack')?.dirty ||
+                            projectGroup.get('techstack')?.touched ) &&
+                            projectGroup.get('techstack')?.hasError('required'))
+                            {
+                            <hlm-error
+                              >Techstack used in project is required</hlm-error
+                            >
+                            }
+                          </hlm-form-field>
 
-                      <hlm-form-field>
-                        <label for="yearProject{{ i }}" hlmLabel>
-                          <div class="text-xs">Year</div>
-                        </label>
-                        <input
-                          id="yearProject{{ i }}"
-                          class="w-full"
-                          hlmInput
-                          placeholder="Project completed on"
-                          formControlName="year"
-                        />
-                        @if (( projectGroup.get('year')?.dirty ||
-                        projectGroup.get('year')?.touched ) &&
-                        projectGroup.get('year')?.hasError('required')) {
-                        <hlm-error
-                          >Year on which project go completed</hlm-error
-                        >
-                        }
-                      </hlm-form-field>
+                          <hlm-form-field>
+                            <label for="yearProject{{ i }}" hlmLabel>
+                              <div class="text-xs">Year</div>
+                            </label>
+                            <input
+                              id="yearProject{{ i }}"
+                              class="w-full"
+                              hlmInput
+                              placeholder="Project completed on"
+                              formControlName="year"
+                            />
+                            @if (( projectGroup.get('year')?.dirty ||
+                            projectGroup.get('year')?.touched ) &&
+                            projectGroup.get('year')?.hasError('required')) {
+                            <hlm-error
+                              >Year on which project go completed</hlm-error
+                            >
+                            }
+                          </hlm-form-field>
 
-                      <hlm-form-field>
-                        <label for="summaryProject{{ i }}" hlmLabel>
-                          <div class="text-xs">Summary</div>
-                        </label>
-                        <textarea
-                          id="summaryProject{{ i }}"
-                          class="w-full min-h-[100px]"
-                          hlmInput
-                          placeholder="Type your message here."
-                          formControlName="summary"
-                        ></textarea>
-                        @if (( projectGroup.get('summary')?.dirty ||
-                        projectGroup.get('summary')?.touched ) &&
-                        projectGroup.get('summary')?.hasError('required')) {
-                        <hlm-error
-                          >Summary of your project is required</hlm-error
-                        >
-                        }
-                      </hlm-form-field>
-                    </div>
-                    <div class="flex items-center justify-end mt-2">
-                      <button
-                        (click)="removeProject(i)"
-                        hlmBtn
-                        size="icon"
-                        variant="destructive"
-                        class="size-8"
-                        [disabled]="projects.length === 1"
-                      >
-                        <ng-icon hlm size="sm" name="lucideTrash" />
-                      </button>
+                          <hlm-form-field>
+                            <label for="summaryProject{{ i }}" hlmLabel>
+                              <div class="text-xs">Summary</div>
+                            </label>
+                            <textarea
+                              id="summaryProject{{ i }}"
+                              class="w-full min-h-[100px]"
+                              hlmInput
+                              placeholder="Type your message here."
+                              formControlName="summary"
+                            ></textarea>
+                            @if (( projectGroup.get('summary')?.dirty ||
+                            projectGroup.get('summary')?.touched ) &&
+                            projectGroup.get('summary')?.hasError('required')) {
+                            <hlm-error
+                              >Summary of your project is required</hlm-error
+                            >
+                            }
+                          </hlm-form-field>
+                        </div>
+                        <div hlmCardFooter>
+                          <button
+                            (click)="removeProject(i)"
+                            hlmBtn
+                            size="icon"
+                            variant="destructive"
+                            class="size-8"
+                            [disabled]="projects.length === 1"
+                          >
+                            <ng-icon hlm size="sm" name="lucideTrash" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   }
                 </div>
-                <button
-                  (click)="addProject()"
-                  hlmBtn
-                  class="mt-2 w-fit"
-                  variant="secondary"
-                >
-                  Add Project
-                </button>
-              </hlm-accordion-content>
+                <div hlmCardFooter>
+                  <button
+                    (click)="addProject()"
+                    hlmBtn
+                    class="mt-2 w-fit"
+                    variant="secondary"
+                  >
+                    Add Project
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </hlm-tabs>
         </form>
       </div>
     </div>
