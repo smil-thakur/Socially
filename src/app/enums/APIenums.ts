@@ -7,4 +7,6 @@ export const API = {
   GETUSERPROFILE: '/userProfile',
   GETLATEXFROMUSERPROFILE: '/getTexFromProfile',
   GETPDFFROMLATEX: '/convert-tex',
+  SAVETEX: '/saveResume',
+  GETTEXCONTENT: '/getTexContent',
 };

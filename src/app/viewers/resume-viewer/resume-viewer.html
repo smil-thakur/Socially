@@ -1,12 +1,22 @@
+<hlm-toaster [duration]="5000" [closeButton]="true"></hlm-toaster>
 <div class="flex justify-between items-center w-[100%] p-4">
   <div>
-    <button hlmBtn>
+    <button (click)="handleBack()" hlmBtn>
       <ng-icon size="25px" name="lucideArrowLeft"></ng-icon>
     </button>
   </div>
   <div class="">{{ username }}'s Resume</div>
-  <div>
-    <button hlmBtn (click)="recompilePDF()">Compile</button>
+  <div class="flex items-center gap-2">
+    <button hlmBtn variant="link">
+      <a [href]="pdfSource" target="_blank" rel="noopener noreferrer"
+        >Download PDF</a
+      >
+    </button>
+    <button hlmBtn (click)="recompilePDF()" variant="secondary">
+      Regenerate
+    </button>
+    <button hlmBtn (click)="recompilePDF()" variant="secondary">Compile</button>
+    <button [disabled]="isPDFSaved" hlmBtn (click)="savePDF()">Save</button>
   </div>
 </div>
 

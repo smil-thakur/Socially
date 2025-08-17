@@ -1,0 +1,8 @@
+<hlm-dialog-header>
+  <div hlmDialogTitle>{{ title }}</div>
+  <div hlmCardDescription>{{ desc }}</div>
+</hlm-dialog-header>
+<hlm-dialog-footer>
+  <button hlmBtn (click)="confirmed()">Yes</button>
+  <button hlmBtn (click)="declined()" variant="destructive">No</button>
+</hlm-dialog-footer>

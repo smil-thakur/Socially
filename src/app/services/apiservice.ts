@@ -44,6 +44,40 @@ export class APIservice {
     );
   }
 
+  public getText(
+    url: string,
+    idTocken?: string,
+    onStart?: () => void,
+    onComplete?: () => void,
+    onError?: () => void
+  ): Promise<any> {
+    if (onStart) {
+      onStart();
+    }
+    return firstValueFrom(
+      this.httpclient
+        .get(url, {
+          headers: {
+            Authorization: idTocken ? idTocken : '',
+          },
+          responseType: 'text',
+        })
+        .pipe(
+          catchError((err) => {
+            if (onError) {
+              onError();
+            }
+            throw Error(`api post to url ${url} failed ${err}`);
+          }),
+          finalize(() => {
+            if (onComplete) {
+              onComplete();
+            }
+          })
+        )
+    );
+  }
+
   public post<T>(
     api: string,
     body: T,

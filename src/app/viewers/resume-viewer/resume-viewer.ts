@@ -22,9 +22,22 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideArrowLeft } from '@ng-icons/lucide';
 import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { ErrorDialog } from '../../common/error-dialog/error-dialog';
+import { InfoDialog } from '../../common/info-dialog/info-dialog';
+import { Title } from '@angular/platform-browser';
+import { ConfirmationDialog } from '../../common/confirmation-dialog/confirmation-dialog';
+import { Location } from '@angular/common';
+import { toast } from 'ngx-sonner';
+import { HlmToaster } from '@spartan-ng/helm/sonner';
+import { isEqual } from 'lodash';
 @Component({
   selector: 'app-resume-viewer',
-  imports: [CodeEditorComponent, PdfViewerModule, HlmButton, NgIcon],
+  imports: [
+    CodeEditorComponent,
+    PdfViewerModule,
+    HlmButton,
+    NgIcon,
+    HlmToaster,
+  ],
   providers: [
     provideIcons({
       lucideArrowLeft,
@@ -43,12 +56,17 @@ export class ResumeViewer extends BasePageScreen implements OnInit {
   private resumePDFService = inject(ResumePdfService);
   private themeService = inject(ToggleThemeService);
   private hlmDialogService = inject(HlmDialogService);
+  private location = inject(Location);
 
   public username = this.userService.getCurrentUserObject().displayName;
   public latex = '';
   public pdfSource = '';
   public theme =
     this.themeService.getCurrentMode() === 'dark' ? 'vs-dark' : 'vs-light';
+  public isPDFSaved = false;
+  public pdfContainsError = false;
+  public texURL = '';
+  public initialTex = '';
 
   public codeModel: CodeModel = {
     language: 'latex',
@@ -62,19 +80,32 @@ export class ResumeViewer extends BasePageScreen implements OnInit {
 
   public async getLatex() {
     this.preloaderService.show();
-    let resumeData: ResumeData;
-    if (this.userCacheManager.getCache()) {
-      resumeData = this.userCacheManager.getCache()!;
-    } else {
-      resumeData = (await this.resumeDataService.getResumeDataFirebase())!;
+    try {
+      const saveTex = await this.resumePDFService.getSaveTexContent();
+      this.latex = saveTex!;
+      this.isPDFSaved = true;
+      this.initialTex = this.latex;
+    } catch (err) {
+      toast('No saved Tex found', {
+        description:
+          'Please save your generated Tex, we were not able to locate any saved Tex',
+      });
+      let resumeData: ResumeData;
+      if (this.userCacheManager.getCache()) {
+        resumeData = this.userCacheManager.getCache()!;
+      } else {
+        resumeData = (await this.resumeDataService.getResumeDataFirebase())!;
+      }
+      this.latex = (
+        await this.apiService.post(
+          API.GETLATEXFROMUSERPROFILE,
+          resumeData,
+          await this.userService.getCurrentUserObject().getIdToken()
+        )
+      )['latex'];
+      this.initialTex = this.latex;
     }
-    this.latex = (
-      await this.apiService.post(
-        API.GETLATEXFROMUSERPROFILE,
-        resumeData,
-        await this.userService.getCurrentUserObject().getIdToken()
-      )
-    )['latex'];
+
     this.codeService.monaco.languages.register({ id: 'latex' });
     this.codeService.monaco.languages.setMonarchTokensProvider('latex', latex);
     this.codeModel = {
@@ -86,17 +117,96 @@ export class ResumeViewer extends BasePageScreen implements OnInit {
     this.preloaderService.hide();
   }
 
+  public async regeneratePDF() {
+    this.preloaderService.show();
+    try {
+      let resumeData: ResumeData;
+      if (this.userCacheManager.getCache()) {
+        resumeData = this.userCacheManager.getCache()!;
+      } else {
+        resumeData = (await this.resumeDataService.getResumeDataFirebase())!;
+      }
+      this.latex = (
+        await this.apiService.post(
+          API.GETLATEXFROMUSERPROFILE,
+          resumeData,
+          await this.userService.getCurrentUserObject().getIdToken()
+        )
+      )['latex'];
+      this.initialTex = this.latex;
+      this.codeModel = {
+        language: 'latex',
+        value: this.latex,
+        uri: 'resume.tex',
+      };
+      await this.getPDF();
+      this.isPDFSaved = false;
+    } catch (err) {
+      this.hlmDialogService.open(ErrorDialog, {
+        context: {
+          error: 'Error generating PDF',
+          desc: `Incorrect syntax or internal issue, please try again, after verifying your latex code ${err}`,
+        },
+      });
+      this.pdfContainsError = true;
+    } finally {
+      this.preloaderService.hide();
+    }
+  }
+
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     this.getLatex();
   }
 
   public contentChange(value: any) {
     this.latex = value;
+    if (!isEqual(this.latex, this.initialTex)) {
+      this.isPDFSaved = false;
+    }
   }
 
   public async recompilePDF() {
     if (this.latex) {
       await this.getPDF();
+    }
+  }
+
+  public handleBack() {
+    if (!this.isPDFSaved) {
+      const dialogref = this.hlmDialogService.open(ConfirmationDialog, {
+        context: {
+          title: 'Your Resume is not saved!',
+          desc: 'Your resume pdf is not saved on cloud navigating back will cause in loss of data!, do you confirm to discard the data?',
+        },
+      });
+      dialogref.closed$.subscribe((response) => {
+        if (response === 'yes') {
+          this.location.back();
+        } else {
+          return;
+        }
+      });
+    } else {
+      this.location.back();
+    }
+  }
+
+  public async savePDF() {
+    this.preloaderService.show();
+    try {
+      this.texURL = await this.resumePDFService.saveTex(this.latex);
+      this.isPDFSaved = true;
+      this.initialTex = this.latex;
+    } catch (err) {
+      this.hlmDialogService.open(ErrorDialog, {
+        context: {
+          error: 'Error saving PDF',
+          desc: `Error saving the PDF please check your internet or try again later ${err}`,
+        },
+      });
+    } finally {
+      this.preloaderService.hide();
     }
   }
 
@@ -112,6 +222,7 @@ export class ResumeViewer extends BasePageScreen implements OnInit {
             desc: `Incorrect syntax or internal issue, please try again, after verifying your latex code ${err}`,
           },
         });
+        this.pdfContainsError = true;
       }
     }
   }
