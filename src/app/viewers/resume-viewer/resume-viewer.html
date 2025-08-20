@@ -1,19 +1,23 @@
 <hlm-toaster [duration]="5000" [closeButton]="true"></hlm-toaster>
 
 <!-- Header Section -->
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full p-3 sm:p-4 gap-3 sm:gap-4">
+<div
+  class="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full p-3 sm:p-4 gap-3 sm:gap-4"
+>
   <!-- Back Button -->
   <div class="flex-shrink-0">
     <button (click)="handleBack()" hlmBtn class="text-sm sm:text-base">
       <ng-icon size="20px" sm:size="25px" name="lucideArrowLeft"></ng-icon>
     </button>
   </div>
-  
+
   <!-- Title -->
-  <div class="text-center sm:text-left text-lg sm:text-xl font-semibold flex-1 px-2">
+  <div
+    class="text-center sm:text-left text-lg sm:text-xl font-semibold flex-1 px-2"
+  >
     {{ username }}'s Resume
   </div>
-  
+
   <!-- Action Buttons -->
   <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
     <button hlmBtn variant="link" class="w-full sm:w-auto text-sm">
@@ -21,20 +25,37 @@
         >Download PDF</a
       >
     </button>
-    <button hlmBtn (click)="recompilePDF()" variant="secondary" class="w-full sm:w-auto text-sm">
+    <button
+      hlmBtn
+      (click)="regeneratePDF()"
+      variant="secondary"
+      class="w-full sm:w-auto text-sm"
+    >
       Regenerate
     </button>
-    <button hlmBtn (click)="recompilePDF()" variant="secondary" class="w-full sm:w-auto text-sm">
+    <button
+      hlmBtn
+      (click)="recompilePDF()"
+      variant="secondary"
+      class="w-full sm:w-auto text-sm"
+    >
       Compile
     </button>
-    <button [disabled]="isPDFSaved" hlmBtn (click)="savePDF()" class="w-full sm:w-auto text-sm">
+    <button
+      [disabled]="isPDFSaved"
+      hlmBtn
+      (click)="savePDF()"
+      class="w-full sm:w-auto text-sm"
+    >
       Save
     </button>
   </div>
 </div>
 
 <!-- Main Content Section -->
-<div class="flex flex-col lg:flex-row h-[calc(100vh-120px)] sm:h-[calc(100vh-140px)]">
+<div
+  class="flex flex-col lg:flex-row h-[calc(100vh-120px)] sm:h-[calc(100vh-140px)]"
+>
   <!-- Code Editor Section -->
   <div class="flex-1 min-h-[400px] lg:min-h-0 order-2 lg:order-1">
     <ngs-code-editor
@@ -45,9 +66,11 @@
       class="h-full"
     ></ngs-code-editor>
   </div>
-  
+
   <!-- PDF Viewer Section -->
-  <div class="flex flex-1 items-center justify-center text-center border border-l-0 lg:border-l lg:border-t-0 order-1 lg:order-2 min-h-[300px] lg:min-h-0">
+  <div
+    class="flex flex-1 items-center justify-center text-center border border-l-0 lg:border-l lg:border-t-0 order-1 lg:order-2 min-h-[300px] lg:min-h-0"
+  >
     @if (this.pdfSource) {
     <pdf-viewer
       [src]="pdfSource"
@@ -57,8 +80,12 @@
     ></pdf-viewer>
     } @if (!this.pdfSource) {
     <div class="p-6 text-center">
-      <h3 class="{{ h3Style }} text-base sm:text-lg">Click on Compile button to see your resume.</h3>
-      <p class="text-sm text-muted-foreground mt-2">The PDF will appear here after compilation</p>
+      <h3 class="{{ h3Style }} text-base sm:text-lg">
+        Click on Compile button to see your resume.
+      </h3>
+      <p class="text-sm text-muted-foreground mt-2">
+        The PDF will appear here after compilation
+      </p>
     </div>
     }
   </div>
