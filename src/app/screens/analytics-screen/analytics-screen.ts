@@ -132,6 +132,8 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
         });
       } else if (this.resumeDataSaved) {
         this.setResumeDatatoForm(this.resumeDataSaved);
+      } else if (this.resumeData) {
+        this.setResumeDatatoForm(this.resumeData);
       } else {
         if (this.educations.length === 0) this.addEducation();
         if (this.experiences.length === 0) this.addExperience();

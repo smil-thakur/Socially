@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class TopNavBar {
   private auth = inject(Auth);
   private router = inject(Router);
-  public signOut() {
+  public logout() {
     signOut(this.auth)
       .then(() => {
         this.router.navigate(['/login']);

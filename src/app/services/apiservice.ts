@@ -33,7 +33,7 @@ export class APIservice {
             if (onError) {
               onError();
             }
-            throw Error(`api post to url ${url} failed ${err}`);
+            throw Error(err.message);
           }),
           finalize(() => {
             if (onComplete) {

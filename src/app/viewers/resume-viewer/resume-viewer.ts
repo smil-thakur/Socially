@@ -90,20 +90,29 @@ export class ResumeViewer extends BasePageScreen implements OnInit {
         description:
           'Please save your generated Tex, we were not able to locate any saved Tex',
       });
-      let resumeData: ResumeData;
-      if (this.userCacheManager.getCache()) {
-        resumeData = this.userCacheManager.getCache()!;
-      } else {
-        resumeData = (await this.resumeDataService.getResumeDataFirebase())!;
+      try {
+        let resumeData: ResumeData;
+        if (this.userCacheManager.getCache()) {
+          resumeData = this.userCacheManager.getCache()!;
+        } else {
+          resumeData = (await this.resumeDataService.getResumeDataFirebase())!;
+        }
+        this.latex = (
+          await this.apiService.post(
+            API.GETLATEXFROMUSERPROFILE,
+            resumeData,
+            await this.userService.getCurrentUserObject().getIdToken()
+          )
+        )['latex'];
+        this.initialTex = this.latex;
+      } catch (err) {
+        this.hlmDialogService.open(ErrorDialog, {
+          context: {
+            error: 'Error fetching your data',
+            desc: `Internet issue, please try again, after verifying your internet \n ${err}`,
+          },
+        });
       }
-      this.latex = (
-        await this.apiService.post(
-          API.GETLATEXFROMUSERPROFILE,
-          resumeData,
-          await this.userService.getCurrentUserObject().getIdToken()
-        )
-      )['latex'];
-      this.initialTex = this.latex;
     }
 
     this.codeService.monaco.languages.register({ id: 'latex' });
@@ -195,6 +204,7 @@ export class ResumeViewer extends BasePageScreen implements OnInit {
   public async savePDF() {
     this.preloaderService.show();
     try {
+      console.log('saving', this.latex);
       this.texURL = await this.resumePDFService.saveTex(this.latex);
       this.isPDFSaved = true;
       this.initialTex = this.latex;
