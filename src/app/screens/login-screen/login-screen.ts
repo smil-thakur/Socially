@@ -13,6 +13,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  getAdditionalUserInfo,
 } from '@angular/fire/auth';
 import {
   FormControl,
@@ -24,6 +25,7 @@ import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { ErrorDialog } from '../../common/error-dialog/error-dialog';
 import { PreloaderService } from '../../services/preloader-service';
 import { FirebaseError } from '@angular/fire/app';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-login-screen',
@@ -45,6 +47,7 @@ export class LoginScreen extends BasePageScreen implements OnInit {
   private provider = new GoogleAuthProvider();
   private readonly _hlmDialogService = inject(HlmDialogService);
   private preloaderService = inject(PreloaderService);
+  private userService = inject(UserService);
 
   public loginForm: FormGroup | null = null;
   constructor(private router: Router) {
@@ -84,11 +87,24 @@ export class LoginScreen extends BasePageScreen implements OnInit {
   }
 
   public loginWithGoogle() {
-    signInWithPopup(this.auth, this.provider).then((result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      this.router.navigate(['/home']);
-      return credential;
-    });
+    try {
+      signInWithPopup(this.auth, this.provider).then(async (result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const additionalInfo = getAdditionalUserInfo(result);
+        if (additionalInfo?.isNewUser) {
+          this.userService.mapIDwithEmail();
+        }
+        this.router.navigate(['/home']);
+        return credential;
+      });
+    } catch (err) {
+      this._hlmDialogService.open(ErrorDialog, {
+        context: {
+          error: 'Unable to Log you in',
+          desc: `Error while authenticating with backend ${err}`,
+        },
+      });
+    }
   }
 
   public async loginWithEmail() {

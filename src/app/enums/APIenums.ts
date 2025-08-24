@@ -9,4 +9,6 @@ export const API = {
   GETPDFFROMLATEX: '/convert-tex',
   SAVETEX: '/saveResume',
   GETTEXCONTENT: '/getTexContent',
+  MAP_ID_TO_EMAIL: '/mapEmailToId',
+  GET_ID_FROM_EMAIL: '/getIdFromEmail',
 };

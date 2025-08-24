@@ -1,5 +1,6 @@
-@if (!fetchingLinks) {
 <app-static-top-bar></app-static-top-bar>
+
+@if (!fetchingLinks && socialLinks && socialLinks.length > 0) {
 <div class="min-h-screen">
   <div class="p-4 mt-[80px] mb-6">
     <h1 class="{{ h1Style }} mb-2">
@@ -46,5 +47,9 @@
   </div>
 </div>
 
+} @if (socialLinks?.length === 0) {
+<div class="flex items-center justify-center flex-col h-[100vh]">
+  <h1 class="{{ h1Style }}">No social Links found</h1>
+</div>
 }
 <app-promotion-footer></app-promotion-footer>

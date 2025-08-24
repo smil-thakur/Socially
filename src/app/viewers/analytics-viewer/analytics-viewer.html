@@ -65,4 +65,9 @@
     </div>
   </div>
 </div>
+} @if (!resumeData) {
+<div class="flex items-center justify-center flex-col h-[80vh]">
+  <h1 class="{{ h1Style }}">Please update your profile</h1>
+  <h3 class="{{ h3Style }}">Error loading your profile!</h3>
+</div>
 }

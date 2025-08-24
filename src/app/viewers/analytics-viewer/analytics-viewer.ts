@@ -5,6 +5,9 @@ import { ResumeDataService } from '../../services/resume-data-service';
 import { ResumeData } from '../../interfaces/ResumeData';
 import { PreloaderService } from '../../services/preloader-service';
 import { CommonModule } from '@angular/common';
+import { HlmDialogService } from '@spartan-ng/helm/dialog';
+import { ErrorDialog } from '../../common/error-dialog/error-dialog';
+import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 
 @Component({
   selector: 'app-analytics-viewer',
@@ -12,11 +15,12 @@ import { CommonModule } from '@angular/common';
   templateUrl: './analytics-viewer.html',
   styleUrl: './analytics-viewer.scss',
 })
-export class AnalyticsViewer implements OnInit {
+export class AnalyticsViewer extends BasePageScreen implements OnInit {
   private userCacheManager = inject(UserCacheManager);
   private resumeDataService = inject(ResumeDataService);
   private preloaderService = inject(PreloaderService);
   public resumeData: ResumeData | null = null;
+  public hlmDialogService = inject(HlmDialogService);
 
   async ngOnInit() {
     this.preloaderService.show();
@@ -27,10 +31,16 @@ export class AnalyticsViewer implements OnInit {
         this.resumeData = await this.resumeDataService.getResumeDataFirebase();
         if (this.resumeData) {
           this.userCacheManager.setCache(this.resumeData);
+        } else {
+          this.hlmDialogService.open(ErrorDialog, {
+            context: {
+              error: 'Can not get your profile Details',
+              desc: 'Make sure you go to analytics page to check if your profile data is valid and save!',
+            },
+          });
         }
       } catch (error) {
-        console.error("Error fetching resume data:", error);
-        // Handle error appropriately (e.g., display an error message)
+        console.error('Error fetching resume data:', error);
       }
     }
     this.preloaderService.hide();

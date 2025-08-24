@@ -27,7 +27,9 @@ import {
   sendEmailVerification,
   signInWithPopup,
   updateProfile,
+  getAdditionalUserInfo,
 } from '@angular/fire/auth';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-register-screen',
@@ -48,6 +50,7 @@ export class RegisterScreen extends BasePageScreen implements OnInit {
   public registerForm: FormGroup | null = null;
   private auth = inject(Auth);
   private readonly _hlmDialogService = inject(HlmDialogService);
+  private userService = inject(UserService);
   private provider = new GoogleAuthProvider();
   private preloaderService = inject(PreloaderService);
   constructor(private router: Router) {
@@ -79,12 +82,25 @@ export class RegisterScreen extends BasePageScreen implements OnInit {
     this.hidden = !event;
   }
 
-  public loginWithGoogle() {
-    signInWithPopup(this.auth, this.provider).then((result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      this.router.navigate(['/home']);
-      return credential;
-    });
+  public async loginWithGoogle() {
+    try {
+      signInWithPopup(this.auth, this.provider).then(async (result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const additionalInfo = getAdditionalUserInfo(result);
+        if (additionalInfo?.isNewUser) {
+          await this.userService.mapIDwithEmail();
+        }
+        this.router.navigate(['/home']);
+        return credential;
+      });
+    } catch (err) {
+      this._hlmDialogService.open(ErrorDialog, {
+        context: {
+          error: 'Unable to Sign you up',
+          desc: `Error while authenticating with backend ${err}`,
+        },
+      });
+    }
   }
 
   public async registerWithEmail() {
@@ -104,6 +120,7 @@ export class RegisterScreen extends BasePageScreen implements OnInit {
       );
       await updateProfile(userCredential.user, { displayName: username });
       await sendEmailVerification(userCredential.user);
+      await this.userService.mapIDwithEmail();
       this.preloaderService.hide();
       this._hlmDialogService.open(InfoDialog, {
         context: {

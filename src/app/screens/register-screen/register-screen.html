@@ -101,7 +101,12 @@
       <button hlmBtn variant="secondary" (click)="navigateToLoginScreen()">
         Log In
       </button>
-      <button class="shrink-0" hlmBtn variant="outline">
+      <button
+        (click)="loginWithGoogle()"
+        class="shrink-0"
+        hlmBtn
+        variant="outline"
+      >
         <img
           class="w-[20px] h-[20px] shrink-0"
           src="google.png"

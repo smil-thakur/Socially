@@ -9,6 +9,7 @@ import { SocialLinkViewer } from './viewers/social-link-viewer/social-link-viewe
 import { AnalyticsScreen } from './screens/analytics-screen/analytics-screen';
 import { AnalyticsViewer } from './viewers/analytics-viewer/analytics-viewer';
 import { ResumeViewer } from './viewers/resume-viewer/resume-viewer';
+import { ResumeScreen } from './screens/resume-screen/resume-screen';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterScreen, canActivate: [guestGuard] },
@@ -30,8 +31,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'resume-viewer',
+    path: 'resume-viewer/:id',
     component: ResumeViewer,
+  },
+  {
+    path: 'resume',
+    component: ResumeScreen,
     canActivate: [authGuard],
   },
   {

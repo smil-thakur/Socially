@@ -83,7 +83,7 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       type: 'resume',
       icon: 'lucideFileText',
       desc: 'Showcase your professional CV or resume',
-      route: 'social-links',
+      route: 'resume',
     },
     {
       type: 'portfolio',

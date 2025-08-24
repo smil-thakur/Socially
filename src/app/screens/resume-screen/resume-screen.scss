@@ -1,0 +1,182 @@
+// Responsive resume viewer styles
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// Code editor responsive styling
+ngs-code-editor {
+  height: 100%;
+  display: block;
+  border-radius: 0.5rem;
+
+  // Mobile optimizations
+  @media (max-width: 1024px) {
+    border-radius: 0;
+  }
+}
+
+// PDF viewer responsive styling
+pdf-viewer {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+// Header responsive improvements
+.header-section {
+  background: hsl(var(--background));
+  border-bottom: 1px solid hsl(var(--border));
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+// Button responsive improvements
+.hlm-btn {
+  transition: all 0.2s ease;
+
+  &:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  // Mobile button improvements
+  @media (max-width: 640px) {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    min-height: 2.5rem;
+  }
+}
+
+// Action buttons container
+.action-buttons {
+  @media (max-width: 640px) {
+    .hlm-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// Main content responsive layout
+.main-content {
+  @media (max-width: 1024px) {
+    flex-direction: column;
+
+    .code-editor-section {
+      order: 2;
+      min-height: 400px;
+    }
+
+    .pdf-viewer-section {
+      order: 1;
+      min-height: 300px;
+      border-left: none;
+      border-top: 1px solid hsl(var(--border));
+    }
+  }
+
+  @media (min-width: 1025px) {
+    flex-direction: row;
+
+    .code-editor-section {
+      order: 1;
+      border-right: 1px solid hsl(var(--border));
+    }
+
+    .pdf-viewer-section {
+      order: 2;
+      border-left: 1px solid hsl(var(--border));
+    }
+  }
+}
+
+// PDF viewer placeholder styling
+.pdf-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+
+  h3 {
+    margin-bottom: 0.5rem;
+    color: hsl(var(--foreground));
+  }
+
+  p {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+
+// Responsive spacing utilities
+@media (max-width: 640px) {
+  .mobile-p-3 {
+    padding: 0.75rem;
+  }
+
+  .mobile-gap-3 {
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tablet-p-4 {
+    padding: 1rem;
+  }
+
+  .tablet-gap-4 {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .desktop-p-6 {
+    padding: 1.5rem;
+  }
+
+  .desktop-gap-6 {
+    gap: 1.5rem;
+  }
+}
+
+// Smooth transitions for responsive changes
+* {
+  transition: all 0.2s ease;
+}
+
+// Focus states for accessibility
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+// Loading states
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+// Error states
+.error {
+  border-color: hsl(var(--destructive));
+  background-color: hsl(var(--destructive) / 0.1);
+}
+
+// Success states
+.success {
+  border-color: hsl(var(--success));
+  background-color: hsl(var(--success) / 0.1);
+}
