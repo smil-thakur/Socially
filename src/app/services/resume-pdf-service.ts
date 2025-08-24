@@ -3,13 +3,7 @@ import { APIservice } from './apiservice';
 import { API } from '../enums/APIenums';
 import { UserService } from './user-service';
 import { runAsyncInInjectionContext } from '../firebase-fixes/injection-fix';
-import {
-  Firestore,
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-} from '@angular/fire/firestore';
+import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +26,18 @@ export class ResumePdfService {
       );
     } catch (err: any) {
       throw new Error(err.message || 'Failed to generate PDF');
+    }
+  }
+
+  public async getPDFFromEmail(email: string): Promise<Blob> {
+    try {
+      return await this.apiService.getBlob(
+        API.GET_PDF_FROM_EMAIL,
+        { email: email },
+        null
+      );
+    } catch (err: any) {
+      throw new Error(err.message || 'Failed to fetch PDF');
     }
   }
 

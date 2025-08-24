@@ -33,6 +33,31 @@ export class APIservice {
     );
   }
 
+  public getBlob(
+    api: string,
+    params: any,
+    idTocken?: string | null
+  ): Promise<any> {
+    const url =
+      environment.backend.baseURL + ':' + environment.backend.port + api;
+
+    return firstValueFrom(
+      this.httpclient
+        .get(url, {
+          headers: {
+            Authorization: idTocken ? idTocken : '',
+          },
+          responseType: 'blob' as 'json',
+          params: params,
+        })
+        .pipe(
+          catchError((err) => {
+            throw Error(err.message);
+          })
+        )
+    );
+  }
+
   public post<T>(api: string, body: T, idTocken?: string): Promise<any> {
     const url =
       environment.backend.baseURL + ':' + environment.backend.port + api;

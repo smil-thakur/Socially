@@ -218,7 +218,6 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
   public async savePDF() {
     this.preloaderService.show();
     try {
-      console.log('saving', this.latex);
       this.texURL = await this.resumePDFService.saveTex(this.latex);
       this.isPDFSaved = true;
       this.initialTex = this.latex;

@@ -12,4 +12,5 @@ export const API = {
   MAP_ID_TO_EMAIL: '/mapEmailToId',
   GET_ID_FROM_EMAIL: '/getIdFromEmail',
   DELETE_SOCIAL_LINK: '/deleteSocialLink',
+  GET_PDF_FROM_EMAIL: '/getPdfFromEmail',
 };

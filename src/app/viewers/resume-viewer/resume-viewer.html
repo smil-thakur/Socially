@@ -1,0 +1,13 @@
+@if (pdfURL !=="") {
+<pdf-viewer
+  class="h-[100vh]"
+  [src]="pdfURL"
+  [render-text]="true"
+  [original-size]="true"
+>
+</pdf-viewer>
+} @if (pdfURL === "") {
+<div class="flex items-center justify-center flex-col h-[100vh]">
+  <h1 class="{{ h1Style }}">No resume found</h1>
+</div>
+}

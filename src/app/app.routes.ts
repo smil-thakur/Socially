@@ -31,7 +31,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'resume-viewer/:id',
+    path: 'resume-viewer/:email',
     component: ResumeViewer,
   },
   {
