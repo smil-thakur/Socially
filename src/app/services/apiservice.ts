@@ -11,7 +11,8 @@ export class APIservice {
 
   public get<T>(
     api: string,
-    idTocken?: string,
+    params: any,
+    idTocken?: string | null,
     onStart?: () => void,
     onComplete?: () => void,
     onError?: () => void
@@ -27,6 +28,7 @@ export class APIservice {
           headers: {
             Authorization: idTocken ? idTocken : '',
           },
+          params: params,
         })
         .pipe(
           catchError((err) => {

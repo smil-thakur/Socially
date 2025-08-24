@@ -51,5 +51,9 @@
 <div class="flex items-center justify-center flex-col h-[100vh]">
   <h1 class="{{ h1Style }}">No social Links found</h1>
 </div>
+} @if (userNotFound) {
+<div class="flex items-center justify-center flex-col h-[100vh]">
+  <h1 class="{{ h1Style }}">User not found!</h1>
+</div>
 }
 <app-promotion-footer></app-promotion-footer>

@@ -14,6 +14,9 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { lucideGrid3x3, lucideLayoutGrid } from '@ng-icons/lucide';
 import { HlmCard } from '@spartan-ng/helm/card';
 import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
+import { UserService } from '../../services/user-service';
+import { HlmDialogService } from '@spartan-ng/helm/dialog';
+import { ErrorDialog } from '../../common/error-dialog/error-dialog';
 
 @Component({
   selector: 'app-social-link-viewer',
@@ -38,36 +41,55 @@ import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
   ],
 })
 export class SocialLinkViewer extends BasePageScreen implements OnInit {
-  id!: string;
+  email!: string;
   socialLinks: SocialLink[] | null = null;
   fetchingLinks: boolean = true;
   socialLinkGreet: SocialLinkGreeting | null = null;
+  public userNotFound: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private socialLinkService: SocialLinkService,
-    private preloaderService: PreloaderService
+    private preloaderService: PreloaderService,
+    private userService: UserService,
+    private hlmDialogService: HlmDialogService
   ) {
     super();
   }
 
-  async fetchSocialLinks(id: string) {
+  async fetchSocialLinks(email: string) {
     this.fetchingLinks = true;
     this.preloaderService.show();
-    this.socialLinks = await this.socialLinkService.getAllSocialLinksForUser(
-      id
-    );
-    this.socialLinkGreet = await this.socialLinkService.getSocialLinkGreeting(
-      id
-    );
+    let id: string | null = null;
+    try {
+      id = await this.userService.getUserIdFromEmail(email);
+      if (id === null) {
+        this.userNotFound = true;
+        throw new Error('Unable to find the user!');
+      }
+      this.socialLinks = await this.socialLinkService.getAllSocialLinksForUser(
+        id!
+      );
+      this.socialLinkGreet = await this.socialLinkService.getSocialLinkGreeting(
+        id!
+      );
+    } catch (err) {
+      this.hlmDialogService.open(ErrorDialog, {
+        context: {
+          error: 'Unable to fetch the user links',
+          desc: err,
+        },
+      });
+    }
+
     this.preloaderService.hide();
     this.fetchingLinks = false;
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe(async (params) => {
-      this.id = params.get('id')!;
-      this.fetchSocialLinks(this.id);
+      this.email = params.get('email')!;
+      this.fetchSocialLinks(this.email);
     });
   }
 }

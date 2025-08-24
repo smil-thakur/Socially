@@ -40,7 +40,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'social-links/:id',
+    path: 'social-links/:email',
     component: SocialLinkViewer,
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },

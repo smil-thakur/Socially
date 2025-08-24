@@ -172,7 +172,7 @@ export class HomeScreen extends BasePageScreen implements OnInit {
   public navigateToViewer(type: string) {
     switch (type) {
       case 'social-links':
-        this.router.navigate(['/social-links', this.gUser?.uid]);
+        this.router.navigate(['/social-links', this.gUser?.email]);
         break;
       case 'analytics':
         this.router.navigate(['analytics-viewer']);

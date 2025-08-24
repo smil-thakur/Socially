@@ -24,6 +24,7 @@ export class ResumeDataService {
   public async getResumeDataFirebase(): Promise<ResumeData | null> {
     const res: ResumeData = await this.apiService.get<ResumeData>(
       API.GETUSERPROFILE,
+      null,
       await this.userService.getCurrentUserObject().getIdToken()
     );
     if (res) {

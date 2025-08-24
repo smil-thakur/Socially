@@ -38,4 +38,14 @@ export class UserService {
       await this.getCurrentUserObject().getIdToken()
     );
   }
+
+  async getUserIdFromEmail(email: string): Promise<string | null> {
+    return (
+      (await this.apiService.get(
+        API.GET_ID_FROM_EMAIL,
+        { email: email },
+        null
+      )) as any
+    )['id'];
+  }
 }

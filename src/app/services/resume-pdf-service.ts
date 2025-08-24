@@ -59,6 +59,7 @@ export class ResumePdfService {
     try {
       const res = (await this.apiService.get(
         API.GETTEXCONTENT,
+        null,
         await this.userService.getCurrentUserObject().getIdToken()
       )) as any;
       return res['latex'];
