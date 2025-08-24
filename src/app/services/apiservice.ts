@@ -1,7 +1,7 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { catchError, finalize, firstValueFrom, Observable, of } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,16 +12,11 @@ export class APIservice {
   public get<T>(
     api: string,
     params: any,
-    idTocken?: string | null,
-    onStart?: () => void,
-    onComplete?: () => void,
-    onError?: () => void
+    idTocken?: string | null
   ): Promise<T> {
     const url =
       environment.backend.baseURL + ':' + environment.backend.port + api;
-    if (onStart) {
-      onStart();
-    }
+
     return firstValueFrom(
       this.httpclient
         .get<T>(url, {
@@ -32,33 +27,16 @@ export class APIservice {
         })
         .pipe(
           catchError((err) => {
-            if (onError) {
-              onError();
-            }
             throw Error(err.message);
-          }),
-          finalize(() => {
-            if (onComplete) {
-              onComplete();
-            }
           })
         )
     );
   }
 
-  public post<T>(
-    api: string,
-    body: T,
-    idTocken?: string,
-    onStart?: () => void,
-    onComplete?: () => void,
-    onError?: () => void
-  ): Promise<any> {
+  public post<T>(api: string, body: T, idTocken?: string): Promise<any> {
     const url =
       environment.backend.baseURL + ':' + environment.backend.port + api;
-    if (onStart) {
-      onStart();
-    }
+
     return firstValueFrom(
       this.httpclient
         .post<T>(url, body, {
@@ -68,30 +46,14 @@ export class APIservice {
         })
         .pipe(
           catchError((err) => {
-            if (onError) {
-              onError();
-            }
             throw Error(`${err.message}`);
-          }),
-          finalize(() => {
-            if (onComplete) {
-              onComplete();
-            }
           })
         )
     );
   }
-  public postBlob<T>(
-    api: string,
-    body: T,
-    idTocken?: string,
-    onStart?: () => void,
-    onComplete?: () => void,
-    onError?: () => void
-  ): Promise<Blob> {
+  public postBlob<T>(api: string, body: T, idTocken?: string): Promise<Blob> {
     const url =
       environment.backend.baseURL + ':' + environment.backend.port + api;
-    if (onStart) onStart();
 
     return firstValueFrom(
       this.httpclient
@@ -103,12 +65,29 @@ export class APIservice {
         })
         .pipe(
           catchError((err) => {
-            if (onError) onError();
             console.error('API error', err);
             throw Error(`${err.message}`);
-          }),
-          finalize(() => {
-            if (onComplete) onComplete();
+          })
+        )
+    );
+  }
+
+  public delete(api: string, params: any, idTocken: string | null) {
+    const url =
+      environment.backend.baseURL + ':' + environment.backend.port + api;
+
+    return firstValueFrom(
+      this.httpclient
+        .delete(url, {
+          headers: {
+            Authorization: idTocken ? idTocken : '',
+          },
+          params: params,
+        })
+        .pipe(
+          catchError((err) => {
+            console.error('API error', err);
+            throw Error(`${err.message}`);
           })
         )
     );
