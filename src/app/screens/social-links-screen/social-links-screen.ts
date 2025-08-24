@@ -20,13 +20,14 @@ import {
   lucideInstagram,
   lucideGithub,
   lucideYoutube,
+  lucidePencil,
+  lucideTrash,
 } from '@ng-icons/lucide';
 import { HlmSelectImports, HlmSelectModule } from '@spartan-ng/helm/select';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { Subscription } from 'rxjs';
 import { HlmLabel } from '@spartan-ng/helm/label';
 import { SocialLink } from '../../interfaces/social-link';
-import { SocialLinkCard } from '../../common/social-link-card/social-link-card';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { popularSocialMediaPlatforms } from '../../enums/popular-social-media-platforms';
 import { POPULAR_SOCIAL_MEDIA_BASE_URLS } from '../../enums/popular-social-medial-base-url';
@@ -39,13 +40,15 @@ import { InfoDialog } from '../../common/info-dialog/info-dialog';
 import { SocialLinkService } from '../../services/social-link-service';
 import { HlmTabsImports } from '@spartan-ng/helm/tabs';
 import { SocialLinkGreeting } from '../../interfaces/social-link-greeting';
+import { HlmTableImports } from '@spartan-ng/helm/table';
+import { HlmTooltipModule } from '@spartan-ng/helm/tooltip';
+import { ConfirmationDialog } from '../../common/confirmation-dialog/confirmation-dialog';
 
 @Component({
   selector: 'app-social-links-screen',
   standalone: true,
   imports: [
     HlmTabsImports,
-
     ReactiveFormsModule,
     HlmFormFieldModule,
     HlmSelectModule,
@@ -53,15 +56,12 @@ import { SocialLinkGreeting } from '../../interfaces/social-link-greeting';
     HlmSelectImports,
     BrnSelectImports,
     HlmLabel,
-
     HlmButton,
-
     NgIconComponent,
     HlmCardImports,
-
-    SocialLinkCard,
-
+    HlmTableImports,
     CommonModule,
+    HlmTooltipModule,
   ],
   templateUrl: './social-links-screen.html',
   styleUrl: './social-links-screen.scss',
@@ -74,6 +74,8 @@ import { SocialLinkGreeting } from '../../interfaces/social-link-greeting';
       lucideInstagram,
       lucideGithub,
       lucideYoutube,
+      lucideTrash,
+      lucidePencil,
     }),
   ],
 })
@@ -88,6 +90,9 @@ export class SocialLinksScreen
   customIcon: string = '';
   customIconFile: File | null = null;
   platforms = popularSocialMediaPlatforms;
+  public isUpdatingSocialLink = false;
+  public existingIconURL = '';
+  private udpatingSocialLink: SocialLink | null = null;
 
   private platformValueChangeSubscription: Subscription | undefined;
   private profileURLChangeSubscription: Subscription | undefined;
@@ -318,57 +323,190 @@ export class SocialLinksScreen
     }
   }
 
+  async deleteSocialLink(id: string) {
+    try {
+      this._hlmDialogService
+        .open(ConfirmationDialog, {
+          context: {
+            title: 'Are you sure?',
+            desc: 'you want to delete this social link',
+          },
+        })
+        .closed$.subscribe(async (res) => {
+          if (res === 'yes') {
+            this.preloaderService.show();
+            await this.socialLinkService.deleteSocialLink(id);
+            this.socialLinks = this.socialLinks.filter((sl) => sl.id !== id);
+            this.preloaderService.hide();
+            this._hlmDialogService.open(InfoDialog, {
+              context: {
+                info: 'Delete Successfull',
+                desc: 'Your social link has successfully deleted, go to viewer page to see changes',
+              },
+            });
+          } else {
+            return;
+          }
+        });
+    } catch (err) {
+      this._hlmDialogService.open(ErrorDialog, {
+        context: {
+          error: 'Unable to delete your social link',
+          desc: 'Check your internet connection, or try again later',
+        },
+      });
+    }
+  }
+
+  async updateSocialLink(socialLink: SocialLink) {
+    this.isUpdatingSocialLink = true;
+    this.udpatingSocialLink = socialLink;
+    this.url?.disable();
+    this.url?.setValue(socialLink.url);
+    this.username?.setValue(socialLink.username);
+    this.handle?.setValue(socialLink.handle);
+    this.followers?.setValue(socialLink.followers);
+    this.following?.setValue(socialLink.following);
+    this.bio?.setValue(socialLink.desc);
+    this.color?.setValue(socialLink.color);
+    this.platform?.setValue(socialLink.platform);
+    this.platform?.disable();
+    this.customPlatformName?.setValue(socialLink.platformName);
+    if (socialLink.platform !== 'custom') {
+      this.color?.disable();
+    } else {
+      this.color?.enable();
+      this.existingIconURL = socialLink.customIcon;
+      this.color?.setValue(socialLink.color);
+    }
+  }
+
+  async updateSocialLinkDB(): Promise<SocialLink | null> {
+    if (!this.newLinkForm) return null;
+    this.newLinkForm.markAllAsTouched();
+    if (this.newLinkForm.invalid) return null;
+    if (!this.url?.value || !this.platform?.value) return null;
+    this.preloaderService.show();
+    let customIconUrl = '';
+    if (this.platform.value === 'custom' && this.customIconFile) {
+      customIconUrl = await this.socialLinkService.uploadIconAndGetUrl(
+        this.customIconFile
+      );
+    }
+    const link: SocialLink = {
+      id: this.udpatingSocialLink?.id!,
+      url: this.url.value,
+      username: this.username?.value,
+      platform: this.platform.value,
+      platformName: this.customPlatformName?.value,
+      icon: this.udpatingSocialLink?.icon!,
+      color: this.color?.value,
+      customIcon:
+        customIconUrl !== ''
+          ? customIconUrl
+          : this.udpatingSocialLink?.customIcon!,
+      followers: this.followers?.value,
+      following: this.following?.value,
+      desc: this.bio?.value,
+      handle: this.handle?.value,
+    };
+    return link;
+  }
+
   async addSocialLink() {
     if (!this.newLinkForm) return;
     this.newLinkForm.markAllAsTouched();
     if (this.newLinkForm.invalid) return;
     if (!this.url?.value || !this.platform?.value) return;
-    const platform = this.platforms.find(
-      (p) => p.value === this.platform?.value
-    );
-    let customIconUrl = '';
-    try {
+    if (this.isUpdatingSocialLink) {
       this.preloaderService.show();
-      if (this.platform.value === 'custom' && this.customIconFile) {
-        customIconUrl = await this.socialLinkService.uploadIconAndGetUrl(
-          this.customIconFile
-        );
+      try {
+        const updatedSocialLink = await this.updateSocialLinkDB();
+        if (updatedSocialLink) {
+          await this.socialLinkService.addSocialLinkForUser(updatedSocialLink);
+          this.socialLinks = this.socialLinks.filter(
+            (sl) => sl.id !== updatedSocialLink.id
+          );
+          this.socialLinks.push(updatedSocialLink);
+          this._hlmDialogService.open(InfoDialog, {
+            context: {
+              info: 'Update Successfull',
+              desc: 'Your social link has successfully updated, go to viewer page to see changes',
+            },
+          });
+        }
+      } catch (err) {
+        this._hlmDialogService.open(ErrorDialog, {
+          context: {
+            error: (err as any)?.message || 'Unknown error',
+            desc: 'Problem while updating social link',
+          },
+        });
+      } finally {
+        this.isUpdatingSocialLink = false;
+        this.newLinkForm.reset({
+          color: '#666666',
+        });
+        this.platform.disable();
+        this.customIcon = '';
+        this.customIconFile = null;
+        this.preloaderService.hide();
       }
-      const link: SocialLink = {
-        id: uuidv4(),
-        url: this.url.value,
-        username: this.username?.value,
-        platform: this.platform.value,
-        platformName: platform
-          ? this.platform.value === 'custom'
-            ? this.customPlatformName?.value
-            : platform.value
-          : 'Custom',
-        icon: platform ? platform.icon : '',
-        color: this.color?.value || (platform ? platform.color : '#666666'),
-        customIcon: this.platform.value === 'custom' ? customIconUrl : '',
-        followers: this.followers?.value,
-        following: this.following?.value,
-        desc: this.bio?.value,
-        handle: this.handle?.value,
-      };
-      this.socialLinks.push(link);
-      this.newLinkForm.reset({
-        color: '#666666',
-      });
-      this.platform.disable();
-      this.customIcon = '';
-      this.customIconFile = null;
-      await this.socialLinkService.addSocialLinkForUser(link);
-      this.preloaderService.hide();
-    } catch (error) {
-      this.preloaderService.hide();
-      this._hlmDialogService.open(ErrorDialog, {
-        context: {
-          error: (error as any)?.message || 'Unknown error',
-          desc: 'Problem while adding social link',
-        },
-      });
+    } else {
+      const platform = this.platforms.find(
+        (p) => p.value === this.platform?.value
+      );
+      let customIconUrl = '';
+      try {
+        this.preloaderService.show();
+        if (this.platform.value === 'custom' && this.customIconFile) {
+          customIconUrl = await this.socialLinkService.uploadIconAndGetUrl(
+            this.customIconFile
+          );
+        }
+        const link: SocialLink = {
+          id: uuidv4(),
+          url: this.url.value,
+          username: this.username?.value,
+          platform: this.platform.value,
+          platformName: platform
+            ? this.platform.value === 'custom'
+              ? this.customPlatformName?.value
+              : platform.value
+            : 'Custom',
+          icon: platform ? platform.icon : '',
+          color: this.color?.value || (platform ? platform.color : '#666666'),
+          customIcon: this.platform.value === 'custom' ? customIconUrl : '',
+          followers: this.followers?.value,
+          following: this.following?.value,
+          desc: this.bio?.value,
+          handle: this.handle?.value,
+        };
+        this.socialLinks.push(link);
+        await this.socialLinkService.addSocialLinkForUser(link);
+        this.preloaderService.hide();
+        this._hlmDialogService.open(InfoDialog, {
+          context: {
+            info: 'Saved Successfull',
+            desc: 'Your social link has successfully saved, go to viewer page to see changes',
+          },
+        });
+      } catch (error) {
+        this.preloaderService.hide();
+        this._hlmDialogService.open(ErrorDialog, {
+          context: {
+            error: (error as any)?.message || 'Unknown error',
+            desc: 'Problem while adding social link',
+          },
+        });
+      } finally {
+        this.newLinkForm.reset({
+          color: '#666666',
+        });
+        this.platform.disable();
+        this.customIcon = '';
+        this.customIconFile = null;
+      }
     }
   }
 }

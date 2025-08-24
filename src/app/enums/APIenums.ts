@@ -11,4 +11,5 @@ export const API = {
   GETTEXCONTENT: '/getTexContent',
   MAP_ID_TO_EMAIL: '/mapEmailToId',
   GET_ID_FROM_EMAIL: '/getIdFromEmail',
+  DELETE_SOCIAL_LINK: '/deleteSocialLink',
 };

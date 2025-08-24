@@ -124,6 +124,10 @@ div[hlmcardfooter] {
   margin-top: 16px;
 }
 
+hlm-dialog-footer {
+  margin-top: 8px;
+}
+
 div[hlmcardcontent] {
   margin-top: 8px;
 }
@@ -137,5 +141,48 @@ div[hlmcardcontent] {
 body:has(app-resume-viewer) {
   #themeToggleBtn {
     display: none;
+  }
+}
+
+.upper-cushion {
+  height: 8px;
+  width: 100%;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  border: 1px solid var(--border);
+  border-bottom: none;
+}
+.lower-cushion {
+  height: 8px;
+  width: 100%;
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  border: 1px solid var(--border);
+  border-top: none;
+}
+
+table {
+  th {
+    text-align: center;
+    border-right: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  th:first-of-type {
+    border-left: 1px solid var(--border);
+  }
+  td {
+    text-align: center;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  td:first-of-type {
+    border-left: 1px solid var(--border);
+  }
+  td.action {
+    button:not(:last-of-type) {
+      margin-right: 8px;
+    }
   }
 }

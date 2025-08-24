@@ -86,4 +86,13 @@ export class SocialLinkService {
     );
     return response['url'];
   }
+
+  async deleteSocialLink(sid: string) {
+    const idTocken = await this.userService.getCurrentUserObject().getIdToken();
+    await this.apiService.delete(
+      API.DELETE_SOCIAL_LINK,
+      { sid: sid },
+      idTocken
+    );
+  }
 }

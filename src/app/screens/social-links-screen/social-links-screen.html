@@ -204,20 +204,28 @@
                   class="w-[40px] h-[40px] p-1"
                   placeholder="Color"
                   formControlName="color"
-                  [value]="color?.value"
                 />
               </hlm-form-field>
             </div>
-            @if (platform?.value === 'custom') {
+            @if (platform?.value === "custom" && isUpdatingSocialLink &&
+            existingIconURL) {
+            <div class="mt-4">
+              <label class="text-xs mt-4">Already set icon</label>
+              <img
+                class="mt-2 ml-4 w-8 h-8 rounded-full border"
+                [src]="existingIconURL"
+              />
+            </div>
+            } @if (platform?.value === 'custom') {
             <ng-container>
               <hlm-form-field class="mt-4">
                 <label hlmLabel>
-                  Choose custom Icon
+                  {{ isUpdatingSocialLink ? "Change" : "Choose" }} custom Icon
                   <input
                     hlmInput
                     type="file"
                     accept="image/*"
-                    class="w-xs sm:w-xl"
+                    class="w-xs sm:w-md"
                     (change)="onIconUpload($event)"
                   />
                 </label>
@@ -231,7 +239,9 @@
             }
           </div>
           <div hlmCardFooter>
-            <button hlmBtn type="submit">Add</button>
+            <button hlmBtn type="submit">
+              {{ isUpdatingSocialLink ? "Update" : "Add" }}
+            </button>
           </div>
         </form>
       </div>
@@ -297,6 +307,7 @@
     </div>
   </hlm-tabs>
 
+  @if (socialLinks.length > 0) {
   <div
     class="w-full flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mb-4 mt-4"
   >
@@ -305,54 +316,56 @@
     <span class="flex-1 border-b border-muted"></span>
   </div>
 
-  <!-- Layout Options -->
-  <div class="flex flex-col sm:flex-row gap-2 mb-6">
-    <button hlmBtn variant="outline" (click)="layout = 'card'">Card</button>
-    <button hlmBtn variant="outline" (click)="layout = 'pill'">Pill</button>
-    <button hlmBtn variant="outline" (click)="layout = 'icon'">
-      Icon Only
-    </button>
-  </div>
-
-  <!-- Social Links Display Section -->
-  @switch (layout) { @case ('card') {
-  <div class="flex flex-wrap gap-2 sm:gap-4 justify-center w-full">
-    @for (link of socialLinks; track $index) {
-    <app-social-link-card [socialLink]="link"></app-social-link-card>
-    }
-  </div>
-  } @case ('pill') {
-  <div class="flex flex-wrap gap-1 sm:gap-2 justify-center w-full">
-    @for (link of socialLinks; track $index) {
-    <a
-      [href]="link.url"
-      target="_blank"
-      class="px-4 py-2 rounded-full text-white"
-      [style]="{ background: link.color }"
-    >
-      @if (link.icon) {
-      <ng-icon [name]="link.icon" size="18px"></ng-icon>
-      } @if (link.customIcon) {
-      <img
-        [src]="link.customIcon"
-        class="w-5 h-5 rounded-full inline-block mr-1"
-      />
+  <div class="upper-cushion"></div>
+  <table hlmTable>
+    <thead hlmTHead>
+      <tr hlmTr>
+        <th hlmTh class="max-w-[100px]">Username</th>
+        <th hlmTh class="max-w-[86px]">Platform</th>
+        <th hlmTh class="hidden sm:table-cell max-w-[200px]">Bio</th>
+        <th hlmTh class="hidden sm:table-cell">Followers</th>
+        <th hlmTh class="hidden sm:table-cell">Following</th>
+        <th hlmTh>Actions</th>
+      </tr>
+    </thead>
+    <tbody hlmTBody>
+      @for (socialLink of socialLinks; track $index) {
+      <tr hlmTr>
+        <td hlmTd class="max-w-[100px]">{{ socialLink.username }}</td>
+        <td hlmTd class="max-w-[86px]">{{ socialLink.platformName }}</td>
+        <td hlmTd class="hidden sm:table-cell max-w-[200px]">
+          {{ socialLink.desc }}
+        </td>
+        <td hlmTd class="hidden sm:table-cell">
+          {{ socialLink.followers }}
+        </td>
+        <td hlmTd class="hidden sm:table-cell">
+          {{ socialLink.following }}
+        </td>
+        <td hlmTd class="action">
+          <button
+            hlmBtn
+            (click)="deleteSocialLink(socialLink.id)"
+            size="icon"
+            variant="secondary"
+            class="size-8"
+          >
+            <ng-icon hlm name="lucideTrash" />
+          </button>
+          <button
+            (click)="updateSocialLink(socialLink)"
+            hlmBtn
+            size="icon"
+            variant="secondary"
+            class="size-8"
+          >
+            <ng-icon hlm name="lucidePencil" />
+          </button>
+        </td>
+      </tr>
       }
-      {{ link.platformName }}
-    </a>
-    }
-  </div>
-  } @case ('icon') {
-  <div class="flex flex-wrap gap-2 sm:gap-4 justify-center w-full">
-    @for (link of socialLinks; track $index) {
-    <a [href]="link.url" target="_blank">
-      @if (link.icon) {
-      <ng-icon [name]="link.icon" size="32px"></ng-icon>
-      } @if (link.customIcon) {
-      <img [src]="link.customIcon" class="w-8 h-8 rounded-full" />
-      }
-    </a>
-    }
-  </div>
-  } }
+    </tbody>
+  </table>
+  <div class="lower-cushion"></div>
+  }
 </div>
