@@ -10,6 +10,7 @@ import { AnalyticsScreen } from './screens/analytics-screen/analytics-screen';
 import { AnalyticsViewer } from './viewers/analytics-viewer/analytics-viewer';
 import { ResumeViewer } from './viewers/resume-viewer/resume-viewer';
 import { ResumeScreen } from './screens/resume-screen/resume-screen';
+import { PortfolioScreen } from './screens/portfolio-screen/portfolio-screen';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterScreen, canActivate: [guestGuard] },
@@ -37,6 +38,11 @@ export const routes: Routes = [
   {
     path: 'resume',
     component: ResumeScreen,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'portfolio',
+    component: PortfolioScreen,
     canActivate: [authGuard],
   },
   {

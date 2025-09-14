@@ -1,0 +1,19 @@
+<div class="flex mt-4 gap-4 items-center">
+  @for (color of primaryColors(); track $index) {
+  <div
+    (click)="onColorSelected(color)"
+    class="cursor-pointer rounded-full h-[25px] w-[25px]"
+    [class]="{ 'outline-2': selectedColor === color }"
+    [style]="{ 'background-color': color }"
+  ></div>
+  }
+  <div hlmSeparator orientation="vertical" class="h-[20px]"></div>
+  <input
+    [class]="{ 'outline-2': isCustomColor }"
+    class="color-circle"
+    type="color"
+    (input)="onColorpickerChange($event)"
+    [value]="selectedColor"
+  />
+  <p class="text-xs text-muted-foreground">Custom Color</p>
+</div>

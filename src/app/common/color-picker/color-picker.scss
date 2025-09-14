@@ -1,0 +1,19 @@
+.color-circle {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.color-circle::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-circle::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}

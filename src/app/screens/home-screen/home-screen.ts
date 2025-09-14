@@ -89,7 +89,7 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       type: 'portfolio',
       icon: 'lucideFilePlus2',
       desc: 'Website made for you to show off your talents and skills',
-      route: 'social-links',
+      route: 'portfolio',
     },
     {
       type: 'skills-certifications',
@@ -104,28 +104,10 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       route: 'social-links',
     },
     {
-      type: 'contact',
-      icon: 'lucideMail',
-      desc: 'Let people reach out for jobs or freelance work',
-      route: 'social-links',
-    },
-    {
-      type: 'qr-code',
-      icon: 'lucideQrCode',
-      desc: 'Generate a QR code to share your card instantly',
-      route: 'social-links',
-    },
-    {
       type: 'analytics',
       icon: 'lucideChartBar',
       desc: 'See who views your card and profile',
       route: 'analytics',
-    },
-    {
-      type: 'vcard',
-      icon: 'lucideDownload',
-      desc: 'Let people download your vCard to their phone',
-      route: 'social-links',
     },
     {
       type: 'video-intro',

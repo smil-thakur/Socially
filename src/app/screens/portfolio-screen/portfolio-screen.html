@@ -1,0 +1,121 @@
+<app-only-back-nav-bar></app-only-back-nav-bar>
+<div class="main flex flex-col items-center px-2 sm:px-4 md:px-8 lg:px-0">
+  <div
+    hlmCard
+    class="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-3xl mb-24"
+  >
+    <div hlmCardHeader>
+      <div hlmCardTitle>Personalize your site.</div>
+      <div hlmCardDescription>
+        Select your styles to customize your website, so it looks the way you
+        want
+      </div>
+    </div>
+    <div hlmCardContent class="flex flex-col gap-8">
+      <div>
+        <label hlmLabel class="mb-4">Select your style</label>
+        <hlm-radio-group
+          class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-4"
+          (valueChange)="styleChange($event)"
+        >
+          <label class="flex items-center gap-3" hlmLabel>
+            <hlm-radio value="minimal">
+              <hlm-radio-indicator indicator />
+            </hlm-radio>
+            <app-style-card
+              [title]="'Minimalist'"
+              [desc]="
+                'Clean lines, ample whitespace, and a focus on typography.'
+              "
+            ></app-style-card>
+          </label>
+          <label class="flex items-center gap-3" hlmLabel>
+            <hlm-radio value="retro">
+              <hlm-radio-indicator indicator />
+            </hlm-radio>
+            <app-style-card
+              [title]="'Retro'"
+              [desc]="
+                'Vintage fonts, nostalgic color palettes, and classic layouts.'
+              "
+            ></app-style-card>
+          </label>
+          <label class="flex items-center gap-3" hlmLabel>
+            <hlm-radio value="modern">
+              <hlm-radio-indicator indicator />
+            </hlm-radio>
+            <app-style-card
+              [title]="'Modern'"
+              [desc]="'Bold typography, vibrant colors, and dynamic grids.'"
+            ></app-style-card>
+          </label>
+          <label class="flex items-center gap-3" hlmLabel>
+            <hlm-radio value="professional">
+              <hlm-radio-indicator indicator />
+            </hlm-radio>
+            <app-style-card
+              [title]="'Professional'"
+              [desc]="'Structured, elegant, and corporate-friendly design.'"
+            ></app-style-card>
+          </label>
+          <label class="flex items-center gap-3" hlmLabel>
+            <hlm-radio value="monochrome">
+              <hlm-radio-indicator indicator />
+            </hlm-radio>
+            <app-style-card
+              [title]="'Monochrome'"
+              [desc]="
+                'Sleek, eye-friendly, and perfect for low-light environments.'
+              "
+            ></app-style-card>
+          </label>
+        </hlm-radio-group>
+      </div>
+      @if (colorArray.length > 0) {
+      <div>
+        <label hlmLabel>Primary Color</label>
+        <div>
+          <app-color-picker
+            [primaryColors]="colorArray"
+            (selectedColorChange)="onSelectedColorChange($event)"
+          ></app-color-picker>
+        </div>
+      </div>
+      }
+      <div>
+        <label hlmLabel class="mb-4">Font Family</label>
+        <div>
+          <brn-select class="inline-block" placeholder="Select a font">
+            <hlm-select-trigger>
+              <hlm-select-value />
+            </hlm-select-trigger>
+            <hlm-select-content>
+              @for (font of googleFontOptions; track $index) {
+              <hlm-option [value]="font">{{ font }}</hlm-option>
+              }
+            </hlm-select-content>
+          </brn-select>
+        </div>
+      </div>
+      <div>
+        <label hlmLabel class="mb-4">Layout Style</label>
+        <hlm-radio-group
+          class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-4"
+          (valueChange)="onLayoutChange($event)"
+        >
+          @for (layout of layoutTypes; track $index) {
+          <label class="flex items-center gap-3" hlmLabel>
+            <hlm-radio [value]="layout">
+              <hlm-radio-indicator indicator />
+            </hlm-radio>
+            <app-layout-card [type]="layout"></app-layout-card>
+          </label>
+          }
+        </hlm-radio-group>
+      </div>
+    </div>
+    <div hlmCardFooter class="flex items-center justify-center">
+      <button hlmBtn>build it</button>
+    </div>
+  </div>
+</div>

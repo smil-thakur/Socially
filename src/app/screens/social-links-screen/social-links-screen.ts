@@ -43,6 +43,7 @@ import { SocialLinkGreeting } from '../../interfaces/social-link-greeting';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmTooltipModule } from '@spartan-ng/helm/tooltip';
 import { ConfirmationDialog } from '../../common/confirmation-dialog/confirmation-dialog';
+import { OnlyBackNavBar } from '../../common/only-back-nav-bar/only-back-nav-bar';
 
 @Component({
   selector: 'app-social-links-screen',
@@ -62,6 +63,7 @@ import { ConfirmationDialog } from '../../common/confirmation-dialog/confirmatio
     HlmTableImports,
     CommonModule,
     HlmTooltipModule,
+    OnlyBackNavBar,
   ],
   templateUrl: './social-links-screen.html',
   styleUrl: './social-links-screen.scss',
