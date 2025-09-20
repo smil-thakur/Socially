@@ -17,6 +17,7 @@
 
   <!-- Action Buttons -->
   <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+    @if (!website) {
     <button
       hlmBtn
       variant="secondary"
@@ -25,6 +26,7 @@
     >
       Generate
     </button>
+    }
     <button
       hlmBtn
       variant="secondary"
@@ -36,24 +38,40 @@
     </button>
     <button
       hlmBtn
-      variant="secondary"
-      class="w-full sm:w-auto text-sm"
-      (click)="compileWebsite()"
-      [disabled]="!isWebsiteGenerated"
-    >
-      Compile
-    </button>
-    <button
-      hlmBtn
       class="w-full sm:w-auto text-sm"
       (click)="saveBento()"
-      [disabled]="!isWebsiteGenerated || isBentoSaved"
+      [disabled]="isBentoSaved"
     >
       {{ isBentoSaved ? "Saved" : "Save" }}
     </button>
   </div>
 </div>
 
+<div hlmAccordion class="mx-2 mb-4">
+  <div hlmAccordionItem>
+    <h3 class="contents">
+      <button hlmAccordionTrigger>
+        Code for bento
+        <ng-icon name="lucideChevronDown" hlm hlmAccIcon />
+      </button>
+    </h3>
+    <hlm-accordion-content>
+      <ngs-code-editor
+        [options]="codeOption"
+        [theme]="theme"
+        [codeModel]="codeModel"
+        (valueChanged)="contentChange($event)"
+        class="h-[500px]"
+      ></ngs-code-editor>
+    </hlm-accordion-content>
+  </div>
+</div>
+<!-- Code Editor Section -->
+
 @if (website) {
 <app-bento-viewer [website]="website"></app-bento-viewer>
+} @if (!website) {
+<div class="flex items-center justify-center flex-col h-[80vh]">
+  <h1 class="{{ h1Style }}">No bento found</h1>
+</div>
 }

@@ -1,7 +1,8 @@
-@if (website()) {
+@if (website) { @if (inViewMode) {
 <app-only-back-nav-bar></app-only-back-nav-bar>
+}
 <div class="bento-grid" #bentoGrid>
-  @for (bento of website()!.elements; track bento; let i = $index) {
+  @for (bento of website!.elements; track bento; let i = $index) {
   <div
     class="bento minimalist"
     [class]="[bento.layout || 'default', bento.size || 'medium']"
@@ -154,7 +155,7 @@
   }
 </div>
 
-} @if (!website()) {
+} @if (!website) {
 <app-only-back-nav-bar></app-only-back-nav-bar>
 <div class="flex items-center justify-center flex-col h-[80vh]">
   <h1 class="{{ h1Style }}">No bento found</h1>

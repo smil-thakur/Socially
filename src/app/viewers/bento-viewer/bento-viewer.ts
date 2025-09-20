@@ -9,6 +9,7 @@ import {
   HostListener,
   OnInit,
   inject,
+  Input,
 } from '@angular/core';
 import { Website } from '../../interfaces/website';
 import { ActivatedRoute } from '@angular/router';
@@ -20,6 +21,7 @@ import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { ErrorDialog } from '../../common/error-dialog/error-dialog';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { OnlyBackNavBar } from '../../common/only-back-nav-bar/only-back-nav-bar';
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-bento-viewer',
@@ -37,10 +39,11 @@ export class BentoViewer
   private email!: string;
   private preloaderService = inject(PreloaderService);
   private apiService = inject(APIservice);
-  private userService = inject(UserService);
   private hlmDialogService = inject(HlmDialogService);
+  private zone = inject(NgZone);
+  public inViewMode = false;
 
-  website = input<Website>();
+  @Input() website: Website | null = null;
   private resizeTimeout?: number;
 
   ngOnInit() {
@@ -53,7 +56,9 @@ export class BentoViewer
   ngAfterViewInit() {
     // Check if CSS masonry is supported
     if (!CSS.supports('grid-template-rows', 'masonry')) {
-      this.initMasonryFallback();
+      this.zone.onStable.subscribe(() => {
+        this.initMasonryFallback();
+      });
     }
   }
 
@@ -77,43 +82,40 @@ export class BentoViewer
   }
 
   private initMasonryFallback() {
-    // Simple masonry fallback using JavaScript
-    setTimeout(() => {
-      if (this.bentoGrid) {
-        const grid = this.bentoGrid.nativeElement;
-        const items = Array.from(grid.children) as HTMLElement[];
+    if (this.bentoGrid) {
+      const grid = this.bentoGrid.nativeElement;
+      const items = Array.from(grid.children) as HTMLElement[];
 
-        // Reset positioning
-        items.forEach((item) => {
-          item.style.position = 'static';
-          item.style.top = 'auto';
-          item.style.left = 'auto';
-        });
+      // Reset positioning
+      items.forEach((item) => {
+        item.style.position = 'static';
+        item.style.top = 'auto';
+        item.style.left = 'auto';
+      });
 
-        // Simple column-based masonry
-        const columns = this.getColumnCount();
-        const columnHeights = new Array(columns).fill(0);
-        const gap = 16;
+      // Simple column-based masonry
+      const columns = this.getColumnCount();
+      const columnHeights = new Array(columns).fill(0);
+      const gap = 16;
 
-        items.forEach((item) => {
-          const shortestColumn = columnHeights.indexOf(
-            Math.min(...columnHeights)
-          );
-          const itemHeight = item.offsetHeight;
+      items.forEach((item) => {
+        const shortestColumn = columnHeights.indexOf(
+          Math.min(...columnHeights)
+        );
+        const itemHeight = item.offsetHeight;
 
-          item.style.position = 'absolute';
-          item.style.top = `${columnHeights[shortestColumn]}px`;
-          item.style.left = `${shortestColumn * (100 / columns)}%`;
-          item.style.width = `${100 / columns - 1}%`;
+        item.style.position = 'absolute';
+        item.style.top = `${columnHeights[shortestColumn]}px`;
+        item.style.left = `${shortestColumn * (100 / columns)}%`;
+        item.style.width = `${100 / columns - 1}%`;
 
-          columnHeights[shortestColumn] += itemHeight + gap;
-        });
+        columnHeights[shortestColumn] += itemHeight + gap;
+      });
 
-        // Set container height
-        grid.style.height = `${Math.max(...columnHeights)}px`;
-        grid.style.position = 'relative';
-      }
-    }, 100);
+      // Set container height
+      grid.style.height = `${Math.max(...columnHeights)}px`;
+      grid.style.position = 'relative';
+    }
   }
 
   private getColumnCount(): number {
@@ -126,12 +128,16 @@ export class BentoViewer
 
   private async loadBento() {
     if (!this.email) return;
+    this.inViewMode = true;
     try {
       this.preloaderService.show();
-      this.website = await this.apiService.get(API.GET_BENTO_FROM_EMAIL, {
-        email: this.email,
-      });
-      null;
+      this.website = await this.apiService.get(
+        API.GET_BENTO_FROM_EMAIL,
+        {
+          email: this.email,
+        },
+        null
+      );
       console.log('Website loaded for email:', this.email, this.website);
     } catch (err) {
       this.hlmDialogService.open(ErrorDialog, {
