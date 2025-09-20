@@ -24,6 +24,9 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
-    provideCodeEditor(),
+    provideCodeEditor({
+      baseUrl: 'assets/monaco',
+      typingsWorkerUrl: 'assets/workers/typings-worker.js',
+    }),
   ],
 };

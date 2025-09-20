@@ -48,3 +48,7 @@ src/environments/
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+# Monaco Editor assets (generated from node_modules)
+src/assets/monaco/
+src/assets/workers/
