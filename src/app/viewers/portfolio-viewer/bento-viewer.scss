@@ -1,0 +1,785 @@
+/* =============================
+   Base Bento Grid
+============================= */
+/* Enhanced Bento Grid System with Masonry Layout */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* Use masonry for true staggered layout where supported */
+  grid-template-rows: masonry;
+  gap: 16px;
+  padding: 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  /* Better space distribution */
+  align-content: start;
+}
+
+/* Fallback for browsers that don't support masonry */
+@supports not (grid-template-rows: masonry) {
+  .bento-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .bento {
+    flex: 1 1 280px;
+    max-width: calc(50% - 8px);
+    margin-bottom: 16px;
+  }
+
+  .bento.hero {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .bento.large {
+    flex: 1 1 calc(50% - 8px);
+    max-width: calc(50% - 8px);
+  }
+
+  .bento.xl {
+    flex: 1 1 calc(66.666% - 8px);
+    max-width: calc(66.666% - 8px);
+  }
+}
+
+/* Base Bento Styles */
+.bento {
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* Let content determine height naturally */
+  height: fit-content;
+
+  /* Size variants - let masonry handle positioning */
+  &.small {
+    min-height: 200px;
+  }
+  &.medium {
+    min-height: 250px;
+  }
+  &.large {
+    min-height: 300px;
+  }
+  &.xl {
+    min-height: 350px;
+  }
+}
+
+.bento.hero {
+  min-height: 400px;
+  /* For masonry layout, hero cards will naturally take more space */
+}
+
+/* Header Components */
+.bento-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  min-height: 2rem; /* Ensure consistent height for alignment */
+}
+
+.bento-icon {
+  font-size: 1.5rem;
+  opacity: 0.8;
+  flex-shrink: 0; /* Prevent icon from shrinking */
+  line-height: 1; /* Better alignment with text */
+  display: flex;
+  align-items: center;
+}
+
+.bento-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  flex: 1;
+  line-height: 1.2; /* Better line height for alignment */
+  display: flex;
+  align-items: center; /* Center align with icon */
+  word-wrap: break-word; /* Handle long titles */
+  overflow-wrap: break-word;
+}
+
+.bento-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.bento-content {
+  line-height: 1.6;
+  margin-bottom: 16px;
+  color: var(--muted-foreground);
+  flex-grow: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto; /* Enable hyphenation for better text flow */
+}
+
+/* Layout Variants */
+.stats-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 16px;
+  margin-top: auto;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+/* Featured Layout */
+.featured-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.featured-image {
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Timeline Layout */
+.timeline-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-items {
+  flex-grow: 1;
+  position: relative;
+  padding-left: 4px; /* Add padding to account for timeline line */
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.timeline-item:hover {
+  transform: translateX(2px);
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+  margin-top: 6px;
+  margin-right: 16px;
+  flex-shrink: 0;
+  border: 2px solid var(--background);
+  box-shadow: 0 0 0 2px var(--primary);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-item:not(.last-item) .timeline-dot::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 4px;
+  width: 2px;
+  height: calc(100% + 10px);
+  background: linear-gradient(to bottom, var(--primary), var(--border));
+  z-index: 0;
+}
+
+.timeline-content {
+  flex: 1;
+  min-width: 0; /* Allow content to shrink */
+  padding: 4px 0;
+}
+
+.timeline-content h4 {
+  margin: 0 0 6px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  color: var(--foreground);
+}
+
+.timeline-content p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.timeline-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  border: 1px solid var(--border);
+}
+
+/* Individual timeline item styling */
+.timeline-item.last-item {
+  margin-bottom: 0;
+}
+
+.timeline-item.last-item .timeline-dot::after {
+  display: none;
+}
+
+/* Gallery Layout */
+.gallery-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.gallery-item {
+  text-align: center;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  overflow: hidden;
+}
+
+.gallery-item:hover {
+  border-color: var(--ring);
+  transform: translateY(-2px);
+}
+
+.gallery-icon {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.gallery-item h4 {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/* Contact Layout */
+.contact-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  min-height: 44px; /* Ensure consistent height */
+  overflow: hidden;
+}
+
+.contact-item:hover {
+  border-color: var(--ring);
+  background: var(--muted);
+}
+
+.contact-icon {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.contact-item a {
+  color: var(--card-foreground);
+  text-decoration: none;
+  font-weight: 500;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.contact-item a:hover {
+  color: var(--primary);
+}
+
+.contact-item span {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+}
+
+/* Default Inner Bentos */
+.bento-inner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: auto;
+}
+
+.inner-bento {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Allow flex shrinking */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.inner-bento:hover {
+  border-color: var(--ring);
+  transform: translateY(-1px);
+}
+
+.inner-icon {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+  opacity: 0.8;
+  flex-shrink: 0; /* Prevent icon from shrinking */
+  line-height: 1;
+}
+
+.inner-bento h4 {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  flex-shrink: 0; /* Keep heading visible */
+}
+
+.inner-bento p {
+  margin: 4px 0 0 0;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  line-height: 1.3;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  flex-grow: 1; /* Allow text to expand */
+  overflow: hidden; /* Hide overflow text */
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit to 3 lines */
+  line-clamp: 3; /* Standard property for compatibility */
+  -webkit-box-orient: vertical;
+}
+
+.inner-badge {
+  display: inline-block;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 0.6rem;
+  margin-top: 4px;
+  flex-shrink: 0; /* Keep badge visible */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Accent Colors */
+.bento.accent-primary {
+  border-left: 4px solid var(--primary);
+}
+.bento.accent-secondary {
+  border-left: 4px solid var(--secondary);
+}
+.bento.accent-success {
+  border-left: 4px solid #10b981;
+}
+.bento.accent-warning {
+  border-left: 4px solid #f59e0b;
+}
+.bento.accent-info {
+  border-left: 4px solid #3b82f6;
+}
+
+/* Enhanced Masonry Layout */
+.bento-grid {
+  /* Create more dynamic grid for better staggering */
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 900px) and (max-width: 1199px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 600px) and (max-width: 899px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 599px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Fallback responsive adjustments */
+@supports not (grid-template-rows: masonry) {
+  @media (min-width: 1200px) {
+    .bento {
+      max-width: calc(25% - 12px);
+    }
+    .bento.large {
+      max-width: calc(50% - 8px);
+    }
+    .bento.xl {
+      max-width: calc(75% - 4px);
+    }
+  }
+
+  @media (min-width: 900px) and (max-width: 1199px) {
+    .bento {
+      max-width: calc(33.333% - 11px);
+    }
+    .bento.large {
+      max-width: calc(66.666% - 8px);
+    }
+    .bento.xl {
+      max-width: calc(100% - 0px);
+    }
+  }
+
+  @media (min-width: 600px) and (max-width: 899px) {
+    .bento {
+      max-width: calc(50% - 8px);
+    }
+    .bento.large,
+    .bento.xl {
+      max-width: calc(100% - 0px);
+    }
+  }
+}
+
+/* Staggered positioning for visual interest */
+.bento.staggered {
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: var(--stagger-delay, 0s);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Subtle staggered positioning for visual interest */
+.bento:nth-child(odd) {
+  transform: translateY(0);
+}
+
+.bento:nth-child(even) {
+  transform: translateY(5px);
+}
+
+.bento:nth-child(3n) {
+  transform: translateY(-3px);
+}
+
+.bento:nth-child(4n) {
+  transform: translateY(8px);
+}
+
+/* Ensure staggered cards don't interfere with animation */
+.bento.staggered:nth-child(odd),
+.bento.staggered:nth-child(even),
+.bento.staggered:nth-child(3n),
+.bento.staggered:nth-child(4n) {
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .bento-grid {
+    gap: 12px;
+    padding: 12px;
+    grid-template-columns: 1fr;
+  }
+
+  .bento {
+    transform: none !important;
+  }
+
+  .bento-title {
+    font-size: 1.1rem;
+  }
+
+  .bento-content {
+    font-size: 0.9rem;
+  }
+
+  .inner-bento h4 {
+    font-size: 0.8rem;
+  }
+
+  .inner-bento p {
+    font-size: 0.7rem;
+    -webkit-line-clamp: 2; /* Reduce to 2 lines on mobile */
+    line-clamp: 2; /* Standard property for compatibility */
+  }
+
+  .gallery-item h4 {
+    font-size: 0.75rem;
+  }
+
+  .timeline-content h4 {
+    font-size: 0.85rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.75rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Fallback mobile adjustments */
+@supports not (grid-template-rows: masonry) {
+  @media (max-width: 599px) {
+    .bento {
+      max-width: 100%;
+      flex: 1 1 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .bento {
+    padding: 16px;
+  }
+
+  .bento-title {
+    font-size: 1rem;
+  }
+
+  .bento-content {
+    font-size: 0.85rem;
+  }
+
+  .inner-bento {
+    padding: 8px;
+  }
+
+  .inner-bento h4 {
+    font-size: 0.75rem;
+  }
+
+  .inner-bento p {
+    font-size: 0.65rem;
+    -webkit-line-clamp: 1; /* Single line on very small screens */
+    line-clamp: 1; /* Standard property for compatibility */
+  }
+
+  .gallery-item {
+    padding: 6px;
+    min-height: 50px;
+  }
+
+  .gallery-item h4 {
+    font-size: 0.7rem;
+  }
+
+  .contact-item {
+    padding: 6px 8px;
+    min-height: 40px;
+  }
+
+  .timeline-content h4 {
+    font-size: 0.8rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.7rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===================================================================
+   Redesigned Themes
+   
+   Improvements:
+   - Monochrome theme is completely redesigned to be sleek & modern.
+   - It now uses CSS variables for automatic dark mode adaptation.
+   - Other themes have received subtle tweaks for better UX and polish.
+=================================================================== */
+.bento-grid {
+  /* --- Minimalist (Clean & Subtle) --- */
+  .bento.minimalist {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--card-foreground);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      sans-serif;
+
+    h1,
+    h2 {
+      font-weight: 600;
+      color: var(--card-foreground);
+    }
+
+    p {
+      line-height: 1.6;
+      color: var(--muted-foreground);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke: var(--muted-foreground);
+      margin-bottom: 8px;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      /* Tweak: Added border highlight on hover for more feedback */
+      border-color: var(--ring);
+    }
+
+    html.dark & {
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .bento {
+    min-width: 270px;
+  }
+  .bento-grid {
+    .bento-inner-vertical {
+      align-items: center;
+      .bento {
+        width: 80%;
+        min-width: unset;
+        max-width: unset;
+        max-height: unset;
+        height: unset;
+        min-height: 50px;
+        h2 {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

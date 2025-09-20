@@ -1,0 +1,59 @@
+<div
+  class="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full p-3 sm:p-4 gap-3 sm:gap-4"
+>
+  <!-- Back Button -->
+  <div class="flex-shrink-0">
+    <button (click)="handleBack()" hlmBtn class="text-sm sm:text-base">
+      <ng-icon size="20px" sm:size="25px" name="lucideArrowLeft"></ng-icon>
+    </button>
+  </div>
+
+  <!-- Title -->
+  <div
+    class="text-center sm:text-left text-lg sm:text-xl font-semibold flex-1 px-2"
+  >
+    {{ username }}'s Bento
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+    <button
+      hlmBtn
+      variant="secondary"
+      class="w-full sm:w-auto text-sm"
+      (click)="buildIt()"
+    >
+      Generate
+    </button>
+    <button
+      hlmBtn
+      variant="secondary"
+      class="w-full sm:w-auto text-sm"
+      (click)="regenerateBento()"
+      [disabled]="!isWebsiteGenerated"
+    >
+      Regenerate
+    </button>
+    <button
+      hlmBtn
+      variant="secondary"
+      class="w-full sm:w-auto text-sm"
+      (click)="compileWebsite()"
+      [disabled]="!isWebsiteGenerated"
+    >
+      Compile
+    </button>
+    <button
+      hlmBtn
+      class="w-full sm:w-auto text-sm"
+      (click)="saveBento()"
+      [disabled]="!isWebsiteGenerated || isBentoSaved"
+    >
+      {{ isBentoSaved ? "Saved" : "Save" }}
+    </button>
+  </div>
+</div>
+
+@if (website) {
+<app-bento-viewer [website]="website"></app-bento-viewer>
+}

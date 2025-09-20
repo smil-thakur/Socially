@@ -162,6 +162,9 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       case 'resume':
         this.router.navigate(['/resume-viewer', this.gUser?.email]);
         break;
+      case 'portfolio':
+        this.router.navigate(['/portfolio-viewer']);
+        break;
       default:
         break;
     }

@@ -10,7 +10,8 @@ import { AnalyticsScreen } from './screens/analytics-screen/analytics-screen';
 import { AnalyticsViewer } from './viewers/analytics-viewer/analytics-viewer';
 import { ResumeViewer } from './viewers/resume-viewer/resume-viewer';
 import { ResumeScreen } from './screens/resume-screen/resume-screen';
-import { PortfolioScreen } from './screens/portfolio-screen/portfolio-screen';
+import { BentoScreen } from './screens/portfolio-screen/bento-screen';
+import { BentoViewer } from './viewers/portfolio-viewer/bento-viewer';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterScreen, canActivate: [guestGuard] },
@@ -42,8 +43,12 @@ export const routes: Routes = [
   },
   {
     path: 'portfolio',
-    component: PortfolioScreen,
+    component: BentoScreen,
     canActivate: [authGuard],
+  },
+  {
+    path: 'portfolio-viewer',
+    component: BentoViewer,
   },
   {
     path: 'social-links/:email',

@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PortfolioScreen } from './portfolio-screen';
+import { BentoScreen } from './bento-screen';
 
-describe('PortfolioScreen', () => {
-  let component: PortfolioScreen;
-  let fixture: ComponentFixture<PortfolioScreen>;
+describe('BentoScreen', () => {
+  let component: BentoScreen;
+  let fixture: ComponentFixture<BentoScreen>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PortfolioScreen]
-    })
-    .compileComponents();
+      imports: [BentoScreen],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(PortfolioScreen);
+    fixture = TestBed.createComponent(BentoScreen);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
