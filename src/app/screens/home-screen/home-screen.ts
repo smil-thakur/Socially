@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
+import { TitleCasePipe } from '@angular/common';
 import {
   lucideBadgeCheck,
   lucideChartBar,
@@ -9,6 +10,7 @@ import {
   lucideDownload,
   lucideFilePlus2,
   lucideFileText,
+  lucideLayoutGrid,
   lucideLink,
   lucideMail,
   lucidePen,
@@ -30,12 +32,19 @@ import { ResumeDataService } from '../../services/resume-data-service';
 
 @Component({
   selector: 'app-home-screen',
-  imports: [NgIcon, HlmIcon, HlmCardImports, HlmButton, TopNavBar],
+  imports: [
+    NgIcon,
+    HlmIcon,
+    HlmCardImports,
+    HlmButton,
+    TopNavBar,
+    TitleCasePipe,
+  ],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.scss',
   providers: [
     provideIcons({
-      lucideFilePlus2,
+      lucideLayoutGrid,
       lucideLink,
       lucideContact,
       lucideFileText,
@@ -46,6 +55,7 @@ import { ResumeDataService } from '../../services/resume-data-service';
       lucideChartBar,
       lucideDownload,
       lucideVideo,
+      lucideFilePlus2,
     }),
   ],
 })
@@ -86,10 +96,10 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       route: 'resume',
     },
     {
-      type: 'portfolio',
-      icon: 'lucideFilePlus2',
-      desc: 'Website made for you to show off your talents and skills',
-      route: 'portfolio',
+      type: 'bento',
+      icon: 'lucideLayoutGrid',
+      desc: 'A portfolio built using modular bento cards to showcase your projects, skills, and achievements',
+      route: 'bento',
     },
     {
       type: 'skills-certifications',
@@ -162,8 +172,8 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       case 'resume':
         this.router.navigate(['/resume-viewer', this.gUser?.email]);
         break;
-      case 'portfolio':
-        this.router.navigate(['/portfolio-viewer']);
+      case 'bento':
+        this.router.navigate(['/bento-viewer', this.gUser?.email]);
         break;
       default:
         break;

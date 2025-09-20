@@ -13,8 +13,8 @@ export const API = {
   GET_ID_FROM_EMAIL: '/getIdFromEmail',
   DELETE_SOCIAL_LINK: '/deleteSocialLink',
   GET_PDF_FROM_EMAIL: '/getPdfFromEmail',
-  GET_BENTO_FROM_PORTFOLIO_DATA: '/website',
-  SAVE_WEBSITE: '/saveBento',
-  GET_SAVED_WEBSITE: '/getSavedWebsite',
-  GET_WEBSITE_FROM_EMAIL: '/getWebsiteFromEmail',
+  GET_BENTO_FROM_PORTFOLIO_DATA: '/bento',
+  SAVE_BENTO: '/saveBento',
+  GET_BENTO_WEBSITE: '/getSavedBento',
+  GET_BENTO_FROM_EMAIL: '/getBentoFromEmail',
 };

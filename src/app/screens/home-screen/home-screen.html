@@ -32,7 +32,7 @@
       @for (social of socials; track $index) {
       <div hlmCard class="w-xs cursor-pointer focusable">
         <div hlmCardHeader>
-          <div hlmCardTitle>{{ social.type }}</div>
+          <div hlmCardTitle>{{ social.type | titlecase }}</div>
           <div hlmCardDescription>{{ social.desc }}</div>
         </div>
         <div hlmCardContent>

@@ -18,14 +18,19 @@ import { API } from '../../enums/APIenums';
 import { UserService } from '../../services/user-service';
 import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { ErrorDialog } from '../../common/error-dialog/error-dialog';
+import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
+import { OnlyBackNavBar } from '../../common/only-back-nav-bar/only-back-nav-bar';
 
 @Component({
   selector: 'app-bento-viewer',
-  imports: [],
+  imports: [OnlyBackNavBar],
   templateUrl: './bento-viewer.html',
   styleUrl: './bento-viewer.scss',
 })
-export class BentoViewer implements AfterViewInit, OnDestroy, OnInit {
+export class BentoViewer
+  extends BasePageScreen
+  implements AfterViewInit, OnDestroy, OnInit
+{
   @ViewChild('bentoGrid', { static: false })
   bentoGrid!: ElementRef<HTMLDivElement>;
   private route = inject(ActivatedRoute);
@@ -41,7 +46,7 @@ export class BentoViewer implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(async (params) => {
       this.email = params.get('email')!;
-      this.loadWebsiteByEmail();
+      await this.loadBento();
     });
   }
 
@@ -119,16 +124,14 @@ export class BentoViewer implements AfterViewInit, OnDestroy, OnInit {
     return 1;
   }
 
-  private async loadWebsiteByEmail() {
+  private async loadBento() {
     if (!this.email) return;
-
     try {
       this.preloaderService.show();
-      this.website = await this.apiService.get(
-        API.GET_WEBSITE_FROM_EMAIL,
-        { email: this.email },
-        await this.userService.getCurrentUserObject().getIdToken()
-      );
+      this.website = await this.apiService.get(API.GET_BENTO_FROM_EMAIL, {
+        email: this.email,
+      });
+      null;
       console.log('Website loaded for email:', this.email, this.website);
     } catch (err) {
       this.hlmDialogService.open(ErrorDialog, {

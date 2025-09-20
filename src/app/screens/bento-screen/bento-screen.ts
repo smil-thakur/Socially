@@ -22,7 +22,7 @@ import { UserService } from '../../services/user-service';
 import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { ErrorDialog } from '../../common/error-dialog/error-dialog';
 import { PreloaderService } from '../../services/preloader-service';
-import { BentoViewer } from '../../viewers/portfolio-viewer/bento-viewer';
+import { BentoViewer } from '../../viewers/bento-viewer/bento-viewer';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { ConfirmationDialog } from '../../common/confirmation-dialog/confirmation-dialog';
 import { Location } from '@angular/common';
@@ -184,7 +184,7 @@ export class BentoScreen implements OnInit {
     try {
       this.preloaderService.show();
       await this.apiService.post(
-        API.SAVE_WEBSITE,
+        API.SAVE_BENTO,
         this.website,
         await this.userService.getCurrentUserObject().getIdToken()
       );
@@ -206,7 +206,7 @@ export class BentoScreen implements OnInit {
     try {
       this.preloaderService.show();
       this.website = await this.apiService.get(
-        API.GET_SAVED_WEBSITE,
+        API.GET_BENTO_WEBSITE,
         null,
         await this.userService.getCurrentUserObject().getIdToken()
       );

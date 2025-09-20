@@ -41,7 +41,7 @@ export class ResumeViewer extends BasePageScreen implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(async (params) => {
       this.email = params.get('email')!;
-      this.fetchPDFFromEmail();
+      await this.fetchPDFFromEmail();
     });
   }
 }
