@@ -13,7 +13,6 @@ import {
   CodeModel,
   CodeEditorService,
 } from '@ngstack/code-editor';
-import latex from 'monaco-latex';
 import { ResumePdfService } from '../../services/resume-pdf-service';
 import { ToggleThemeService } from '../../services/toggle-theme-service';
 import { HlmButton } from '@spartan-ng/helm/button';
@@ -76,6 +75,17 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
 
   public codeOption = {
     automaticLayout: true,
+    wordWrap: 'on' as const,
+    minimap: { enabled: false },
+    scrollBeyondLastLine: false,
+    fontSize: 14,
+    lineNumbers: 'on' as const,
+    folding: true,
+    bracketPairColorization: { enabled: true },
+    suggest: {
+      showKeywords: true,
+      showSnippets: true,
+    },
   };
 
   public async getLatex() {
@@ -129,8 +139,31 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
       }
     }
 
+    // Register LaTeX language
     this.codeService.monaco.languages.register({ id: 'latex' });
-    this.codeService.monaco.languages.setMonarchTokensProvider('latex', latex);
+    
+    // Set up basic LaTeX syntax highlighting
+    this.codeService.monaco.languages.setMonarchTokensProvider('latex', {
+      tokenizer: {
+        root: [
+          [/\\[a-zA-Z@]+/, 'keyword'],
+          [/\\[^a-zA-Z@]/, 'keyword'],
+          [/\{/, 'delimiter.bracket', '@bracket'],
+          [/\}/, 'delimiter.bracket', '@pop'],
+          [/%/, 'comment', '@comment'],
+          [/[^\\{}%]+/, 'text']
+        ],
+        bracket: [
+          [/\{/, 'delimiter.bracket', '@bracket'],
+          [/\}/, 'delimiter.bracket', '@pop'],
+          [/[^{}]+/, 'text']
+        ],
+        comment: [
+          [/$/, 'comment', '@pop'],
+          [/.*/, 'comment']
+        ]
+      }
+    });
     this.codeModel = {
       language: 'latex',
       value: this.latex,

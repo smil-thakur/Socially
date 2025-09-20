@@ -77,8 +77,8 @@ export class BentoScreen implements OnInit {
     if (!this.isBentoSaved) {
       const dialogref = this.hlmDialogService.open(ConfirmationDialog, {
         context: {
-          title: 'Your Resume is not saved!',
-          desc: 'Your resume pdf is not saved on cloud navigating back will cause in loss of data!, do you confirm to discard the data?',
+          title: 'Your Bento is not saved!',
+          desc: 'Your Bento pdf is not saved on cloud navigating back will cause in loss of data!, do you confirm to discard the data?',
         },
       });
       dialogref.closed$.subscribe((response) => {
@@ -210,8 +210,6 @@ export class BentoScreen implements OnInit {
         null,
         await this.userService.getCurrentUserObject().getIdToken()
       );
-      console.log('Saved website loaded:', this.website);
-      localStorage.setItem('website', JSON.stringify(this.website));
       this.isWebsiteGenerated = true;
       this.isBentoSaved = true;
     } catch (err) {
