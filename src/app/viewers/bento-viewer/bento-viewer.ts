@@ -22,10 +22,12 @@ import { ErrorDialog } from '../../common/error-dialog/error-dialog';
 import { BasePageScreen } from '../../common/base-page-screen/base-page-screen';
 import { OnlyBackNavBar } from '../../common/only-back-nav-bar/only-back-nav-bar';
 import { NgZone } from '@angular/core';
+import { StaticTopBar } from '../../common/static-top-bar/static-top-bar';
+import { PromotionFooter } from '../../common/promotion-footer/promotion-footer';
 
 @Component({
   selector: 'app-bento-viewer',
-  imports: [OnlyBackNavBar],
+  imports: [OnlyBackNavBar, StaticTopBar, PromotionFooter],
   templateUrl: './bento-viewer.html',
   styleUrl: './bento-viewer.scss',
 })

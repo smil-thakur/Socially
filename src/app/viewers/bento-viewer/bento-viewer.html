@@ -1,163 +1,171 @@
-@if (website) { @if (inViewMode) {
-<app-only-back-nav-bar></app-only-back-nav-bar>
+@if (inViewMode) {
+<app-static-top-bar></app-static-top-bar>
 }
-<div class="bento-grid" #bentoGrid>
-  @for (bento of website!.elements; track bento; let i = $index) {
-  <div
-    class="bento minimalist"
-    [class]="[bento.layout || 'default', bento.size || 'medium']"
-    [class.hero]="bento.bigBento"
-    [class.accent-primary]="bento.accent === 'primary'"
-    [class.accent-secondary]="bento.accent === 'secondary'"
-    [class.accent-success]="bento.accent === 'success'"
-    [class.accent-warning]="bento.accent === 'warning'"
-    [class.accent-info]="bento.accent === 'info'"
-    [class.staggered]="true"
-    [style.--stagger-delay]="i * 0.1 + 's'"
-  >
-    <!-- Header Section -->
-    <div class="bento-header">
-      @if (bento.icon) {
-      <div class="bento-icon">{{ bento.icon }}</div>
-      }
-      <h2 class="bento-title">{{ bento.heading }}</h2>
-      @if (bento.tags?.length) {
-      <div class="bento-tags">
-        @for (tag of bento.tags; track tag) {
-        <span class="tag">{{ tag }}</span>
+<div [class]="{ 'mt-[80px]': inViewMode }">
+  @if (website) {
+  <div class="bento-grid" #bentoGrid>
+    @for (bento of website!.elements; track bento; let i = $index) {
+    <div
+      class="bento minimalist"
+      [class]="[bento.layout || 'default', bento.size || 'medium']"
+      [class.hero]="bento.bigBento"
+      [class.accent-primary]="bento.accent === 'primary'"
+      [class.accent-secondary]="bento.accent === 'secondary'"
+      [class.accent-success]="bento.accent === 'success'"
+      [class.accent-warning]="bento.accent === 'warning'"
+      [class.accent-info]="bento.accent === 'info'"
+      [class.staggered]="true"
+      [style.--stagger-delay]="i * 0.1 + 's'"
+    >
+      <!-- Header Section -->
+      <div class="bento-header">
+        @if (bento.icon) {
+        <div class="bento-icon">{{ bento.icon }}</div>
         }
-      </div>
-      }
-    </div>
-
-    <!-- Content based on layout type -->
-    @switch (bento.layout) { @case ('stats') {
-    <div class="stats-layout">
-      <p class="bento-content">{{ bento.content }}</p>
-      @if (bento.stats?.length) {
-      <div class="stats-grid">
-        @for (stat of bento.stats; track stat) {
-        <div class="stat-item">
-          <div class="stat-value">{{ stat.value }}</div>
-          <div class="stat-label">{{ stat.label }}</div>
+        <h2 class="bento-title">{{ bento.heading }}</h2>
+        @if (bento.tags?.length) {
+        <div class="bento-tags">
+          @for (tag of bento.tags; track tag) {
+          <span class="tag">{{ tag }}</span>
+          }
         </div>
         }
       </div>
-      }
-    </div>
-    } @case ('featured') {
-    <div class="featured-layout">
-      @if (bento.image) {
-      <div class="featured-image">
-        <img [src]="bento.image" [alt]="bento.heading" />
-      </div>
-      }
-      <div class="featured-content">
+
+      <!-- Content based on layout type -->
+      @switch (bento.layout) { @case ('stats') {
+      <div class="stats-layout">
         <p class="bento-content">{{ bento.content }}</p>
+        @if (bento.stats?.length) {
+        <div class="stats-grid">
+          @for (stat of bento.stats; track stat) {
+          <div class="stat-item">
+            <div class="stat-value">{{ stat.value }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+          }
+        </div>
+        }
       </div>
-    </div>
-    } @case ('timeline') {
-    <div class="timeline-layout">
-      @if (bento.innerBentos?.length) {
-      <!-- Grouped timeline with innerBentos -->
-      <p class="bento-content">{{ bento.content }}</p>
-      <div class="timeline-items">
-        @for (item of bento.innerBentos; track item; let isLast = $last) {
-        <div class="timeline-item" [class.last-item]="isLast">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
+      } @case ('featured') {
+      <div class="featured-layout">
+        @if (bento.image) {
+        <div class="featured-image">
+          <img [src]="bento.image" [alt]="bento.heading" />
+        </div>
+        }
+        <div class="featured-content">
+          <p class="bento-content">{{ bento.content }}</p>
+        </div>
+      </div>
+      } @case ('timeline') {
+      <div class="timeline-layout">
+        @if (bento.innerBentos?.length) {
+        <!-- Grouped timeline with innerBentos -->
+        <p class="bento-content">{{ bento.content }}</p>
+        <div class="timeline-items">
+          @for (item of bento.innerBentos; track item; let isLast = $last) {
+          <div class="timeline-item" [class.last-item]="isLast">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h4>{{ item.heading }}</h4>
+              @if (item.content) {
+              <p>{{ item.content }}</p>
+              } @if (item.badge) {
+              <span class="timeline-badge">{{ item.badge }}</span>
+              }
+            </div>
+          </div>
+          }
+        </div>
+        } @else {
+        <!-- Individual timeline item -->
+        <div class="timeline-items">
+          <div class="timeline-item last-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h4>{{ bento.heading }}</h4>
+              <p>{{ bento.content }}</p>
+              @if (bento.badge) {
+              <span class="timeline-badge">{{ bento.badge }}</span>
+              }
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      } @case ('gallery') {
+      <div class="gallery-layout">
+        <p class="bento-content">{{ bento.content }}</p>
+        @if (bento.innerBentos?.length) {
+        <div class="gallery-grid">
+          @for (item of bento.innerBentos; track item) {
+          <div class="gallery-item">
+            @if (item.icon) {
+            <div class="gallery-icon">{{ item.icon }}</div>
+            }
             <h4>{{ item.heading }}</h4>
-            @if (item.content) {
-            <p>{{ item.content }}</p>
-            } @if (item.badge) {
-            <span class="timeline-badge">{{ item.badge }}</span>
-            }
           </div>
-        </div>
-        }
-      </div>
-      } @else {
-      <!-- Individual timeline item -->
-      <div class="timeline-items">
-        <div class="timeline-item last-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <h4>{{ bento.heading }}</h4>
-            <p>{{ bento.content }}</p>
-            @if (bento.badge) {
-            <span class="timeline-badge">{{ bento.badge }}</span>
-            }
-          </div>
-        </div>
-      </div>
-      }
-    </div>
-    } @case ('gallery') {
-    <div class="gallery-layout">
-      <p class="bento-content">{{ bento.content }}</p>
-      @if (bento.innerBentos?.length) {
-      <div class="gallery-grid">
-        @for (item of bento.innerBentos; track item) {
-        <div class="gallery-item">
-          @if (item.icon) {
-          <div class="gallery-icon">{{ item.icon }}</div>
-          }
-          <h4>{{ item.heading }}</h4>
-        </div>
-        }
-      </div>
-      }
-    </div>
-    } @case ('contact') {
-    <div class="contact-layout">
-      <p class="bento-content">{{ bento.content }}</p>
-      @if (bento.innerBentos?.length) {
-      <div class="contact-items">
-        @for (contact of bento.innerBentos; track contact) {
-        <div class="contact-item">
-          @if (contact.icon) {
-          <span class="contact-icon">{{ contact.icon }}</span>
-          } @if (contact.link) {
-          <a [href]="contact.link" target="_blank">{{ contact.heading }}</a>
-          } @else {
-          <span>{{ contact.heading }}</span>
           }
         </div>
         }
       </div>
-      }
-    </div>
-    } @default {
-    <!-- Default layout -->
-    <div class="default-layout">
-      <p class="bento-content">{{ bento.content }}</p>
+      } @case ('contact') {
+      <div class="contact-layout">
+        <p class="bento-content">{{ bento.content }}</p>
+        @if (bento.innerBentos?.length) {
+        <div class="contact-items">
+          @for (contact of bento.innerBentos; track contact) {
+          <div class="contact-item">
+            @if (contact.icon) {
+            <span class="contact-icon">{{ contact.icon }}</span>
+            } @if (contact.link) {
+            <a [href]="contact.link" target="_blank">{{ contact.heading }}</a>
+            } @else {
+            <span>{{ contact.heading }}</span>
+            }
+          </div>
+          }
+        </div>
+        }
+      </div>
+      } @default {
+      <!-- Default layout -->
+      <div class="default-layout">
+        <p class="bento-content">{{ bento.content }}</p>
 
-      @if (bento.innerBentos?.length) {
-      <div class="bento-inner-grid">
-        @for (inner of bento.innerBentos; track inner) {
-        <div class="inner-bento">
-          @if (inner.icon) {
-          <span class="inner-icon">{{ inner.icon }}</span>
-          }
-          <h4>{{ inner.heading }}</h4>
-          @if (inner.content) {
-          <p>{{ inner.content }}</p>
-          } @if (inner.badge) {
-          <span class="inner-badge">{{ inner.badge }}</span>
+        @if (bento.innerBentos?.length) {
+        <div class="bento-inner-grid">
+          @for (inner of bento.innerBentos; track inner) {
+          <div class="inner-bento">
+            @if (inner.icon) {
+            <span class="inner-icon">{{ inner.icon }}</span>
+            }
+            <h4>{{ inner.heading }}</h4>
+            @if (inner.content) {
+            <p>{{ inner.content }}</p>
+            } @if (inner.badge) {
+            <span class="inner-badge">{{ inner.badge }}</span>
+            }
+          </div>
           }
         </div>
         }
       </div>
-      }
+      } }
     </div>
-    } }
+    }
+  </div>
+
+  } @if (!website) {
+  <app-only-back-nav-bar></app-only-back-nav-bar>
+  <div class="flex items-center justify-center flex-col h-[80vh]">
+    <h1 class="{{ h1Style }}">No bento found</h1>
   </div>
   }
 </div>
-
-} @if (!website) {
-<app-only-back-nav-bar></app-only-back-nav-bar>
-<div class="flex items-center justify-center flex-col h-[80vh]">
-  <h1 class="{{ h1Style }}">No bento found</h1>
-</div>
+@if (inViewMode) {
+<app-promotion-footer
+  title="Want to create your own bento portfolio page?"
+></app-promotion-footer>
 }

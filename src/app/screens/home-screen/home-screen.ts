@@ -83,12 +83,12 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       desc: 'Organize all your social media profiles in one place',
       route: 'social-links',
     },
-    {
-      type: 'digital-card',
-      icon: 'lucideContact',
-      desc: 'Your modern business card to share digitally',
-      route: 'social-links',
-    },
+    // {
+    //   type: 'digital-card',
+    //   icon: 'lucideContact',
+    //   desc: 'Your modern business card to share digitally',
+    //   route: 'social-links',
+    // },
     {
       type: 'resume',
       icon: 'lucideFileText',
@@ -101,30 +101,30 @@ export class HomeScreen extends BasePageScreen implements OnInit {
       desc: 'A portfolio built using modular bento cards to showcase your projects, skills, and achievements',
       route: 'bento',
     },
-    {
-      type: 'skills-certifications',
-      icon: 'lucideBadgeCheck',
-      desc: 'Highlight your skills and certifications',
-      route: 'social-links',
-    },
-    {
-      type: 'blog',
-      icon: 'lucidePen',
-      desc: 'Write and share articles to build your personal brand',
-      route: 'social-links',
-    },
+    // {
+    //   type: 'skills-certifications',
+    //   icon: 'lucideBadgeCheck',
+    //   desc: 'Highlight your skills and certifications',
+    //   route: 'social-links',
+    // },
+    // {
+    //   type: 'blog',
+    //   icon: 'lucidePen',
+    //   desc: 'Write and share articles to build your personal brand',
+    //   route: 'social-links',
+    // },
     {
       type: 'analytics',
       icon: 'lucideChartBar',
-      desc: 'See who views your card and profile',
+      desc: 'Manage your data',
       route: 'analytics',
     },
-    {
-      type: 'video-intro',
-      icon: 'lucideVideo',
-      desc: 'Add a quick video introduction to make a personal connection',
-      route: 'social-links',
-    },
+    // {
+    //   type: 'video-intro',
+    //   icon: 'lucideVideo',
+    //   desc: 'Add a quick video introduction to make a personal connection',
+    //   route: 'social-links',
+    // },
   ];
 
   public navigateToScreen(route: string) {
