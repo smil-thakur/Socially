@@ -141,7 +141,7 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
 
     // Register LaTeX language
     this.codeService.monaco.languages.register({ id: 'latex' });
-    
+
     // Set up basic LaTeX syntax highlighting
     this.codeService.monaco.languages.setMonarchTokensProvider('latex', {
       tokenizer: {
@@ -151,18 +151,18 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
           [/\{/, 'delimiter.bracket', '@bracket'],
           [/\}/, 'delimiter.bracket', '@pop'],
           [/%/, 'comment', '@comment'],
-          [/[^\\{}%]+/, 'text']
+          [/[^\\{}%]+/, 'text'],
         ],
         bracket: [
           [/\{/, 'delimiter.bracket', '@bracket'],
           [/\}/, 'delimiter.bracket', '@pop'],
-          [/[^{}]+/, 'text']
+          [/[^{}]+/, 'text'],
         ],
         comment: [
           [/$/, 'comment', '@pop'],
-          [/.*/, 'comment']
-        ]
-      }
+          [/.*/, 'comment'],
+        ],
+      },
     });
     this.codeModel = {
       language: 'latex',
@@ -224,7 +224,9 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
 
   public async recompilePDF() {
     if (this.latex) {
+      this.preloaderService.show();
       await this.getPDF();
+      this.preloaderService.hide();
     }
   }
 
