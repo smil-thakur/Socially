@@ -212,6 +212,7 @@ export class BentoScreen extends BasePageScreen implements OnInit {
         null,
         await this.userService.getCurrentUserObject().getIdToken()
       );
+      this.codeValue = JSON.stringify(this.website, null, 2);
       localStorage.setItem('website', JSON.stringify(this.website));
       this.isWebsiteGenerated = true;
       this.isBentoSaved = false; // Reset saved status when regenerating
