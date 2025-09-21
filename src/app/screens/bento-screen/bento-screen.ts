@@ -26,6 +26,7 @@ import { toast } from 'ngx-sonner';
 import { isEqual } from 'lodash';
 import { languages } from '../../enums/language-data';
 import { HlmToaster } from '@spartan-ng/helm/sonner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bento-screen',
@@ -56,6 +57,7 @@ export class BentoScreen extends BasePageScreen implements OnInit {
   public initialValue: Website | null = null;
   private hlmDialogService = inject(HlmDialogService);
   private preloaderService = inject(PreloaderService);
+  private router = inject(Router);
   private location = inject(Location);
   private themeService = inject(ToggleThemeService);
   public isBentoSaved = false;
@@ -217,9 +219,11 @@ export class BentoScreen extends BasePageScreen implements OnInit {
       this.hlmDialogService.open(ErrorDialog, {
         context: {
           error: 'Unable to generate the website',
-          desc: err,
+          desc: 'Please make sure we have your data in analytics page, if not drop your pdf to extract data!',
         },
       });
+      toast.error(`${err}`);
+      this.router.navigate(['/home']);
     } finally {
       this.preloaderService.hide();
     }
@@ -240,9 +244,10 @@ export class BentoScreen extends BasePageScreen implements OnInit {
       this.hlmDialogService.open(ErrorDialog, {
         context: {
           error: 'Unable to regenerate the website',
-          desc: err,
+          desc: 'Please make sure we have your data in analytics page, if not drop your pdf to extract data!',
         },
       });
+      toast.error(`${err}`);
     } finally {
       this.preloaderService.hide();
     }
@@ -297,7 +302,7 @@ export class BentoScreen extends BasePageScreen implements OnInit {
       this.hlmDialogService.open(ErrorDialog, {
         context: {
           error: 'Unable to load bento',
-          info: 'Generate your bento if not yet generated or try again later',
+          desc: 'Generate your bento if not yet generated or try again later',
         },
       });
     } finally {
