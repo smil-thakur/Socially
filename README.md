@@ -1,6 +1,10 @@
 # Socially
 
-A modern, full-featured social profile management platform. Socially empowers users to create and manage professional profiles, social links, analytics, resumes, and bento grids with an intuitive and responsive interface.
+A modern, full-featured AI first social profile management platform. Socially empowers users to generate and manage professional profiles, social links, analytics, resumes, and bento grids with an intuitive and responsive interface.
+
+Socially with the help on AI generates your resume, your bento using your data feeded by you through a PDF or already existing resume, it works like magic a simple drag and drop and done you have everything ready in your hands
+
+quickly share your social links, your resume and your bentos easily through sharable links (other person won't require a signup to view your socials)
 
 ## 🚀 Features
 
@@ -10,17 +14,27 @@ A modern, full-featured social profile management platform. Socially empowers us
 - Add, edit, and organize all your important links in one place
 - Shareable profile URL for easy access
 
+- <img width="1440" height="857" alt="Screenshot 2025-09-21 at 4 59 30 PM" src="https://github.com/user-attachments/assets/9813be33-5006-460f-9e54-35580eefa332" />
+visit on : https://smil-thakur.github.io/Socially/social-links/smil.raj.thakur@gmail.com
+
+
 ### 📄 Resume Builder & Viewer
 
-- Create professional resumes with customizable templates
+- Generate using AI professional resumes with customizable latex
 - Share resumes via unique URLs
 - View resumes created by other users
+- <img width="1440" height="857" alt="Screenshot 2025-09-21 at 5 01 43 PM" src="https://github.com/user-attachments/assets/9b57bcb4-f3a0-4f1a-baa9-447e7c156f62" />
+visit on : https://smil-thakur.github.io/Socially/resume-viewer/smil.raj.thakur@gmail.com
 
 ### 🎨 Bento Grid Creator
 
-- Design visually appealing bento-style profile grids
+- Design visually appealing bento-style profile grids using AI and then fine tune it with the code
 - Showcase your work, skills, and interests in a creative layout
+
 - Shareable bento grid pages
+- <img width="1440" height="857" alt="Screenshot 2025-09-21 at 5 02 48 PM" src="https://github.com/user-attachments/assets/cd882a06-185f-4543-895a-96e080f3adaf" />
+visit on : [https://smil-thakur.github.io/Socially/resume-viewer/smil.raj.thakur@gmail.com
+](https://smil-thakur.github.io/Socially/bento-viewer/smil.raj.thakur@gmail.com)
 
 ## 🛠️ Technologies Stack
 
