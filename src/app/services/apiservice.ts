@@ -14,8 +14,8 @@ export class APIservice {
     params: any,
     idTocken?: string | null
   ): Promise<T> {
-    const url = 'https://socially-backend-keig.onrender.com' + api;
-
+    const url = environment.backend.baseURL + api;
+    console.log(url);
     return firstValueFrom(
       this.httpclient
         .get<T>(url, {
@@ -37,7 +37,8 @@ export class APIservice {
     params: any,
     idTocken?: string | null
   ): Promise<any> {
-    const url = 'https://socially-backend-keig.onrender.com' + api;
+    const url = environment.backend.baseURL + api;
+    console.log(url);
 
     return firstValueFrom(
       this.httpclient
@@ -57,7 +58,8 @@ export class APIservice {
   }
 
   public post<T>(api: string, body: T, idTocken?: string): Promise<any> {
-    const url = 'https://socially-backend-keig.onrender.com' + api;
+    const url = environment.backend.baseURL + api;
+    console.log(url);
 
     return firstValueFrom(
       this.httpclient
@@ -74,7 +76,8 @@ export class APIservice {
     );
   }
   public postBlob<T>(api: string, body: T, idTocken?: string): Promise<Blob> {
-    const url = 'https://socially-backend-keig.onrender.com' + api;
+    const url = environment.backend.baseURL + api;
+    console.log(url);
 
     return firstValueFrom(
       this.httpclient
@@ -94,7 +97,8 @@ export class APIservice {
   }
 
   public delete(api: string, params: any, idTocken: string | null) {
-    const url = 'https://socially-backend-keig.onrender.com' + api;
+    const url = environment.backend.baseURL + api;
+    console.log(url);
 
     return firstValueFrom(
       this.httpclient

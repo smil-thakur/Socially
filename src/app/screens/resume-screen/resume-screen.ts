@@ -139,31 +139,6 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
       }
     }
 
-    // Register LaTeX language
-    this.codeService.monaco.languages.register({ id: 'latex' });
-
-    // Set up basic LaTeX syntax highlighting
-    this.codeService.monaco.languages.setMonarchTokensProvider('latex', {
-      tokenizer: {
-        root: [
-          [/\\[a-zA-Z@]+/, 'keyword'],
-          [/\\[^a-zA-Z@]/, 'keyword'],
-          [/\{/, 'delimiter.bracket', '@bracket'],
-          [/\}/, 'delimiter.bracket', '@pop'],
-          [/%/, 'comment', '@comment'],
-          [/[^\\{}%]+/, 'text'],
-        ],
-        bracket: [
-          [/\{/, 'delimiter.bracket', '@bracket'],
-          [/\}/, 'delimiter.bracket', '@pop'],
-          [/[^{}]+/, 'text'],
-        ],
-        comment: [
-          [/$/, 'comment', '@pop'],
-          [/.*/, 'comment'],
-        ],
-      },
-    });
     this.codeModel = {
       language: 'latex',
       value: this.latex,
@@ -211,6 +186,31 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
   }
 
   ngOnInit(): void {
+    // Register LaTeX language
+    this.codeService.monaco.languages.register({ id: 'latex' });
+
+    // Set up basic LaTeX syntax highlighting
+    this.codeService.monaco.languages.setMonarchTokensProvider('latex', {
+      tokenizer: {
+        root: [
+          [/\\[a-zA-Z@]+/, 'keyword'],
+          [/\\[^a-zA-Z@]/, 'keyword'],
+          [/\{/, 'delimiter.bracket', '@bracket'],
+          [/\}/, 'delimiter.bracket', '@pop'],
+          [/%/, 'comment', '@comment'],
+          [/[^\\{}%]+/, 'text'],
+        ],
+        bracket: [
+          [/\{/, 'delimiter.bracket', '@bracket'],
+          [/\}/, 'delimiter.bracket', '@pop'],
+          [/[^{}]+/, 'text'],
+        ],
+        comment: [
+          [/$/, 'comment', '@pop'],
+          [/.*/, 'comment'],
+        ],
+      },
+    });
     window.scrollTo(0, 0);
     this.getLatex();
   }

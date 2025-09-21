@@ -58,6 +58,7 @@
     "@spartan-ng/cli": "^0.0.1-alpha.511",
     "@types/jasmine": "~5.1.9",
     "@types/lodash": "^4.17.20",
+    "angular-cli-ghpages": "^2.0.3",
     "jasmine-core": "~5.10.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
