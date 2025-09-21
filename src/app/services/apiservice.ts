@@ -15,7 +15,6 @@ export class APIservice {
     idTocken?: string | null
   ): Promise<T> {
     const url = environment.backend.baseURL + api;
-    console.log(url);
     return firstValueFrom(
       this.httpclient
         .get<T>(url, {
@@ -38,7 +37,6 @@ export class APIservice {
     idTocken?: string | null
   ): Promise<any> {
     const url = environment.backend.baseURL + api;
-    console.log(url);
 
     return firstValueFrom(
       this.httpclient
@@ -59,7 +57,6 @@ export class APIservice {
 
   public post<T>(api: string, body: T, idTocken?: string): Promise<any> {
     const url = environment.backend.baseURL + api;
-    console.log(url);
 
     return firstValueFrom(
       this.httpclient
@@ -77,7 +74,6 @@ export class APIservice {
   }
   public postBlob<T>(api: string, body: T, idTocken?: string): Promise<Blob> {
     const url = environment.backend.baseURL + api;
-    console.log(url);
 
     return firstValueFrom(
       this.httpclient
@@ -98,7 +94,6 @@ export class APIservice {
 
   public delete(api: string, params: any, idTocken: string | null) {
     const url = environment.backend.baseURL + api;
-    console.log(url);
 
     return firstValueFrom(
       this.httpclient

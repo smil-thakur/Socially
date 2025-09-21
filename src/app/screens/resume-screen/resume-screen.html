@@ -58,13 +58,15 @@
 >
   <!-- Code Editor Section -->
   <div class="flex-1 min-h-[400px] lg:min-h-0 order-2 lg:order-1">
-    <ngs-code-editor
-      [options]="codeOption"
-      [theme]="theme"
-      [codeModel]="codeModel"
-      (valueChanged)="contentChange($event)"
+    <code-editor
+      [languages]="ld"
+      theme="dark"
       class="h-full"
-    ></ngs-code-editor>
+      [value]="codeValue"
+      language="latex"
+      [lineWrapping]="true"
+      (change)="contentChange($event)"
+    ></code-editor>
   </div>
 
   <!-- PDF Viewer Section -->

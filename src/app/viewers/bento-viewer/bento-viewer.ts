@@ -140,7 +140,6 @@ export class BentoViewer
         },
         null
       );
-      console.log('Website loaded for email:', this.email, this.website);
     } catch (err) {
       this.hlmDialogService.open(ErrorDialog, {
         context: {

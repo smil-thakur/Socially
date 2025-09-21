@@ -4,7 +4,7 @@
 <div [class]="{ 'mt-[80px]': inViewMode }">
   @if (website) {
   <div class="bento-grid" #bentoGrid>
-    @for (bento of website!.elements; track bento; let i = $index) {
+    @for (bento of website!.elements; track bento.heading + i; let i = $index) {
     <div
       class="bento minimalist"
       [class]="[bento.layout || 'default', bento.size || 'medium']"
@@ -38,7 +38,7 @@
         <p class="bento-content">{{ bento.content }}</p>
         @if (bento.stats?.length) {
         <div class="stats-grid">
-          @for (stat of bento.stats; track stat) {
+          @for (stat of bento.stats; track stat.label) {
           <div class="stat-item">
             <div class="stat-value">{{ stat.value }}</div>
             <div class="stat-label">{{ stat.label }}</div>
@@ -64,7 +64,7 @@
         <!-- Grouped timeline with innerBentos -->
         <p class="bento-content">{{ bento.content }}</p>
         <div class="timeline-items">
-          @for (item of bento.innerBentos; track item; let isLast = $last) {
+          @for (item of bento.innerBentos; track item.heading + $index; let isLast = $last) {
           <div class="timeline-item" [class.last-item]="isLast">
             <div class="timeline-dot"></div>
             <div class="timeline-content">
@@ -99,7 +99,7 @@
         <p class="bento-content">{{ bento.content }}</p>
         @if (bento.innerBentos?.length) {
         <div class="gallery-grid">
-          @for (item of bento.innerBentos; track item) {
+          @for (item of bento.innerBentos; track item.heading + $index) {
           <div class="gallery-item">
             @if (item.icon) {
             <div class="gallery-icon">{{ item.icon }}</div>
@@ -115,7 +115,7 @@
         <p class="bento-content">{{ bento.content }}</p>
         @if (bento.innerBentos?.length) {
         <div class="contact-items">
-          @for (contact of bento.innerBentos; track contact) {
+          @for (contact of bento.innerBentos; track contact.heading + $index) {
           <div class="contact-item">
             @if (contact.icon) {
             <span class="contact-icon">{{ contact.icon }}</span>
@@ -136,7 +136,7 @@
 
         @if (bento.innerBentos?.length) {
         <div class="bento-inner-grid">
-          @for (inner of bento.innerBentos; track inner) {
+          @for (inner of bento.innerBentos; track inner.heading + $index) {
           <div class="inner-bento">
             @if (inner.icon) {
             <span class="inner-icon">{{ inner.icon }}</span>

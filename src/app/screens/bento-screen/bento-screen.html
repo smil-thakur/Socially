@@ -1,3 +1,5 @@
+<hlm-toaster [duration]="5000" [closeButton]="true"></hlm-toaster>
+
 <div
   class="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full p-3 sm:p-4 gap-3 sm:gap-4"
 >
@@ -46,26 +48,16 @@
     </button>
   </div>
 </div>
+<code-editor
+  [languages]="ld"
+  language="json"
+  theme="dark"
+  class="h-[400px] mb-4"
+  [lineWrapping]="true"
+  [value]="codeValue"
+  (change)="contentChange($event)"
+/>
 
-<div hlmAccordion class="mx-2 mb-4">
-  <div hlmAccordionItem>
-    <h3 class="contents">
-      <button hlmAccordionTrigger>
-        Code for bento
-        <ng-icon name="lucideChevronDown" hlm hlmAccIcon />
-      </button>
-    </h3>
-    <hlm-accordion-content>
-      <ngs-code-editor
-        [options]="codeOption"
-        [theme]="theme"
-        [codeModel]="codeModel"
-        (valueChanged)="contentChange($event)"
-        class="h-[500px]"
-      ></ngs-code-editor>
-    </hlm-accordion-content>
-  </div>
-</div>
 <!-- Code Editor Section -->
 
 @if (website) {

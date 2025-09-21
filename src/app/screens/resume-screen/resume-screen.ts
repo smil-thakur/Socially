@@ -7,12 +7,9 @@ import { ResumeDataService } from '../../services/resume-data-service';
 import { UserService } from '../../services/user-service';
 import { PreloaderService } from '../../services/preloader-service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { FormsModule } from '@angular/forms';
 
-import {
-  CodeEditorComponent,
-  CodeModel,
-  CodeEditorService,
-} from '@ngstack/code-editor';
+import { CodeEditor } from '@acrodata/code-editor';
 import { ResumePdfService } from '../../services/resume-pdf-service';
 import { ToggleThemeService } from '../../services/toggle-theme-service';
 import { HlmButton } from '@spartan-ng/helm/button';
@@ -21,22 +18,15 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideArrowLeft } from '@ng-icons/lucide';
 import { HlmDialogService } from '@spartan-ng/helm/dialog';
 import { ErrorDialog } from '../../common/error-dialog/error-dialog';
-import { InfoDialog } from '../../common/info-dialog/info-dialog';
-import { Title } from '@angular/platform-browser';
 import { ConfirmationDialog } from '../../common/confirmation-dialog/confirmation-dialog';
 import { Location } from '@angular/common';
 import { toast } from 'ngx-sonner';
 import { HlmToaster } from '@spartan-ng/helm/sonner';
 import { isEqual } from 'lodash';
+import { languages } from '../../enums/language-data';
 @Component({
   selector: 'app-resume-screen',
-  imports: [
-    CodeEditorComponent,
-    PdfViewerModule,
-    HlmButton,
-    NgIcon,
-    HlmToaster,
-  ],
+  imports: [CodeEditor, PdfViewerModule, HlmButton, NgIcon, HlmToaster],
   providers: [
     provideIcons({
       lucideArrowLeft,
@@ -51,11 +41,11 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
   private resumeDataService = inject(ResumeDataService);
   private userService = inject(UserService);
   private preloaderService = inject(PreloaderService);
-  private codeService = inject(CodeEditorService);
   private resumePDFService = inject(ResumePdfService);
   private themeService = inject(ToggleThemeService);
   private hlmDialogService = inject(HlmDialogService);
   private location = inject(Location);
+  public ld = [languages[1]];
 
   public username = this.userService.getCurrentUserObject().displayName;
   public latex = '';
@@ -66,27 +56,7 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
   public pdfContainsError = false;
   public texURL = '';
   public initialTex = '';
-
-  public codeModel: CodeModel = {
-    language: 'latex',
-    value: '',
-    uri: 'resume.tex',
-  };
-
-  public codeOption = {
-    automaticLayout: true,
-    wordWrap: 'on' as const,
-    minimap: { enabled: false },
-    scrollBeyondLastLine: false,
-    fontSize: 14,
-    lineNumbers: 'on' as const,
-    folding: true,
-    bracketPairColorization: { enabled: true },
-    suggest: {
-      showKeywords: true,
-      showSnippets: true,
-    },
-  };
+  public codeValue = '';
 
   public async getLatex() {
     this.preloaderService.show();
@@ -139,11 +109,7 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
       }
     }
 
-    this.codeModel = {
-      language: 'latex',
-      value: this.latex,
-      uri: 'resume.tex',
-    };
+    this.codeValue = this.latex;
     await this.getPDF();
     this.preloaderService.hide();
   }
@@ -165,11 +131,7 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
         )
       )['latex'];
       this.initialTex = this.latex;
-      this.codeModel = {
-        language: 'latex',
-        value: this.latex,
-        uri: 'resume.tex',
-      };
+      this.codeValue = this.latex;
       await this.getPDF();
       this.isPDFSaved = false;
     } catch (err) {
@@ -186,31 +148,6 @@ export class ResumeScreen extends BasePageScreen implements OnInit {
   }
 
   ngOnInit(): void {
-    // Register LaTeX language
-    this.codeService.monaco.languages.register({ id: 'latex' });
-
-    // Set up basic LaTeX syntax highlighting
-    this.codeService.monaco.languages.setMonarchTokensProvider('latex', {
-      tokenizer: {
-        root: [
-          [/\\[a-zA-Z@]+/, 'keyword'],
-          [/\\[^a-zA-Z@]/, 'keyword'],
-          [/\{/, 'delimiter.bracket', '@bracket'],
-          [/\}/, 'delimiter.bracket', '@pop'],
-          [/%/, 'comment', '@comment'],
-          [/[^\\{}%]+/, 'text'],
-        ],
-        bracket: [
-          [/\{/, 'delimiter.bracket', '@bracket'],
-          [/\}/, 'delimiter.bracket', '@pop'],
-          [/[^{}]+/, 'text'],
-        ],
-        comment: [
-          [/$/, 'comment', '@pop'],
-          [/.*/, 'comment'],
-        ],
-      },
-    });
     window.scrollTo(0, 0);
     this.getLatex();
   }
