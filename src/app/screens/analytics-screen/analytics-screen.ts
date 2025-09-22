@@ -278,6 +278,10 @@ export class AnalyticsScreen extends BasePageScreen implements OnInit {
     }
   }
 
+  public updateProfilePic() {
+    toast.info('Functionality under progress');
+  }
+
   public canSave(): boolean {
     if (this.resumeDataService.resumeDataDTO) {
       return true;
