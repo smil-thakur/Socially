@@ -194,6 +194,6 @@ Contributions are welcome! Please follow these steps:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-Made with ❤️ by Smil Raj Thakue
+Made with ❤️ by Smil Raj Thakur
 
 **Socially** - Elevate Your Digital Presence
