@@ -279,10 +279,10 @@ export class SocialLinksScreen
     const input = event.target as HTMLInputElement;
     const file: File = input.files![0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
+      if (file.size > 1 * 1024 * 1024) {
         this._hlmDialogService.open(InfoDialog, {
           context: {
-            info: 'Icon file size must be less than 5MB.',
+            info: 'Icon file size must be less than 1MB.',
             desc: 'File size limit',
           },
         });
