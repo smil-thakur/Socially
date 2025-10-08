@@ -277,19 +277,40 @@ export class SocialLinksScreen
 
   onIconUpload(event: Event) {
     const input = event.target as HTMLInputElement;
-    const file: File = input.files![0];
-    if (file) {
-      if (file.size > 1 * 1024 * 1024) {
-        this._hlmDialogService.open(InfoDialog, {
-          context: {
-            info: 'Icon file size must be less than 1MB.',
-            desc: 'File size limit',
-          },
-        });
-        return;
-      }
-      this.customIconFile = file;
+    const file: File | undefined = input.files?.[0];
+    // clear state if no file selected
+    if (!file) {
+      this.customIconFile = null;
+      this.customIcon = '';
+      return;
     }
+
+    const MAX_SIZE = 1 * 1024 * 1024; // 1 MB
+    if (file.size > MAX_SIZE) {
+      this._hlmDialogService.open(InfoDialog, {
+        context: {
+          info: 'Icon file size must be less than 1MB.',
+          desc: 'File size limit',
+        },
+      });
+      // Clear the native file input so user can re-select the file
+      try {
+        input.value = '';
+      } catch (e) {
+        // ignore if not allowed, but still reset component state
+      }
+      this.customIconFile = null;
+      this.customIcon = '';
+      return;
+    }
+
+    // Accept the file and generate a preview
+    this.customIconFile = file;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.customIcon = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 
   async addGreetings() {
